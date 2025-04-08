@@ -1,2 +1,9 @@
 *.agdai
 MAlonzo/**
+*.aux
+*.log
+*.out
+*.ptb
+*.synctex.gz
+.DS_Store
+site

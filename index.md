@@ -1,18 +1,12 @@
-```
-
-```
-
 # Agda-Material
-
-`README.md`:
 
 This template repo supports generation of websites where pages include highlighted literate
 Agda code.
 
 ## Installation
 
-- [ ] [Agda](https://agda.readthedocs.io/en/stable/getting-started/installation.html)
-- [ ] [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/getting-started/)
+- [ ] [Agda]
+- [ ] [Material for MkDocs]
 - [ ] LaTeX, including:
   - [ ] `pdflatex`
   - [ ] packages …
@@ -29,7 +23,7 @@ Agda code.
     - [ ] `mkdocs.yml`
     - [ ] `docs`
 
-- [ ] Update `mkdocs.yml` :
+- [ ] Update `mkdocs.yml`:
   - [ ] `site_name`
   - [ ] `site_url`
   - [ ] `repo_name`
@@ -63,3 +57,10 @@ In the terminal:
 - [ ] `make clean-all`
 - [ ] Add your own Agda modules with paths starting from the repo root
 - [ ] `make all ROOT=M` for each Agda root module `M`
+- [ ] Update the generated website landing page `docs/index.md`
+- [ ] Update `mkdocs.yml`:
+  - `nav`
+  - `not_in_nav`
+
+[Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
+[Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
