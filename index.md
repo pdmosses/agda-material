@@ -45,10 +45,10 @@ In a web browser:
 In the terminal:
 
 - [ ] ```
-  make clean-all
-  make all
-  make all ROOT=Test/All.lagda
-  ```
+      make clean-all
+      make all
+      make all ROOT=Test/All.lagda
+      ```
 
 - [ ] Check that the site still corresponds to `https://pdmosses.github.io/agda-material`
 
@@ -57,10 +57,10 @@ In the terminal:
 - [ ] `make clean-all`
 - [ ] Add your own Agda modules with paths starting from the repo root
 - [ ] `make all ROOT=M` for each Agda root module `M`
-- [ ] Update the generated website landing page `docs/index.md`
+- [ ] Update `docs/index.md`
 - [ ] Update `mkdocs.yml`:
-  - `nav`
-  - `not_in_nav`
+  - [ ] `nav`
+  - [ ] `not_in_nav`
 
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
