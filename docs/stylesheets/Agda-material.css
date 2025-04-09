@@ -1,0 +1,10 @@
+/* Content width
+   https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/?h=navigation#content-area-width */
+/* .md-grid {
+  max-width: 1440px; 
+} */
+
+/* Code display */
+pre.Agda {
+  margin-left: 16px;
+}

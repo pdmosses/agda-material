@@ -18,12 +18,12 @@ Agda code.
   Or:
 
   - [ ] Clone/download the template repo
-
   - [ ] Copy to an existing repo:
+    - [ ] `Makefile`
     - [ ] `mkdocs.yml`
-    - [ ] `docs`
-
-- [ ] Update `mkdocs.yml`:
+    - [ ] `agda/*`
+    - [ ] `docs/*`
+  - [ ] Update `mkdocs.yml`:
   - [ ] `site_name`
   - [ ] `site_url`
   - [ ] `repo_name`
@@ -34,7 +34,7 @@ Agda code.
 In VS Code:
 
 - [ ] Open your local repo
-- [ ] Open a new terminal
+- [ ] Open a new terminal in the repo root directory
   - [ ] `mkdocs serve`
 
 In a web browser:
@@ -46,8 +46,8 @@ In the terminal:
 
 - [ ] ```
       make clean-all
-      make all
-      make all ROOT=Test/All.lagda
+      make all ROOT=agda/Test.lagda
+      make all ROOT=agda/Test/All.lagda
       ```
 
 - [ ] Check that the site still corresponds to `https://pdmosses.github.io/agda-material`
