@@ -4,6 +4,7 @@
 #
 # Name   Purpose                  Example       Default
 # -------------------------------------------------------------
+# DIR    agda module directory    DIR=myagda    agda
 # ROOT   root agda module file   ROOT=My.lagda  agda/Test.lagda
 # HTML   generated HTML files    HTML=myhtml    docs/html
 # MD     generated MD files        MD=mymd      docs/md
@@ -19,6 +20,7 @@
 ##############################################################################
 # DEFAULTS
 
+DIR   := agda
 ROOT  := agda/Test.lagda
 HTML  := docs/html
 MD    := docs/md
@@ -26,72 +28,84 @@ PDF   := docs/pdf
 LATEX := latex
 TEMP  := /tmp
 
-PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
-# shell command for generating PDF from LaTeX
-
 ##############################################################################
 # VARIABLES
 
-DIR := $(patsubst %.,%,$(subst /,.,$(dir $(ROOT))))
-# e.g., X (may be .)
+AGDA := agda --include-path=$(DIR)
 
-NAME := $(subst /,.,$(basename $(ROOT)))
-# e.g., X.All
+NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
+# e.g., Test or Test.All
 
 NAME-INPUTS := $(NAME).inputs
-# e.g., X.All.inputs
+# e.g., Test.inputs or Test.All.inputs
 
 NAME-ROOT := $(NAME).root
-# e.g., X.All.root
+# e.g.,Test.root or Test.All.root
 
-define ROOT-LATEX
-\documentclass[a4paper]{article}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{hyperref}
-\usepackage{agda}
-\input{agda-macros}
-\DisableLigatures[-]{encoding = T1, family = tt* }
+PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
+# shell command for generating PDF from LaTeX
 
-\newif\iflatex\latextrue
-\newif\ifmarkdown
-% In *.lagda files, wrap each markup line by \iflatex ... \fi or \ifmarkdown ... \fi
-% e.g. \iflatex\pagebreak\fi \ifmarkdown<br><br>\fi
+define DOC
+\\documentclass[a4paper]{article}
+\\usepackage{parskip}
+\\usepackage[T1]{fontenc}
+\\DisableLigatures[-]{encoding = T1, family = tt* }
+\\usepackage{microtype}
+\\usepackage{hyperref}
 
-\title{$(NAME)}
-\begin{document}
-\maketitle
-\input{$(NAME-INPUTS)}
-\end{document}
+\\usepackage{agda}
+\\input{agda-custom}
+
+\\newif\\iflatex\\latextrue
+\\newif\\ifmarkdown
+
+% In literate Agda files, enclose text with LaTeX markup in 
+% \\iflatex
+% ...
+% \\fi
+% and enclose text with Markdown markup in
+% \\ifmarkdown
+% ...
+% \\fi
+% Note: Inline use of \\if...\\fi is not yet supported by `make md`.
+
+\\title{$(NAME)}
+\\begin{document}
+\\maketitle
+\\input{$(NAME-INPUTS)}
+\\end{document}
 endef
 
-# Use `agda --html` to list all module names imported (perhaps indirectly) by ROOT,
-# and filter to intersect with the modules in the PATH-DIR leading to ROOT 
+# Use `agda --html` to list module names imported (perhaps indirectly) by ROOT,
+# and filter to intersect with the modules in the same directory as ROOT:
 
-IMPORT-NAMES = $(subst $(TEMP)/,,$(basename $(shell rm -rf $(TEMP)/*.html; ``agda --html --html-dir=$(TEMP) $(ROOT); ls $(TEMP)/*.html)))
-# e.g., Agda.Primitive X.All X.Sub.Base
+IMPORT-NAMES = $(subst $(TEMP)/,,$(basename $(shell \
+		rm -rf $(TEMP)/*.html; \
+		$(AGDA) --html --html-dir=$(TEMP) $(ROOT); \
+		ls $(TEMP)/*.html)))
+# e.g., Agda.Primitive Test.All Test.Sub.Base
 
-MODULE-NAMES := $(sort $(subst /,.,$(subst ./,,$(basename $(shell find $(PATH-DIR) -name '*.lagda')))))
-# e.g., X.All X.Sub.Base
+MODULE-NAMES := $(sort $(subst /,.,$(subst $(DIR)/,,$(basename $(shell \
+		find $(dir $(ROOT)) -name '*.lagda')))))
+# e.g., Test.All Test.Sub.Base
 
 AGDA-NAMES := $(filter $(MODULE-NAMES),$(IMPORT-NAMES))
+# e.g., Test.All Test.Sub.Base
 
-AGDA-FILES := $(addsuffix .lagda,$(subst .,/,$(AGDA-NAMES)))
-# e.g., X/All.lagda X/Sub/Base.lagda
+AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(subst .,/,$(AGDA-NAMES))))
+# e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
 
-HTML-FILES := $(addprefix $(HTML)/, $(addsuffix .html,$(AGDA-NAMES)))
-# e.g., docs/html/X.All.html docs/html/X.Sub.Base.html
+HTML-FILES := $(addprefix $(HTML)/,$(addsuffix .html,$(AGDA-NAMES)))
+# e.g., docs/html/Test.All.html docs/html/Test.Sub.Base.html
 
-MD-FILES := $(addprefix $(MD)/, $(addsuffix .md,$(AGDA-NAMES)))
-# e.g., docs/md/X.All.md docs/md/X.Sub.Base.md
+MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(AGDA-NAMES)))
+# e.g., docs/md/Test.All.md docs/md/Test.Sub.Base.md
 
-LATEX-FILES := $(addprefix $(LATEX)/,$(AGDA-FILES:.lagda=.tex))
-# e.g., latex/X/All.tex latex/X/Sub/Base.tex
+LATEX-FILES := $(addprefix $(LATEX)/,$(subst $(DIR)/,,$(AGDA-FILES:.lagda=.tex)))
+# e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
 
-LATEX-INPUTS := $(patsubst $(LATEX)/%.tex,\input{%},$(LATEX-FILES))
-# e.g., 
-# \input{X/All}
-# \input{X/Sub/Base}
+LATEX-INPUTS := $(patsubst $(LATEX)/%.tex,\\input{%},$(LATEX-FILES))
+# e.g., \input{Test/All} \input{Test/Sub/Base}
 
 ##############################################################################
 # RULES
@@ -105,7 +119,7 @@ all: html md latex inputs root pdf
 html: $(HTML-FILES)
 
 $(HTML-FILES): $(AGDA-FILES)
-	@agda --html --html-dir=$(HTML) $(ROOT)
+	@$(AGDA) --html --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages with navigation and dark mode:
 
@@ -113,7 +127,7 @@ $(HTML-FILES): $(AGDA-FILES)
 md: $(MD-FILES)
 
 $(MD-FILES): $(AGDA-FILES)
-	@agda --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
+	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
 	for FILE in $(MD)/*; do \
 	  MDFILE=$${FILE%.*}.md; \
 	  export MDFILE; \
@@ -133,16 +147,13 @@ $(MD-FILES): $(AGDA-FILES)
 	  esac \
 	done
 
-# delete \iflatex...\fi
-# replace \ifmarkdown...\fi by ...
-
 # Generate latex source files for use in latex documents:
 
 .PHONY: latex
 latex: $(LATEX-FILES)
 
-$(LATEX-FILES): $(LATEX)/%.tex: %.lagda
-	@agda --latex --latex-dir=$(LATEX) $<
+$(LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
+	@$(AGDA) --latex --latex-dir=$(LATEX) $<
 
 # Generate a latex file that inputs all the generated source files:
 
@@ -157,22 +168,21 @@ $(LATEX)/$(NAME-INPUTS).tex: $(AGDA-FILES)
 .PHONY: root
 root: $(LATEX)/$(NAME-ROOT).tex
 
-export ROOT-LATEX
+export DOC
 $(LATEX)/$(NAME-ROOT).tex:
-	@printf "%s" "$$(ROOT-LATEX)" > $@
+	@echo "$$DOC" > $@
 
 # Generate a PDF using $(PDFLATEX)
 
 .PHONY: pdf
 pdf: $(PDF)/$(NAME).pdf
 
-$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME-ROOT).tex $(LATEX)/$(NAME-INPUTS).tex \
-			$(LATEX)/agda.sty $(LATEX)/agda-macros.tex $(LATEX-FILES)
+$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME-ROOT).tex $(LATEX)/$(NAME-INPUTS).tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/agda-custom.tex
 	@cd $(LATEX); \
 	  $(PDFLATEX) $(NAME-ROOT).tex; \
 	  $(PDFLATEX) $(NAME-ROOT).tex; \
 	  rm -f $(NAME-ROOT).{aux,log,out,ptb}
-	@mv -f $(LATEX)/$(NAME-ROOT).pdf $(PDF)/$(NAME).pdf;
+	@mkdir -p docs/pdf && mv -f $(LATEX)/$(NAME-ROOT).pdf $(PDF)/$(NAME).pdf
 
 # GENERIC
 
@@ -189,7 +199,7 @@ clean-html:
 
 .PHONY: clean-latex
 clean-latex:
-	@rm -rf $(LATEX-FILES) $(LATEX)/$(NAME).tex $(LATEX)/$(NAME-INPUTS).tex
+	@rm -rf $(LATEX-FILES) $(LATEX)/$(NAME-ROOT).tex $(LATEX)/$(NAME-INPUTS).tex
 
 .PHONY: clean-pdf
 clean-pdf:
@@ -228,10 +238,10 @@ endef
 
 define DEBUG
 
+DIR:
+  $(DIR)
 NAME:
   $(NAME)
-PATH-DIR:
-  $(PATH-DIR)
 IMPORT-NAMES:
   $(IMPORT-NAMES)
 MODULE-NAMES:
@@ -249,7 +259,7 @@ LATEX-FILES:
 LATEX-ROOT:
   $(LATEX)/$(NAME-ROOT).tex
 LATEX-INPUTS:
-  $(LATEX)/$(NAME-INPUTS).tex
+  $(LATEX-INPUTS)
 PDF-ROOT:
   $(PDF)/$(NAME).pdf
 

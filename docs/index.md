@@ -1,66 +1,19 @@
 # Agda-Material
 
-This template repo supports generation of websites where pages include highlighted literate
+This template repo supports generation of websites that include literate
 Agda code.
 
-## Installation
+The provided `Makefile` generates web page sources in HTML and Markdown
+from Agda sources using `agda --html`.
 
-- [ ] [Agda]
-- [ ] [Material for MkDocs]
-- [ ] LaTeX, including:
-  - [ ] `pdflatex`
-  - [ ] packages …
+The theme [Material for MkDocs] builds a static website from the web page
+sources, and `mkdocs serve` previews it locally.
 
-- [ ] Either:
+[GitHub Actions] publish the website on [GitHub Pages] whenever changes are
+pushed to the repository.
 
-  - [ ] Create a fresh repo from this template
+The `Makefile` also generates PDFs using `agda --latex` and `pdflatex`.
 
-  Or:
-
-  - [ ] Clone/download the template repo
-
-  - [ ] Copy to an existing repo:
-    - [ ] `mkdocs.yml`
-    - [ ] `docs`
-
-- [ ] Update `mkdocs.yml`:
-  - [ ] `site_name`
-  - [ ] `site_url`
-  - [ ] `repo_name`
-  - [ ] `repo_url`
-
-## Testing
-
-In VS Code:
-
-- [ ] Open your local repo
-- [ ] Open a new terminal
-  - [ ] `mkdocs serve`
-
-In a web browser:
-
-- [ ] Open `localhost:8000/agda-material`
-- [ ] Check that the site corresponds to `https://pdmosses.github.io/agda-material`
-
-In the terminal:
-
-- [ ] ```
-      make clean-all
-      make all
-      make all ROOT=Test/All.lagda
-      ```
-
-- [ ] Check that the site still corresponds to `https://pdmosses.github.io/agda-material`
-
-## Using
-
-- [ ] `make clean-all`
-- [ ] Add your own Agda modules with paths starting from the repo root
-- [ ] `make all ROOT=M` for each Agda root module `M`
-- [ ] Update `docs/index.md`
-- [ ] Update `mkdocs.yml`:
-  - [ ] `nav`
-  - [ ] `not_in_nav`
 
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/

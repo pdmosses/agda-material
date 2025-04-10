@@ -1,6 +1,9 @@
 \iflatex
-Copied from
-\href{github.com/agda/agda}{https://github.com/agda/agda/blob/master/examples/syntax/highlighting/Test3.lagda}.
+\begin{center}
+  \fbox{
+    Copied from \texttt{\href{https://github.com/agda/agda/blob/master/examples/syntax/highlighting/Test3.lagda}{github.com/agda/agda}}
+}
+\end{center}
 \fi
 \ifmarkdown
 !!! info
