@@ -70,11 +70,11 @@ The operating system was macOS Sequoia 15.4, running on Apple M1 and M3 chips.
 
 3.  In the terminal:
 
-    - [ ] ```
-          make clean-all
-          make ROOT=agda/Test.lagda
-          make ROOT=agda/Test/All.lagda
-          ```
+    ```shell
+    make clean-all
+    make ROOT=agda/Test.lagda
+    make ROOT=agda/Test/All.lagda
+    ```
 
 4.  In the web browser:
 
