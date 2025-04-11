@@ -1,0 +1,28 @@
+\documentclass[a4paper]{article}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\DisableLigatures[-]{encoding = T1, family = tt* }
+\usepackage{hyperref}
+
+\usepackage{agda}
+\input{agda-custom}
+
+\newif\iflatex\latextrue
+\newif\ifmarkdown
+
+% In literate Agda files, enclose text with LaTeX markup in 
+% \iflatex
+% ...
+% \fi
+% and enclose text with Markdown markup in
+% \ifmarkdown
+% ...
+% \fi
+% Note: Inline use of \if...\fi is not yet supported by `make md`.
+
+\title{Test.All}
+\begin{document}
+\maketitle
+\input{Test.All.inputs}
+\end{document}

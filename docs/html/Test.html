@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Test</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Background">\iflatex
+\begin{center}
+  \fbox{
+    Copied from \texttt{\href{https://github.com/agda/agda/blob/master/examples/syntax/highlighting/Test3.lagda}{github.com/agda/agda}}
+}
+\end{center}
+\fi
+\ifmarkdown
+!!! info
+
+    Copied from
+    [github.com/agda/agda](https://github.com/agda/agda/blob/master/examples/syntax/highlighting/Test3.lagda)
+\fi
+
+This test file currently lacks module-related stuff.
+
+And interesting uses of shadowing.
+
+</a><a id="432" class="Markup">\begin{code}</a>
+<a id="445" class="Keyword">module</a> <a id="452" href="Test.html" class="Module">Test</a> <a id="457" class="Keyword">where</a>
+
+<a id="464" class="Keyword">infix</a>  <a id="471" class="Number">12</a> <a id="474" href="Test.html#885" class="Function Operator">_!</a>
+<a id="477" class="Keyword">infixl</a>  <a id="485" class="Number">7</a> <a id="487" href="Test.html#778" class="Function Operator">_+_</a> <a id="491" href="Test.html#845" class="Postulate Operator">_-_</a>
+<a id="495" class="Keyword">infixr</a>  <a id="503" class="Number">2</a> <a id="505" href="Test.html#864" class="Function Operator">-_</a>
+
+<a id="509" class="Keyword">data</a> <a id="ℕ"></a><a id="514" href="Test.html#514" class="Datatype">ℕ</a> <a id="516" class="Symbol">:</a> <a id="518" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="522" class="Keyword">where</a>
+  <a id="ℕ.zero"></a><a id="530" href="Test.html#530" class="InductiveConstructor">zero</a> <a id="535" class="Symbol">:</a> <a id="537" href="Test.html#514" class="Datatype">ℕ</a>
+  <a id="ℕ.suc"></a><a id="541" href="Test.html#541" class="InductiveConstructor">suc</a>  <a id="546" class="Symbol">:</a> <a id="548" href="Test.html#514" class="Datatype">ℕ</a> <a id="550" class="Symbol">-&gt;</a> <a id="553" href="Test.html#514" class="Datatype">ℕ</a>
+<a id="555" class="Markup">\end{code}</a><a id="565" class="Background">
+\ifmarkdown
+???+ note
+
+    The name `Set` is declared in the built-in module `Agda.Primitive`.
+    Built-in and library modules are included in the website,
+    but not listed in the navigation.
+\fi
+</a><a id="765" class="Markup">\begin{code}</a>
+<a id="_+_"></a><a id="778" href="Test.html#778" class="Function Operator">_+_</a> <a id="782" class="Symbol">:</a> <a id="784" href="Test.html#514" class="Datatype">ℕ</a> <a id="786" class="Symbol">-&gt;</a> <a id="789" href="Test.html#514" class="Datatype">ℕ</a> <a id="791" class="Symbol">-&gt;</a> <a id="794" href="Test.html#514" class="Datatype">ℕ</a>
+<a id="796" href="Test.html#530" class="InductiveConstructor">zero</a>  <a id="802" href="Test.html#778" class="Function Operator">+</a> <a id="804" href="Test.html#804" class="Bound">n</a> <a id="806" class="Symbol">=</a> <a id="808" href="Test.html#804" class="Bound">n</a>
+<a id="810" href="Test.html#541" class="InductiveConstructor">suc</a> <a id="814" href="Test.html#814" class="Bound">m</a> <a id="816" href="Test.html#778" class="Function Operator">+</a> <a id="818" href="Test.html#818" class="Bound">n</a> <a id="820" class="Symbol">=</a> <a id="822" href="Test.html#541" class="InductiveConstructor">suc</a> <a id="826" class="Symbol">(</a><a id="827" href="Test.html#814" class="Bound">m</a> <a id="829" href="Test.html#778" class="Function Operator">+</a> <a id="831" href="Test.html#818" class="Bound">n</a><a id="832" class="Symbol">)</a>
+
+<a id="835" class="Keyword">postulate</a> <a id="_-_"></a><a id="845" href="Test.html#845" class="Postulate Operator">_-_</a> <a id="849" class="Symbol">:</a> <a id="851" href="Test.html#514" class="Datatype">ℕ</a> <a id="853" class="Symbol">-&gt;</a> <a id="856" href="Test.html#514" class="Datatype">ℕ</a> <a id="858" class="Symbol">-&gt;</a> <a id="861" href="Test.html#514" class="Datatype">ℕ</a>
+
+<a id="-_"></a><a id="864" href="Test.html#864" class="Function Operator">-_</a> <a id="867" class="Symbol">:</a> <a id="869" href="Test.html#514" class="Datatype">ℕ</a> <a id="871" class="Symbol">-&gt;</a> <a id="874" href="Test.html#514" class="Datatype">ℕ</a>
+<a id="876" href="Test.html#864" class="Function Operator">-</a> <a id="878" href="Test.html#878" class="Bound">n</a> <a id="880" class="Symbol">=</a> <a id="882" href="Test.html#878" class="Bound">n</a>
+
+<a id="_!"></a><a id="885" href="Test.html#885" class="Function Operator">_!</a> <a id="888" class="Symbol">:</a> <a id="890" href="Test.html#514" class="Datatype">ℕ</a> <a id="892" class="Symbol">-&gt;</a> <a id="895" href="Test.html#514" class="Datatype">ℕ</a>
+<a id="897" href="Test.html#530" class="InductiveConstructor">zero</a>  <a id="903" href="Test.html#885" class="Function Operator">!</a> <a id="905" class="Symbol">=</a> <a id="907" href="Test.html#541" class="InductiveConstructor">suc</a> <a id="911" href="Test.html#530" class="InductiveConstructor">zero</a>
+<a id="916" href="Test.html#541" class="InductiveConstructor">suc</a> <a id="920" href="Test.html#920" class="Bound">n</a> <a id="922" href="Test.html#885" class="Function Operator">!</a> <a id="924" class="Symbol">=</a> <a id="926" href="Test.html#920" class="Bound">n</a> <a id="928" href="Test.html#845" class="Postulate Operator">-</a> <a id="930" href="Test.html#920" class="Bound">n</a> <a id="932" href="Test.html#885" class="Function Operator">!</a>
+
+<a id="935" class="Keyword">record</a> <a id="Equiv"></a><a id="942" href="Test.html#942" class="Record">Equiv</a> <a id="948" class="Symbol">{</a><a id="949" href="Test.html#949" class="Bound">a</a> <a id="951" class="Symbol">:</a> <a id="953" href="Agda.Primitive.html#388" class="Primitive">Set</a><a id="956" class="Symbol">}</a> <a id="958" class="Symbol">(</a><a id="959" href="Test.html#959" class="Bound Operator">_≈_</a> <a id="963" class="Symbol">:</a> <a id="965" href="Test.html#949" class="Bound">a</a> <a id="967" class="Symbol">-&gt;</a> <a id="970" href="Test.html#949" class="Bound">a</a> <a id="972" class="Symbol">-&gt;</a> <a id="975" href="Agda.Primitive.html#388" class="Primitive">Set</a><a id="978" class="Symbol">)</a> <a id="980" class="Symbol">:</a> <a id="982" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="986" class="Keyword">where</a>
+  <a id="994" class="Keyword">field</a>
+    <a id="Equiv.refl"></a><a id="1004" href="Test.html#1004" class="Field">refl</a>      <a id="1014" class="Symbol">:</a> <a id="1016" class="Symbol">forall</a> <a id="1023" href="Test.html#1023" class="Bound">x</a>       <a id="1031" class="Symbol">-&gt;</a> <a id="1034" href="Test.html#1023" class="Bound">x</a> <a id="1036" href="Test.html#959" class="Bound Operator">≈</a> <a id="1038" href="Test.html#1023" class="Bound">x</a>
+    <a id="Equiv.sym"></a><a id="1044" href="Test.html#1044" class="Field">sym</a>       <a id="1054" class="Symbol">:</a> <a id="1056" class="Symbol">{</a><a id="1057" href="Test.html#1057" class="Bound">x</a> <a id="1059" href="Test.html#1059" class="Bound">y</a> <a id="1061" class="Symbol">:</a> <a id="1063" href="Test.html#949" class="Bound">a</a><a id="1064" class="Symbol">}</a>      <a id="1071" class="Symbol">-&gt;</a> <a id="1074" href="Test.html#1057" class="Bound">x</a> <a id="1076" href="Test.html#959" class="Bound Operator">≈</a> <a id="1078" href="Test.html#1059" class="Bound">y</a> <a id="1080" class="Symbol">-&gt;</a> <a id="1083" href="Test.html#1059" class="Bound">y</a> <a id="1085" href="Test.html#959" class="Bound Operator">≈</a> <a id="1087" href="Test.html#1057" class="Bound">x</a>
+    <a id="Equiv._`trans`_"></a><a id="1093" href="Test.html#1093" class="Field Operator">_`trans`_</a> <a id="1103" class="Symbol">:</a> <a id="1105" class="Symbol">forall</a> <a id="1112" class="Symbol">{</a><a id="1113" href="Test.html#1113" class="Bound">x</a> <a id="1115" href="Test.html#1115" class="Bound">y</a> <a id="1117" href="Test.html#1117" class="Bound">z</a><a id="1118" class="Symbol">}</a> <a id="1120" class="Symbol">-&gt;</a> <a id="1123" href="Test.html#1113" class="Bound">x</a> <a id="1125" href="Test.html#959" class="Bound Operator">≈</a> <a id="1127" href="Test.html#1115" class="Bound">y</a> <a id="1129" class="Symbol">-&gt;</a> <a id="1132" href="Test.html#1115" class="Bound">y</a> <a id="1134" href="Test.html#959" class="Bound Operator">≈</a> <a id="1136" href="Test.html#1117" class="Bound">z</a> <a id="1138" class="Symbol">-&gt;</a> <a id="1141" href="Test.html#1113" class="Bound">x</a> <a id="1143" href="Test.html#959" class="Bound Operator">≈</a> <a id="1145" href="Test.html#1117" class="Bound">z</a>
+
+<a id="1148" class="Keyword">data</a> <a id="_≡_"></a><a id="1153" href="Test.html#1153" class="Datatype Operator">_≡_</a> <a id="1157" class="Symbol">{</a><a id="1158" href="Test.html#1158" class="Bound">a</a> <a id="1160" class="Symbol">:</a> <a id="1162" href="Agda.Primitive.html#388" class="Primitive">Set</a><a id="1165" class="Symbol">}</a> <a id="1167" class="Symbol">(</a><a id="1168" href="Test.html#1168" class="Bound">x</a> <a id="1170" class="Symbol">:</a> <a id="1172" href="Test.html#1158" class="Bound">a</a><a id="1173" class="Symbol">)</a> <a id="1175" class="Symbol">:</a> <a id="1177" href="Test.html#1158" class="Bound">a</a> <a id="1179" class="Symbol">-&gt;</a> <a id="1182" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1186" class="Keyword">where</a>
+  <a id="_≡_.refl"></a><a id="1194" href="Test.html#1194" class="InductiveConstructor">refl</a> <a id="1199" class="Symbol">:</a> <a id="1201" href="Test.html#1168" class="Bound">x</a> <a id="1203" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1205" href="Test.html#1168" class="Bound">x</a>
+
+<a id="subst"></a><a id="1208" href="Test.html#1208" class="Function">subst</a> <a id="1214" class="Symbol">:</a> <a id="1216" class="Symbol">forall</a> <a id="1223" class="Symbol">{</a><a id="1224" href="Test.html#1224" class="Bound">a</a> <a id="1226" href="Test.html#1226" class="Bound">x</a> <a id="1228" href="Test.html#1228" class="Bound">y</a><a id="1229" class="Symbol">}</a> <a id="1231" class="Symbol">-&gt;</a>
+  <a id="1236" class="Symbol">(</a><a id="1237" href="Test.html#1237" class="Bound">P</a> <a id="1239" class="Symbol">:</a> <a id="1241" href="Test.html#1224" class="Bound">a</a> <a id="1243" class="Symbol">-&gt;</a> <a id="1246" href="Agda.Primitive.html#388" class="Primitive">Set</a><a id="1249" class="Symbol">)</a> <a id="1251" class="Symbol">-&gt;</a> <a id="1254" href="Test.html#1226" class="Bound">x</a> <a id="1256" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1258" href="Test.html#1228" class="Bound">y</a> <a id="1260" class="Symbol">-&gt;</a> <a id="1263" href="Test.html#1237" class="Bound">P</a> <a id="1265" href="Test.html#1226" class="Bound">x</a> <a id="1267" class="Symbol">-&gt;</a> <a id="1270" href="Test.html#1237" class="Bound">P</a> <a id="1272" href="Test.html#1228" class="Bound">y</a>
+<a id="1274" href="Test.html#1208" class="Function">subst</a> <a id="1280" class="Symbol">{</a><a id="1281" class="Argument">x</a> <a id="1283" class="Symbol">=</a> <a id="1285" href="Test.html#1285" class="Bound">x</a><a id="1286" class="Symbol">}</a> <a id="1288" class="DottedPattern Symbol">.{</a><a id="1290" class="DottedPattern Argument">y</a> <a id="1292" class="DottedPattern Symbol">=</a> <a id="1294" href="Test.html#1285" class="DottedPattern Bound">x</a><a id="1295" class="DottedPattern Symbol">}</a> <a id="1297" class="Symbol">_</a> <a id="1299" href="Test.html#1194" class="InductiveConstructor">refl</a> <a id="1304" href="Test.html#1304" class="Bound">p</a> <a id="1306" class="Symbol">=</a> <a id="1308" href="Test.html#1304" class="Bound">p</a>
+
+<a id="Equiv-≡"></a><a id="1311" href="Test.html#1311" class="Function">Equiv-≡</a> <a id="1319" class="Symbol">:</a> <a id="1321" class="Symbol">forall</a> <a id="1328" class="Symbol">{</a><a id="1329" href="Test.html#1329" class="Bound">a</a><a id="1330" class="Symbol">}</a> <a id="1332" class="Symbol">-&gt;</a> <a id="1335" href="Test.html#942" class="Record">Equiv</a> <a id="1341" class="Symbol">{</a><a id="1342" href="Test.html#1329" class="Bound">a</a><a id="1343" class="Symbol">}</a> <a id="1345" href="Test.html#1153" class="Datatype Operator">_≡_</a>
+<a id="1349" href="Test.html#1311" class="Function">Equiv-≡</a> <a id="1357" class="Symbol">{</a><a id="1358" href="Test.html#1358" class="Bound">a</a><a id="1359" class="Symbol">}</a> <a id="1361" class="Symbol">=</a>
+  <a id="1365" class="Keyword">record</a> <a id="1372" class="Symbol">{</a> <a id="1374" href="Test.html#1004" class="Field">refl</a>      <a id="1384" class="Symbol">=</a> <a id="1386" class="Symbol">\</a><a id="1387" href="Test.html#1387" class="Bound">_</a> <a id="1389" class="Symbol">-&gt;</a> <a id="1392" href="Test.html#1194" class="InductiveConstructor">refl</a>
+         <a id="1406" class="Symbol">;</a> <a id="1408" href="Test.html#1044" class="Field">sym</a>       <a id="1418" class="Symbol">=</a> <a id="1420" href="Test.html#1478" class="Function">sym</a>
+         <a id="1433" class="Symbol">;</a> <a id="1435" href="Test.html#1093" class="Field Operator">_`trans`_</a> <a id="1445" class="Symbol">=</a> <a id="1447" href="Test.html#1533" class="Function Operator">_`trans`_</a>
+         <a id="1466" class="Symbol">}</a>
+  <a id="1470" class="Keyword">where</a>
+  <a id="1478" href="Test.html#1478" class="Function">sym</a> <a id="1482" class="Symbol">:</a> <a id="1484" class="Symbol">{</a><a id="1485" href="Test.html#1485" class="Bound">x</a> <a id="1487" href="Test.html#1487" class="Bound">y</a> <a id="1489" class="Symbol">:</a> <a id="1491" href="Test.html#1358" class="Bound">a</a><a id="1492" class="Symbol">}</a> <a id="1494" class="Symbol">-&gt;</a> <a id="1497" href="Test.html#1485" class="Bound">x</a> <a id="1499" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1501" href="Test.html#1487" class="Bound">y</a> <a id="1503" class="Symbol">-&gt;</a> <a id="1506" href="Test.html#1487" class="Bound">y</a> <a id="1508" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1510" href="Test.html#1485" class="Bound">x</a>
+  <a id="1514" href="Test.html#1478" class="Function">sym</a> <a id="1518" href="Test.html#1194" class="InductiveConstructor">refl</a> <a id="1523" class="Symbol">=</a> <a id="1525" href="Test.html#1194" class="InductiveConstructor">refl</a>
+
+  <a id="1533" href="Test.html#1533" class="Function Operator">_`trans`_</a> <a id="1543" class="Symbol">:</a> <a id="1545" class="Symbol">{</a><a id="1546" href="Test.html#1546" class="Bound">x</a> <a id="1548" href="Test.html#1548" class="Bound">y</a> <a id="1550" href="Test.html#1550" class="Bound">z</a> <a id="1552" class="Symbol">:</a> <a id="1554" href="Test.html#1358" class="Bound">a</a><a id="1555" class="Symbol">}</a> <a id="1557" class="Symbol">-&gt;</a> <a id="1560" href="Test.html#1546" class="Bound">x</a> <a id="1562" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1564" href="Test.html#1548" class="Bound">y</a> <a id="1566" class="Symbol">-&gt;</a> <a id="1569" href="Test.html#1548" class="Bound">y</a> <a id="1571" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1573" href="Test.html#1550" class="Bound">z</a> <a id="1575" class="Symbol">-&gt;</a> <a id="1578" href="Test.html#1546" class="Bound">x</a> <a id="1580" href="Test.html#1153" class="Datatype Operator">≡</a> <a id="1582" href="Test.html#1550" class="Bound">z</a>
+  <a id="1586" href="Test.html#1194" class="InductiveConstructor">refl</a> <a id="1591" href="Test.html#1533" class="Function Operator">`trans`</a> <a id="1599" href="Test.html#1194" class="InductiveConstructor">refl</a> <a id="1604" class="Symbol">=</a> <a id="1606" href="Test.html#1194" class="InductiveConstructor">refl</a>
+<a id="1611" class="Markup">\end{code}</a><a id="1621" class="Background">
+
+</a><a id="1623" class="Markup">\begin{code}</a>
+<a id="1636" class="Keyword">postulate</a>
+  <a id="String"></a><a id="1648" href="Test.html#1648" class="Postulate">String</a> <a id="1655" class="Symbol">:</a> <a id="1657" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+  <a id="Char"></a><a id="1663" href="Test.html#1663" class="Postulate">Char</a>   <a id="1670" class="Symbol">:</a> <a id="1672" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+  <a id="Float"></a><a id="1678" href="Test.html#1678" class="Postulate">Float</a>  <a id="1685" class="Symbol">:</a> <a id="1687" href="Agda.Primitive.html#388" class="Primitive">Set</a>
+
+<a id="1692" class="Symbol">{-#</a> <a id="1696" class="Keyword">BUILTIN</a> <a id="1704" class="Keyword">STRING</a>  <a id="1712" href="Test.html#1648" class="Postulate">String</a> <a id="1719" class="Symbol">#-}</a>
+<a id="1723" class="Symbol">{-#</a> <a id="1727" class="Keyword">BUILTIN</a> <a id="1735" class="Keyword">CHAR</a>    <a id="1743" href="Test.html#1663" class="Postulate">Char</a>   <a id="1750" class="Symbol">#-}</a>
+<a id="1754" class="Symbol">{-#</a> <a id="1758" class="Keyword">BUILTIN</a> <a id="1766" class="Keyword">FLOAT</a>   <a id="1774" href="Test.html#1678" class="Postulate">Float</a>  <a id="1781" class="Symbol">#-}</a>
+
+<a id="1786" class="Symbol">{-#</a> <a id="1790" class="Keyword">BUILTIN</a> <a id="1798" class="Keyword">NATURAL</a> <a id="1806" href="Test.html#514" class="Datatype">ℕ</a>      <a id="1813" class="Symbol">#-}</a>
+
+<a id="1818" class="Keyword">data</a> <a id="[_]"></a><a id="1823" href="Test.html#1823" class="Datatype Operator">[_]</a> <a id="1827" class="Symbol">(</a><a id="1828" href="Test.html#1828" class="Bound">a</a> <a id="1830" class="Symbol">:</a> <a id="1832" href="Agda.Primitive.html#388" class="Primitive">Set</a><a id="1835" class="Symbol">)</a> <a id="1837" class="Symbol">:</a> <a id="1839" href="Agda.Primitive.html#388" class="Primitive">Set</a> <a id="1843" class="Keyword">where</a>
+  <a id="[_].[]"></a><a id="1851" href="Test.html#1851" class="InductiveConstructor">[]</a>  <a id="1855" class="Symbol">:</a> <a id="1857" href="Test.html#1823" class="Datatype Operator">[</a> <a id="1859" href="Test.html#1828" class="Bound">a</a> <a id="1861" href="Test.html#1823" class="Datatype Operator">]</a>
+  <a id="[_]._∷_"></a><a id="1865" href="Test.html#1865" class="InductiveConstructor Operator">_∷_</a> <a id="1869" class="Symbol">:</a> <a id="1871" href="Test.html#1828" class="Bound">a</a> <a id="1873" class="Symbol">-&gt;</a> <a id="1876" href="Test.html#1823" class="Datatype Operator">[</a> <a id="1878" href="Test.html#1828" class="Bound">a</a> <a id="1880" href="Test.html#1823" class="Datatype Operator">]</a> <a id="1882" class="Symbol">-&gt;</a> <a id="1885" href="Test.html#1823" class="Datatype Operator">[</a> <a id="1887" href="Test.html#1828" class="Bound">a</a> <a id="1889" href="Test.html#1823" class="Datatype Operator">]</a>
+
+<a id="1892" class="Symbol">{-#</a> <a id="1896" class="Keyword">BUILTIN</a> <a id="1904" class="Keyword">LIST</a> <a id="1909" href="Test.html#1823" class="Datatype Operator">[_]</a> <a id="1913" class="Symbol">#-}</a>
+<a id="1917" class="Comment">-- {-# BUILTIN NIL  []  #-}</a>
+<a id="1945" class="Comment">-- {-# BUILTIN CONS _∷_ #-}</a>
+
+<a id="1974" class="Keyword">primitive</a>
+  <a id="primStringToList"></a><a id="1986" href="Test.html#1986" class="Primitive">primStringToList</a> <a id="2003" class="Symbol">:</a> <a id="2005" href="Test.html#1648" class="Postulate">String</a> <a id="2012" class="Symbol">-&gt;</a> <a id="2015" href="Test.html#1823" class="Datatype Operator">[</a> <a id="2017" href="Test.html#1663" class="Postulate">Char</a> <a id="2022" href="Test.html#1823" class="Datatype Operator">]</a>
+
+<a id="string"></a><a id="2025" href="Test.html#2025" class="Function">string</a> <a id="2032" class="Symbol">:</a> <a id="2034" href="Test.html#1823" class="Datatype Operator">[</a> <a id="2036" href="Test.html#1663" class="Postulate">Char</a> <a id="2041" href="Test.html#1823" class="Datatype Operator">]</a>
+<a id="2043" href="Test.html#2025" class="Function">string</a> <a id="2050" class="Symbol">=</a> <a id="2052" href="Test.html#1986" class="Primitive">primStringToList</a> <a id="2069" class="String">&quot;∃ apa&quot;</a>
+
+<a id="char"></a><a id="2078" href="Test.html#2078" class="Function">char</a> <a id="2083" class="Symbol">:</a> <a id="2085" href="Test.html#1663" class="Postulate">Char</a>
+<a id="2090" href="Test.html#2078" class="Function">char</a> <a id="2095" class="Symbol">=</a> <a id="2097" class="String">&#39;∀&#39;</a>
+
+<a id="anotherString"></a><a id="2102" href="Test.html#2102" class="Function">anotherString</a> <a id="2116" class="Symbol">:</a> <a id="2118" href="Test.html#1648" class="Postulate">String</a>
+<a id="2125" href="Test.html#2102" class="Function">anotherString</a> <a id="2139" class="Symbol">=</a> <a id="2141" class="String">&quot;¬ be\
+    \pa&quot;</a>
+
+<a id="nat"></a><a id="2158" href="Test.html#2158" class="Function">nat</a> <a id="2162" class="Symbol">:</a> <a id="2164" href="Test.html#514" class="Datatype">ℕ</a>
+<a id="2166" href="Test.html#2158" class="Function">nat</a> <a id="2170" class="Symbol">=</a> <a id="2172" class="Number">45</a>
+
+<a id="float"></a><a id="2176" href="Test.html#2176" class="Function">float</a> <a id="2182" class="Symbol">:</a> <a id="2184" href="Test.html#1678" class="Postulate">Float</a>
+<a id="2190" href="Test.html#2176" class="Function">float</a> <a id="2196" class="Symbol">=</a> <a id="2198" class="Number">45.0e-37</a>
+<a id="2207" class="Markup">\end{code}</a></pre></body></html>
