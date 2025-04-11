@@ -3,6 +3,9 @@
 This template repo supports generation of websites where pages include highlighted literate
 Agda code.
 
+The rest of this page explains how to install, test, and make use of the repo.
+See the website [homepage] for an overview, motivation, and links to examples. 
+
 ## Installation
 
 - [ ] [Agda]
@@ -62,5 +65,6 @@ In the terminal:
   - [ ] `nav`
   - [ ] `not_in_nav`
 
+[Homepage]: https://pdmosses.github.io/agda-material
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
