@@ -39,7 +39,7 @@ The operating system was macOS Sequoia 15.4, running on Apple M1 and M3 chips.
 
 **Either** create a fresh repo:
 
-- [ ] Click on the **Use this template** button in the [Agda-Material repo]
+- [ ] Click on the **Use this template** button above
 
 **Or** use an existing repo:
 
@@ -87,12 +87,13 @@ to publish highlighted literate Agda code.
 
 ## Reporting issues and suggestions
 
-Please use the issue tracker to report any issues that arise.
+Please use the [issue tracker] to report any issues that arise.
 
 [^copy]: In case of name clashes with existing files or directories, it may be
     necessary to move them, or to modify the `Makefile`.
 
 [Agda-Material Repo]: https://github.com/pdmosses/agda-material/
+[Issue tracker]: https://github.com/pdmosses/agda-material/issues
 [Homepage]: https://pdmosses.github.io/agda-material/
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
