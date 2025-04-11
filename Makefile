@@ -49,8 +49,8 @@ define DOC
 \\documentclass[a4paper]{article}
 \\usepackage{parskip}
 \\usepackage[T1]{fontenc}
-\\DisableLigatures[-]{encoding = T1, family = tt* }
 \\usepackage{microtype}
+\\DisableLigatures[-]{encoding = T1, family = tt* }
 \\usepackage{hyperref}
 
 \\usepackage{agda}
@@ -161,7 +161,7 @@ $(LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
 inputs: $(LATEX)/$(NAME-INPUTS).tex
 
 $(LATEX)/$(NAME-INPUTS).tex: $(AGDA-FILES)
-	@printf "%s\n" $(LATEX-INPUTS) > $@
+	@printf "%s\n\n\\\\bigskip\\\\hrule\\\\bigskip\n\n" $(LATEX-INPUTS) > $@
 
 # Generate a latex document to format all the input source files:
 
