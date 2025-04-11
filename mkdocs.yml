@@ -9,8 +9,12 @@ nav:
   - index.md
   - Example module:
     - md/Test.md
+    - Test (HTML): html/Test.html
+    - Test (PDF): pdf/Test.pdf
   - Nested modules:
     - md/Test.All.md
+    - Test.All (HTML): html/Test.All.html
+    - Test.All (PDF): pdf/Test.All.pdf
     - md/Test.Sub.Base.md
 
 not_in_nav:
@@ -71,6 +75,8 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - tables
 
 plugins:
