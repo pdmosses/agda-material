@@ -1,19 +1,34 @@
 # Agda-Material
 
-This template repo supports generation of websites that include literate
-Agda code.
+This repo supports **generation of websites** with **highlighted Agda code**
+from literate Agda sources.
 
-The provided `Makefile` generates web page sources in HTML and Markdown
-from Agda sources using `agda --html`.
+## Main features
 
-The theme [Material for MkDocs] builds a static website from the web page
-sources, and `mkdocs serve` previews it locally.
+- **Navigation**:
+  pages on generated websites have menus with links to Agda modules
 
-[GitHub Actions] publish the website on [GitHub Pages] whenever changes are
-pushed to the repository.
+- **Light *and* dark mode**:
+  pages on generated websites have toggles for light and dark mode
 
-The `Makefile` also generates PDFs using `agda --latex` and `pdflatex`.
+- **LaTeX *and* Markdown**:
+  source files use `\iflatex...\fi` and `\ifmarkdown...\fi` to enclose markup
 
+- **Device independence**:
+  [Material for MkDocs] targets tablet and mobile devices as well as desktop
 
+- **Automatic regeneration**:
+  a `Makefile` updates local items when Agda sources change
+
+- **Automatic publication**:
+  [GitHub Actions] rebuilds the published website when changes are pushed to the repo
+
+[Homepage]: https://pdmosses.github.io/agda-material
+[Makefile]: Makefile
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
+[GitHub Pages]: https://pages.github.com
+[GitHub Actions]: https://github.com/features/actions
+[MacTeX 2025]: https://tug.org/mactex/
+[TeX Live 2025]: https://www.tug.org/texlive/
+[GNU Make]: https://www.gnu.org/software/make/manual/make.html
