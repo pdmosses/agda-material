@@ -39,7 +39,7 @@ The operating system was macOS Sequoia 15.4, running on Apple M1 and M3 chips.
 
 **Either** create a fresh repo:
 
-- [ ] Click on template
+- [ ] Click on the **Use this template** button in the [Agda-Material repo]
 
 **Or** use an existing repo:
 
@@ -92,11 +92,12 @@ Please use the issue tracker to report any issues that arise.
 [^copy]: In case of name clashes with existing files or directories, it may be
     necessary to move them, or to modify the `Makefile`.
 
-[Homepage]: https://pdmosses.github.io/agda-material
+[Agda-Material Repo]: https://github.com/pdmosses/agda-material/
+[Homepage]: https://pdmosses.github.io/agda-material/
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
 [GitHub Pages]: https://pages.github.com
-[GitHub Actions]: https://github.com/features/actions
+[GitHub Actions]: https://github.com/features/actions/
 [MacTeX 2025]: https://tug.org/mactex/
 [TeX Live 2025]: https://www.tug.org/texlive/
 [GNU Make]: https://www.gnu.org/software/make/manual/make.html
