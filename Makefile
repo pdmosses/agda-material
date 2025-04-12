@@ -86,10 +86,10 @@ IMPORT-NAMES = $(subst $(TEMP)/,,$(basename $(shell \
 # e.g., Agda.Primitive Test.All Test.Sub.Base
 
 MODULE-NAMES := $(sort $(subst /,.,$(subst $(DIR)/,,$(basename $(shell \
-		find $(dir $(ROOT)) -name '*.lagda')))))
-# e.g., Test.All Test.Sub.Base
+		find $(DIR) -name '*.lagda')))))
+# e.g., Test Test.All Test.Sub.Base Test.Sub.Not-Imported
 
-AGDA-NAMES := $(filter $(MODULE-NAMES),$(IMPORT-NAMES))
+AGDA-NAMES := $(filter $(IMPORT-NAMES),$(MODULE-NAMES))
 # e.g., Test.All Test.Sub.Base
 
 AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(subst .,/,$(AGDA-NAMES))))
