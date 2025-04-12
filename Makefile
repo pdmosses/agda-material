@@ -31,6 +31,8 @@ TEMP  := /tmp
 ##############################################################################
 # VARIABLES
 
+SHELL = sh
+
 AGDA := agda --include-path=$(DIR)
 
 NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
