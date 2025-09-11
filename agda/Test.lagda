@@ -1,16 +1,4 @@
-\iflatex
-\begin{center}
-  \fbox{
-    Copied from \texttt{\href{https://github.com/agda/agda/blob/master/examples/syntax/highlighting/Test3.lagda}{github.com/agda/agda}}
-}
-\end{center}
-\fi
-\ifmarkdown
-!!! info
-
-    Copied from
-    [github.com/agda/agda](https://github.com/agda/agda/blob/master/examples/syntax/highlighting/Test3.lagda)
-\fi
+[Copied from https://github.com/agda/agda/examples/syntax/highlighting/Test3.lagda]
 
 This test file currently lacks module-related stuff.
 
@@ -27,13 +15,7 @@ data ℕ : Set where
   zero : ℕ
   suc  : ℕ -> ℕ
 \end{code}
-\ifmarkdown
-???+ note
 
-    The name `Set` is declared in the built-in module `Agda.Primitive`.
-    Built-in and library modules are included in the website,
-    but not listed in the navigation.
-\fi
 \begin{code}
 _+_ : ℕ -> ℕ -> ℕ
 zero  + n = n
