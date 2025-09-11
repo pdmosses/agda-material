@@ -1,6 +1,5 @@
 Copied from examples/syntax/highlighting/Test3.lagda in the agda/agda repository,
 with additional literate prose by @pdmosses
-[Copied from https://github.com/agda/agda/examples/syntax/highlighting/Test3.lagda]
 
 This test file currently lacks module-related stuff.
 
