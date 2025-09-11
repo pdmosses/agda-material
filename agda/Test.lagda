@@ -1,3 +1,5 @@
+Copied from examples/syntax/highlighting/Test3.lagda in the agda/agda repository,
+with additional literate prose by @pdmosses
 [Copied from https://github.com/agda/agda/examples/syntax/highlighting/Test3.lagda]
 
 This test file currently lacks module-related stuff.
@@ -15,6 +17,8 @@ data ℕ : Set where
   zero : ℕ
   suc  : ℕ -> ℕ
 \end{code}
+
+The type Set is declared in the built-in module Agda.Primitive.
 
 \begin{code}
 _+_ : ℕ -> ℕ -> ℕ
@@ -55,9 +59,7 @@ Equiv-≡ {a} =
 
   _`trans`_ : {x y z : a} -> x ≡ y -> y ≡ z -> x ≡ z
   refl `trans` refl = refl
-\end{code}
 
-\begin{code}
 postulate
   String : Set
   Char   : Set

@@ -2,7 +2,7 @@
 
 # Commands to update all files generated from the default test modules:
 #
-# make ROOT=agda/Test.lagda
+# make
 # make ROOT=agda/Test/All.lagda
 # make ROOT=agda/Test/Sub/Not-Imported.lagda
 
