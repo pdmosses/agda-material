@@ -174,7 +174,7 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	@cd $(LATEX); \
 	  $(PDFLATEX) $(NAME).doc.tex; \
 	  $(PDFLATEX) $(NAME).doc.tex; \
-	  rm -f $(NAME).doc.{aux,log,out,ptb}
+	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
 
 # Remove all ROOT-generated files
