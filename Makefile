@@ -121,7 +121,7 @@ all: html md latex doc pdf
 .PHONY: html
 html: $(HTML-FILES)
 
-$(HTML-FILES)&: $(AGDA-FILES)
+$(HTML-FILES) &:: $(AGDA-FILES)
 	@$(AGDA) --html --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages:
@@ -129,7 +129,7 @@ $(HTML-FILES)&: $(AGDA-FILES)
 .PHONY: md
 md: $(MD-FILES)
 
-$(MD-FILES)&: $(AGDA-FILES)
+$(MD-FILES) &:: $(AGDA-FILES)
 	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
 	for FILE in $(MD)/*; do \
 	  MDFILE=$${FILE%.*}.md; \
