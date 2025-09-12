@@ -33,7 +33,7 @@ TEMP  := /tmp
 # VARIABLES
 
 # Shell command for calling Agda:
-AGDA := agda --include-path=$(DIR)
+AGDA := agda --include-path=$(DIR) --trace-imports=0
 
 # Shell command for generating PDF from LaTeX:
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
@@ -56,7 +56,7 @@ HTML-FILES := $(subst $(TEMP)/,$(HTML)/,$(shell \
 # e.g., docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html
 
 # Names of modules imported (perhaps indirectly) by ROOT:
-IMPORT-NAMES := $(subst /,.,$(subst $(HTML)/,,$(basename $(HTML-FILES))))
+IMPORT-NAMES := $(subst $(HTML)/,,$(basename $(HTML-FILES)))
 # e.g., Agda.Primitive Test.All Test.Sub.Base
 
 # Names of modules in DIR:
@@ -84,7 +84,7 @@ MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(IMPORT-NAMES)))
 LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
 # e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
 
-LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),\\section{$(p)}\\input{$(p)}$(NEWLINE))
+LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\\section{$(p)}\\input{$(p)})
 # e.g., \input{Test/All}\n \input{Test/Sub/Base}\n
 
 AGDA-STYLE := conor
@@ -107,6 +107,7 @@ define LATEXDOC
 \\tableofcontents
 \\newpage
 $(LATEX-INPUTS)
+
 \\end{document}
 endef
 
