@@ -195,7 +195,7 @@ clean-md:
 	@rm -rf $(MD-FILES)
 
 clean-latex:
-	@rm -rf $(LATEX-FILES) $(LATEX)/$(NAME).doc.tex
+	@rm -rf $(LATEX-FILES) $(LATEX)/$(NAME).doc.{aux,log,out,ptb,tex,toc}
 
 clean-pdf:
 	@rm -rf $(PDF)/$(NAME).pdf
