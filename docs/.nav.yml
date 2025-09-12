@@ -1,6 +1,14 @@
 nav:
   - md/Test*
   - md/*
+  - HTML: 
+    - Test: html/Test.html
+    - Test.All: html/Test.All.html
+    - Test.Sub.Not-Imported: html/Test.Sub.Not-Imported.html
+  - PDF: 
+    - Test: pdf/Test.pdf
+    - Test.All: pdf/Test.All.pdf
+    - Test.Sub.Not-Imported: pdf/Test.Sub.Not-Imported.pdf
 
 ignore:
   - index.md
