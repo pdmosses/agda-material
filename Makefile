@@ -59,6 +59,10 @@ HTML-FILES := $(subst $(TEMP)/,$(HTML)/,$(shell \
 IMPORT-NAMES := $(subst $(HTML)/,,$(basename $(HTML-FILES)))
 # e.g., Agda.Primitive Test.All Test.Sub.Base
 
+# Paths of modules imported (perhaps indirectly) by ROOT:
+IMPORT-PATHS := $(subst .,/,$(IMPORT-NAMES))
+# e.g., Agda/Primitive Test/All Test/Sub/Base
+
 # Names of modules in DIR:
 MODULE-NAMES := $(sort $(subst /,.,$(subst $(DIR)/,,$(basename $(shell \
 		find $(DIR) -name '*.lagda')))))
@@ -77,8 +81,8 @@ AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
 # e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
 
 # Target files:
-MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(IMPORT-NAMES)))
-# e.g., docs/md/Agda.Primitive.md docs/md/Test.All.md docs/md/Test.Sub.Base.md
+MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(IMPORT-PATHS)))
+# e.g., docs/md/Agda/Primitive.md docs/md/Test/All.md docs/md/Test/Sub/Base.md
 
 # Target files:
 LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
@@ -231,34 +235,36 @@ endef
 
 define DEBUG
 
-DIR:
-  $(DIR)
-ROOT:
-  $(ROOT)
-NAME:
-  $(NAME)
-IMPORT-NAMES:
-  $(IMPORT-NAMES)
-MODULE-NAMES:
-  $(MODULE-NAMES)
-AGDA-NAMES:
-  $(AGDA-NAMES)
-AGDA-PATHS:
-  $(AGDA-PATHS)
-AGDA-FILES:
-  $(AGDA-FILES)
-HTML-FILES:
-  $(HTML-FILES)
-MD-FILES:
-  $(MD-FILES)
+DIR:          $(DIR)
+ROOT:         $(ROOT)
+NAME:         $(NAME)
+
+IMPORT-NAMES: $(IMPORT-NAMES)
+
+IMPORT-PATHS: $(IMPORT-PATHS)
+
+MODULE-NAMES: $(MODULE-NAMES)
+
+AGDA-NAMES:   $(AGDA-NAMES)
+
+AGDA-PATHS:   $(AGDA-PATHS)
+
+AGDA-FILES:   $(AGDA-FILES)
+
+HTML-FILES:   $(HTML-FILES)
+
+MD-FILES:     $(MD-FILES)
+
 LATEXDOC:
-  $(LATEXDOC)
-LATEX-FILES:
-  $(LATEX-FILES)
+
+$(LATEXDOC)
+
+LATEX-FILES:  $(LATEX-FILES)
+
 LATEX-INPUTS:
-  $(LATEX-INPUTS)
-AGDA-CUSTOM:
-  $(AGDA-CUSTOM)
+$(LATEX-INPUTS)
+
+AGDA-CUSTOM:  $(AGDA-CUSTOM)
 
 endef
 
