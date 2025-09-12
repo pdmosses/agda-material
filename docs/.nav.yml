@@ -1,4 +1,6 @@
 nav:
+  - About: index.md
+  - agda/agda Test3: md/Test.md
   - md/Test*
   - md/*
   - HTML: 
@@ -10,8 +12,4 @@ nav:
     - Test.All: pdf/Test.All.pdf
     - Test.Sub.Not-Imported: pdf/Test.Sub.Not-Imported.pdf
 
-ignore:
-  - index.md
-
-# flatten_single_child_sections: true
 preserve_directory_names: true

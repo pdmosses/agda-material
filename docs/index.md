@@ -11,9 +11,6 @@ from literate Agda sources.
 - **Light *and* dark mode**:
   pages on generated websites have toggles for light and dark mode
 
-- **LaTeX *and* Markdown**:
-  source files use `\iflatex...\fi` and `\ifmarkdown...\fi` to enclose markup
-
 - **Device independence**:
   [Material for MkDocs] targets tablet and mobile devices as well as desktop
 
@@ -24,7 +21,6 @@ from literate Agda sources.
   [GitHub Actions] rebuilds the published website when changes are pushed to the repo
 
 [Homepage]: https://pdmosses.github.io/agda-material
-[Makefile]: Makefile
 [Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
 [GitHub Pages]: https://pages.github.com
