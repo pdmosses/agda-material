@@ -3,27 +3,7 @@ site_url: https://pdmosses.github.io/agda-material/
 repo_name: pdmosses/agda-material
 repo_url: https://github.com/pdmosses/agda-material
 
-use_directory_urls: false
-
-nav:
-  - index.md
-  - Example module:
-    - md/Test.md
-    - Test (HTML): html/Test.html
-    - Test (PDF): pdf/Test.pdf
-  - Nested modules:
-    - md/Test.All.md
-    - Test.All (HTML): html/Test.All.html
-    - Test.All (PDF): pdf/Test.All.pdf
-    - md/Test.Sub.Base.md
-  - Not imported module:
-    - md/Test.Sub.Not-Imported.md
-    - Test.All (HTML): html/Test.Sub.Not-Imported.html
-    - Test.All (PDF): pdf/Test.Sub.Not-Imported.pdf
-
-not_in_nav:
-  html/*.html
-  md/*.md
+use_directory_urls: true
 
 theme:
   name: material
@@ -49,8 +29,8 @@ theme:
     - navigation.indexes
     - navigation.instant
     - navigation.instant.progress
-    - navigation.tabs
-    - navigation.tabs.sticky
+    # - navigation.tabs
+    # - navigation.tabs.sticky
     - navigation.top
     - search.suggest
     - search.highlight
@@ -85,4 +65,11 @@ markdown_extensions:
   - tables
 
 plugins:
-  - search
+- search
+- awesome-nav
+# - awesome-pages:
+#     collapse_single_pages: false
+#     strict: false
+#     order: asc
+#     sort_type: natural
+#     order_by: title

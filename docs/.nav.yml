@@ -1,0 +1,9 @@
+nav:
+  - md/Test*
+  - md/*
+
+ignore:
+  - index.md
+
+# flatten_single_child_sections: true
+preserve_directory_names: true

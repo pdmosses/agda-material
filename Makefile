@@ -32,6 +32,8 @@ TEMP  := /tmp
 ##############################################################################
 # VARIABLES
 
+SHELL=bash
+
 # Shell command for calling Agda:
 AGDA := agda --include-path=$(DIR) --trace-imports=0
 
@@ -88,31 +90,31 @@ MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(IMPORT-PATHS)))
 LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
 # e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
 
-LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\\section{$(p)}\\input{$(p)})
+LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\section{$(p)}\input{$(p)})
 # e.g., \input{Test/All}\n \input{Test/Sub/Base}\n
 
 AGDA-STYLE := conor
 AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
 
 define LATEXDOC
-\\documentclass[a4paper]{article}
-\\usepackage{parskip}
-\\usepackage[T1]{fontenc}
-\\usepackage{microtype}
-\\DisableLigatures[-]{encoding = T1, family = tt* }
-\\usepackage{hyperref}
+\documentclass[a4paper]{article}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\DisableLigatures[-]{encoding = T1, family = tt* }
+\usepackage{hyperref}
 
-\\usepackage[$(AGDA-STYLE)]{agda}
-\\input{$(AGDA-CUSTOM)}
+\usepackage[$(AGDA-STYLE)]{agda}
+\input{$(AGDA-CUSTOM)}
 
-\\title{$(NAME)}
-\\begin{document}
-\\maketitle
-\\tableofcontents
-\\newpage
+\title{$(NAME)}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
 $(LATEX-INPUTS)
 
-\\end{document}
+\end{document}
 endef
 
 ##############################################################################
@@ -142,13 +144,21 @@ md: $(MD-FILES)
 $(MD-FILES) &:: $(AGDA-FILES)
 	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
 	for FILE in $(MD)/*; do \
-	  MDFILE=$${FILE%.*}.md; \
+	  BASENAME=$${FILE%.*}; \
+	  MDFILE=$${BASENAME//./\/}.md; \
 	  export MDFILE; \
 	  case $$FILE in \
 	    *.tex) \
-	      mv -f $$FILE $$MDFILE ;; \
+	      mkdir -p `dirname $$MDFILE`; \
+	      printf "%s\ntitle: %s\n%s\n\n" "---" `basename -s ".md" $$MDFILE` "---" > $$MDFILE; \
+	      printf "# %s\n\n" $${BASENAME##*/} >> $$MDFILE; \
+	      cat $$FILE >> $$MDFILE; \
+	      rm $$FILE ;; \
 	    *.html) \
-	      printf "%s" '<pre class="Agda">' > $$MDFILE; \
+	      mkdir -p `dirname $$MDFILE`; \
+	      printf "%s\ntitle: %s\n%s\n\n" "---" `basename -s ".md" $$MDFILE` "---" > $$MDFILE; \
+	      printf "# %s\n\n" $${BASENAME##*/} >> $$MDFILE; \
+	      printf "%s" '<pre class="Agda">' >> $$MDFILE; \
 	      cat $$FILE >> $$MDFILE; \
 	      printf "%s" '</pre>' >> $$MDFILE; \
 	      rm $$FILE ;; \
