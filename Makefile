@@ -129,6 +129,11 @@ $(HTML-FILES) &:: $(AGDA-FILES)
 .PHONY: md
 md: $(MD-FILES)
 
+# `agda --html --html-highlight=code ROOT.lagda` produces highlighted HTML files
+# from plain `agda` and literate `lagda` source files. However, the extension is
+# `tex` for HTML produced from `lagda` files. It is `html` for `agda` files, but
+# needs to be wrapped in `<pre class="Agda">...</pre>` tags.
+
 $(MD-FILES) &:: $(AGDA-FILES)
 	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
 	for FILE in $(MD)/*; do \
