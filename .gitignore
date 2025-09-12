@@ -1,9 +1,14 @@
 *.agdai
 MAlonzo/**
+docs/html/
+docs/md/
+docs/pdf/
+latex/
 *.aux
 *.log
 *.out
 *.ptb
 *.synctex.gz
+*.toc
 .DS_Store
 site

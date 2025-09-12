@@ -16,6 +16,10 @@ nav:
     - Test.All (HTML): html/Test.All.html
     - Test.All (PDF): pdf/Test.All.pdf
     - md/Test.Sub.Base.md
+  - Not imported module:
+    - md/Test.Sub.Not-Imported.md
+    - Test.All (HTML): html/Test.Sub.Not-Imported.html
+    - Test.All (PDF): pdf/Test.Sub.Not-Imported.pdf
 
 not_in_nav:
   html/*.html
@@ -52,8 +56,9 @@ theme:
     - search.highlight
 
 extra_css:
-  - stylesheets/Agda.css
   - stylesheets/Agda-material.css
+  - stylesheets/Agda-md.css
+  - stylesheets/Agda-md-dark.css
 # KaTeX:
   - https://unpkg.com/katex@0/dist/katex.min.css
 
