@@ -1,15 +1,12 @@
 nav:
   - About: index.md
-  - agda/agda Test3: md/Test.md
-  - md/Test*
+  - md/All.md
+  - Test3: md/Test.md
   - md/*
-  - HTML: 
-    - Test: html/Test.html
-    - Test.All: html/Test.All.html
-    - Test.Sub.Not-Imported: html/Test.Sub.Not-Imported.html
-  - PDF: 
-    - Test: pdf/Test.pdf
-    - Test.All: pdf/Test.All.pdf
-    - Test.Sub.Not-Imported: pdf/Test.Sub.Not-Imported.pdf
+  - HTML: html/All.html
+  - PDF: pdf/All.pdf
 
 preserve_directory_names: true
+
+sort:
+  sections: mixed

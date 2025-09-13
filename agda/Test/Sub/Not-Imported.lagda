@@ -1,7 +1,7 @@
 \begin{code}
 module Test.Sub.Not-Imported where
 
-open import Test
+import Test
 \end{code}
 
 This module is not imported by Test.All,

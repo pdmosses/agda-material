@@ -22,7 +22,7 @@
 # DEFAULTS
 
 DIR   := agda
-ROOT  := agda/Test.lagda
+ROOT  := agda/All.lagda
 HTML  := docs/html
 MD    := docs/md
 PDF   := docs/pdf

@@ -29,8 +29,8 @@ theme:
     - navigation.indexes
     - navigation.instant
     - navigation.instant.progress
-    # - navigation.tabs
-    # - navigation.tabs.sticky
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - search.suggest
     - search.highlight
@@ -67,9 +67,3 @@ markdown_extensions:
 plugins:
 - search
 - awesome-nav
-# - awesome-pages:
-#     collapse_single_pages: false
-#     strict: false
-#     order: asc
-#     sort_type: natural
-#     order_by: title
