@@ -1,10 +1,8 @@
 # Makefile for generating websites and pdfs from Agda sources
 
-# Commands to update all files generated from the default test modules:
+# Command to update all files generated from the default test modules:
 #
-# make ROOT=agda/Test.lagda
-# make ROOT=agda/Test/All.lagda
-# make ROOT=agda/Test/Sub/Not-Imported.lagda
+# make all
 
 ##############################################################################
 # PARAMETERS
@@ -12,7 +10,7 @@
 # Name   Purpose                 Default
 # ----------------------------------------------
 # DIR    import include-path     agda
-# ROOT   root module file        agda/Test.lagda
+# ROOT   root module file        agda/All.lagda
 # HTML   generated HTML files    docs/html
 # MD     generated MD files      docs/md
 # PDF    generated PDF files     docs/pdf
@@ -32,7 +30,7 @@ TEMP  := /tmp
 ##############################################################################
 # VARIABLES
 
-SHELL=bash
+SHELL=/bin/sh
 
 # Shell command for calling Agda:
 AGDA := agda --include-path=$(DIR) --trace-imports=0
@@ -142,29 +140,29 @@ md: $(MD-FILES)
 # needs to be wrapped in `<pre class="Agda">...</pre>` tags.
 
 $(MD-FILES) &:: $(AGDA-FILES)
-	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
-	for FILE in $(MD)/*; do \
+	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
+	@for FILE in $(MD)/*; do \
 	  BASENAME=$${FILE%.*}; \
 	  MDFILE=$${BASENAME//./\/}.md; \
 	  export MDFILE; \
 	  case $$FILE in \
-	    *.tex) \
-	      mkdir -p `dirname $$MDFILE`; \
-	      printf "%s\ntitle: %s\n%s\n\n" "---" `basename -s ".md" $$MDFILE` "---" > $$MDFILE; \
-	      printf "# %s\n\n" $${BASENAME##*/} >> $$MDFILE; \
-	      cat $$FILE >> $$MDFILE; \
-	      rm $$FILE ;; \
 	    *.html) \
+	      sd '\A' '<pre class="Agda">' $$FILE; \
+	      sd '\z' '</pre>' $$FILE;; \
+	  esac; \
+	  case $$FILE in \
+	    *.html | *.tex) \
 	      mkdir -p `dirname $$MDFILE`; \
-	      printf "%s\ntitle: %s\n%s\n\n" "---" `basename -s ".md" $$MDFILE` "---" > $$MDFILE; \
-	      printf "# %s\n\n" $${BASENAME##*/} >> $$MDFILE; \
-	      printf "%s" '<pre class="Agda">' >> $$MDFILE; \
-	      cat $$FILE >> $$MDFILE; \
-	      printf "%s" '</pre>' >> $$MDFILE; \
-	      rm $$FILE ;; \
-	    */Agda.css) \
-	      rm $$FILE ;; \
-	    *) \
+	      printf "%s\ntitle: %s\n%s\n\n# %s\n\n" \
+	             "---" \
+		     `basename -s ".md" $$MDFILE` \
+		     "---" \
+		     $${BASENAME##*/} > $$MDFILE; \
+	      cat $$FILE >> $$MDFILE;; \
+	  esac; \
+	  case $$FILE in \
+	    *.html | *.tex | */Agda.css) \
+	      rm $$FILE;; \
 	  esac \
 	done
 
