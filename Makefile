@@ -10,7 +10,7 @@
 # Name   Purpose                 Default
 # ----------------------------------------------
 # DIR    import include-path     agda
-# ROOT   root module file        agda/All.lagda
+# ROOT   root module file        agda/index.lagda
 # HTML   generated HTML files    docs/html
 # MD     generated MD files      docs/md
 # PDF    generated PDF files     docs/pdf
@@ -20,7 +20,7 @@
 # DEFAULTS
 
 DIR   := agda
-ROOT  := agda/All.lagda
+ROOT  := agda/index.lagda
 HTML  := docs/html
 MD    := docs/md
 PDF   := docs/pdf
@@ -89,30 +89,30 @@ LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
 # e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
 
 LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\section{$(p)}\input{$(p)})
-# e.g., \input{Test/All}\n \input{Test/Sub/Base}\n
+# e.g., \n\section{index}\input{index}\n\section{Test/All}\input{Test/All}...
 
 AGDA-STYLE := conor
 AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
 
 define LATEXDOC
-\documentclass[a4paper]{article}
-\usepackage{parskip}
-\usepackage[T1]{fontenc}
-\usepackage{microtype}
-\DisableLigatures[-]{encoding = T1, family = tt* }
-\usepackage{hyperref}
+\\documentclass[a4paper]{article}
+\\usepackage{parskip}
+\\usepackage[T1]{fontenc}
+\\usepackage{microtype}
+\\DisableLigatures[-]{encoding = T1, family = tt* }
+\\usepackage{hyperref}
 
-\usepackage[$(AGDA-STYLE)]{agda}
-\input{$(AGDA-CUSTOM)}
+\\usepackage[$(AGDA-STYLE)]{agda}
+\\input{$(AGDA-CUSTOM)}
 
-\title{$(NAME)}
-\begin{document}
-\maketitle
-\tableofcontents
-\newpage
+\\title{$(NAME)}
+\\begin{document}
+\\maketitle
+\\tableofcontents
+\\newpage
 $(LATEX-INPUTS)
 
-\end{document}
+\\end{document}
 endef
 
 ##############################################################################
@@ -156,7 +156,7 @@ $(MD-FILES) &:: $(AGDA-FILES)
 	@for FILE in $(MD)/*; do \
 	  BASENAME=$${FILE%.*}; \
 	  MDFILE=$${BASENAME//./\/}.md; \
-	  RELATIVE=`echo $$BASENAME | sd '^$(MD)/' '.' | sd '\.[^.]*' '../'`; \
+	  RELATIVE=`echo $$BASENAME | sd '^$(MD)/' '.' | sd '\.index$$' '' | sd '\.[^.]*' '../'`; \
 	  export MDFILE; \
 	  case $$FILE in \
 	    *.html) \
@@ -165,11 +165,12 @@ $(MD-FILES) &:: $(AGDA-FILES)
 	  esac; \
 	  case $$FILE in \
 	    *.html | *.tex) \
-	      sd '(href="[A-Z][^"]*)\.html' '$$1/' $$FILE; \
+	      sd '(href="[A-Za-z][^"]*)\.html' '$$1/' $$FILE; \
 	      while grep -q 'href="[A-Z][^".]*\.' $$FILE; do \
 	        sd '(href="[A-Za-z][^".]*)\.' '$$1/' $$FILE; \
 	      done; \
 	      sd 'href="([A-Za-z])' "href=\"$$RELATIVE\$$1" $$FILE; \
+	      sd '(href="[^"]*)index/' '$$1.' $$FILE; \
 	      mkdir -p `dirname $$MDFILE`; \
 	      printf "%s\ntitle: %s\n%s\n\n# %s\n\n" \
 	             "---" \
