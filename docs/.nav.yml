@@ -1,10 +1,10 @@
 nav:
   - About: index.md
-  - md/All.md
+  - md/index.md
   - Test3: md/Test.md
   - md/*
-  - HTML: html/All.html
-  - PDF: pdf/All.pdf
+  - HTML: html/index.html
+  - PDF: pdf/index.pdf
 
 preserve_directory_names: true
 
