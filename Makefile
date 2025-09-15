@@ -125,7 +125,7 @@ all: check html md latex doc pdf
 
 .PHONY: check
 check:
-	agda $(ROOT)
+	@$(AGDA) $(ROOT)
 
 # Generate HTML web pages:
 
