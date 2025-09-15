@@ -1,13 +1,11 @@
 First text line
 
 \begin{code}
-
 module Test.All where
 
-open import Test.Sub.Base
+import Test.Sub.Base
 
 -- Just testing...
-
 \end{code}
 
 Literate prose is included in generated webpages and PDFs.
@@ -36,9 +34,7 @@ singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$ such
 that $f(a)=f(b)$.
 
 \begin{code}
-
 -- More code
-
 \end{code}
 
 Last text line
