@@ -220,6 +220,12 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
 
+# Update and build the website, then publish it on GitHub Pages
+
+.PHONY: pub
+pub: all
+	@mkdocs gh-deploy --force
+
 # Remove all ROOT-generated files
 
 .PHONY: clean clean-html clean-md clean-latex clean-pdf
