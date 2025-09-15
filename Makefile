@@ -119,7 +119,13 @@ endef
 # RULES
 
 .PHONY: all
-all: html md latex doc pdf
+all: check html md latex doc pdf
+
+# Check Agda source files:
+
+.PHONY: check
+check:
+	agda $(ROOT)
 
 # Generate HTML web pages:
 
@@ -185,7 +191,7 @@ $(MD-FILES) &:: $(AGDA-FILES)
 	  esac \
 	done
 
-# Generate latex source files for use in latex documents:
+# Generate LaTeX source files for use in latex documents:
 
 .PHONY: latex
 latex: $(LATEX-FILES)
@@ -237,6 +243,8 @@ define HELP
 
 make all
   Generate web pages and pdfs for ROOT
+make check:
+  Check that loading the Agda source files for $(ROOT) does not report errors
 make html:
   Generate web page sources in ${HTML}
 make md:
