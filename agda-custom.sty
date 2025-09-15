@@ -1,0 +1,20 @@
+\ProvidesPackage{agda-custom}
+
+% This package should be used after the agda package.
+
+% It is intended for overriding definitions in the agda package
+% and for loading further packages, defining Unicode characters, etc.
+
+% The following definitions are required for formatting agda/Test.lagda
+
+% To control the typesetting of individual symbols:
+
+\renewcommand{\AgdaSymbol}[1]
+  {\AgdaNoSpaceMath{\textcolor{AgdaSymbol}{\AgdaFontStyle{\AgdaFormat{#1}{#1}}}}}
+
+% Typeset -> as \to, and \ as \lambda:
+
+\DeclareRobustCommand{\AgdaFormat}[2]{%
+  \ifthenelse{\equal{#1}{->}}{\ensuremath\to}{%
+     \ifthenelse{\equal{#1}{\textbackslash{}}}{\ensuremath\lambda}{%
+      #2}}}

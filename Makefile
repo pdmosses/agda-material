@@ -92,7 +92,10 @@ LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\section{$(p)}\input{$(p)})
 # e.g., \n\section{index}\input{index}\n\section{Test/All}\input{Test/All}...
 
 AGDA-STYLE := conor
+
+# LaTeX packages provided by Agda-Material are in the project root:
 AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
+UNICODE := $(patsubst %/,../,$(LATEX)/)unicode
 
 define LATEXDOC
 \\documentclass[a4paper]{article}
@@ -103,7 +106,8 @@ define LATEXDOC
 \\usepackage{hyperref}
 
 \\usepackage[$(AGDA-STYLE)]{agda}
-\\input{$(AGDA-CUSTOM)}
+\\usepackage{$(AGDA-CUSTOM)}
+\\usepackage{$(UNICODE)}
 
 \\title{$(NAME)}
 \\begin{document}
@@ -213,7 +217,7 @@ $(LATEX)/$(NAME).doc.tex:
 .PHONY: pdf
 pdf: $(PDF)/$(NAME).pdf
 
-$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).tex
+$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(UNICODE).sty
 	@cd $(LATEX); \
 	  $(PDFLATEX) $(NAME).doc.tex; \
 	  $(PDFLATEX) $(NAME).doc.tex; \
