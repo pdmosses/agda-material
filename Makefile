@@ -224,13 +224,19 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
 
-# Update and build the website, then publish it on GitHub Pages
+# Preview the generated website
 
-.PHONY: pub
-pub: all
+.PHONY: preview
+preview: all
+	@mkdocs serve
+
+# Update and build the website, then deploy it on GitHub Pages from the gh-pages branch
+
+.PHONY: deploy
+deploy: all
 	@mkdocs gh-deploy --force
 
-# Remove all ROOT-generated files
+# Remove all files generated from ROOT
 
 .PHONY: clean clean-html clean-md clean-latex clean-pdf
 clean: clean-html clean-md clean-latex clean-pdf
@@ -252,9 +258,13 @@ clean-pdf:
 define HELP
 
 make all
-  Generate web pages and pdfs for ROOT
+  Generate web pages and pdfs for $(ROOT)
 make check:
   Check that loading the Agda source files for $(ROOT) does not report errors
+make preview
+  Update the web pages and pdfs for $(ROOT), the preview the website locally
+make deploy
+  Update the web pages and pdfs for $(ROOT), then deploy the website on GitHub Pages 
 make html:
   Generate web page sources in ${HTML}
 make md:

@@ -1,4 +1,4 @@
-# Agda-Material
+# About Agda-Material
 
 This repository supports **generation of websites and PDFs** with
 **highlighted code** from (plain and/or literate) Agda source files.
