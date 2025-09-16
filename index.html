@@ -514,18 +514,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#website-generation" class="md-nav__link">
+  <a href="#for-website-generation" class="md-nav__link">
     <span class="md-ellipsis">
-      Website generation
+      For website generation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pdf-generation" class="md-nav__link">
+  <a href="#for-pdf-generation" class="md-nav__link">
     <span class="md-ellipsis">
-      PDF generation
+      For PDF generation
     </span>
   </a>
   
@@ -565,9 +565,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#copy-files-to-your-existing-repository" class="md-nav__link">
+  <a href="#copy-files-to-an-existing-repository" class="md-nav__link">
     <span class="md-ellipsis">
-      Copy files to your existing repository
+      Copy files to an existing repository
     </span>
   </a>
   
@@ -598,15 +598,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#update-markdown-files-and-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      Update Markdown files and settings
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#replace-the-agda-source-files" class="md-nav__link">
     <span class="md-ellipsis">
       Replace the Agda source files
@@ -619,6 +610,15 @@
   <a href="#generate-highlighted-listings-of-all-the-agda-code" class="md-nav__link">
     <span class="md-ellipsis">
       Generate highlighted listings of all the Agda code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-a-generated-website-to-github-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy a generated website to GitHub Pages
     </span>
   </a>
   
@@ -1079,18 +1079,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#website-generation" class="md-nav__link">
+  <a href="#for-website-generation" class="md-nav__link">
     <span class="md-ellipsis">
-      Website generation
+      For website generation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pdf-generation" class="md-nav__link">
+  <a href="#for-pdf-generation" class="md-nav__link">
     <span class="md-ellipsis">
-      PDF generation
+      For PDF generation
     </span>
   </a>
   
@@ -1130,9 +1130,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#copy-files-to-your-existing-repository" class="md-nav__link">
+  <a href="#copy-files-to-an-existing-repository" class="md-nav__link">
     <span class="md-ellipsis">
-      Copy files to your existing repository
+      Copy files to an existing repository
     </span>
   </a>
   
@@ -1163,15 +1163,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#update-markdown-files-and-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      Update Markdown files and settings
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#replace-the-agda-source-files" class="md-nav__link">
     <span class="md-ellipsis">
       Replace the Agda source files
@@ -1184,6 +1175,15 @@
   <a href="#generate-highlighted-listings-of-all-the-agda-code" class="md-nav__link">
     <span class="md-ellipsis">
       Generate highlighted listings of all the Agda code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-a-generated-website-to-github-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy a generated website to GitHub Pages
     </span>
   </a>
   
@@ -1243,22 +1243,23 @@
 <h1 id="agda-material">Agda-Material</h1>
 <p>Agda-Material automates the steps that Agda leaves to the user when generating
 web pages and LaTeX files.</p>
-<p>This is the README page for the repository [pdmosses/agda-material].
+<p>This is the README page for the <a href="https://github.com/pdmosses/agda-material/">Agda-Material repository</a>.
 It explains how to install, test, and make use of Agda-Material.
-See the [About] page for an overview of motivation and features.</p>
+See the <a href="about/">About</a> page for motivation and an overview.</p>
 <h2 id="repository-contents">Repository contents</h2>
-<p>The repository contains the following files:</p>
+<p>The repository contains the following files and directories:</p>
 <ul>
 <li><code>agda</code>: directory for Agda source code</li>
 <li><code>docs</code>: directory for generating a website<ul>
 <li><code>docs/javascripts</code>: directory for added Javascript files</li>
 <li><code>docs/stylesheets</code>: directory for added CSS files</li>
 <li><code>docs/.nav.yml</code>: configuration file for navigation panels</li>
-<li><code>docs/about.md</code>: Markdown source for the [About] page</li>
-<li><code>docs/README.md</code>: Markdown source for the home page</li>
+<li><code>docs/about.md</code>: Markdown source for the <a href="about/">About</a> page</li>
+<li><code>docs/README.md</code>: Markdown source for the <a href="./">Agda-Material home</a> page</li>
 </ul>
 </li>
-<li><code>agda-custom.tex</code>: file for overriding commands defined in <code>agda.sty</code></li>
+<li><code>agda-custom.sty</code>: package for overriding commands defined in <code>agda.sty</code></li>
+<li><code>unicode.sty</code>: package mapping Unicode characters to LaTeX</li>
 <li><code>Makefile</code>: automation of website and PDF generation</li>
 <li><code>mkdocs.yml</code>: configuration file for generated websites</li>
 <li><code>UNLICENSE</code>: release into the public domain</li>
@@ -1271,66 +1272,67 @@ By default, Agda-Material creates generated files in the following directories:<
 <li><code>docs/pdf</code>: PDF files</li>
 <li><code>latex</code>: LaTeX files</li>
 </ul>
-<p>The default directories for Agda source code and generated files can be changed
-by editing the <code>Makefile</code>.
-The location of the directory <code>docs</code> can be configured by setting <code>docs_dir</code> in
+<p>The default Agda root file can be changed by editing the <code>Makefile</code>;
+similarly for the directories for Agda source code and generated files.</p>
+<p>The location of the directory <code>docs</code> can be configured by setting <code>docs_dir</code> in
 <code>mkdocs.yml</code>.</p>
 <h2 id="software-dependencies">Software dependencies</h2>
 <ul>
 <li><a href="https://agda.readthedocs.io/en/stable/getting-started/installation.html">Agda</a> (2.7.0)</li>
-<li><a href="https://www.gnu.org/software/make/manual/make.html">GNU Make</a></li>
-<li>[sd] (1.0.0)</li>
+<li><a href="https://www.gnu.org/software/make/manual/make.html">GNU Make</a> (3.8.1)</li>
+<li><a href="https://github.com/chmln/sd/">sd</a> (1.0.0)</li>
 </ul>
-<h3 id="website-generation">Website generation</h3>
+<h3 id="for-website-generation">For website generation</h3>
 <ul>
-<li>[Python 3] (<code>python 3.11.3</code>)</li>
-<li>[Pip] (<code>pip 25.2</code>)</li>
-<li>[MkDocs] (<code>mkdocs 1.6.1</code>)</li>
-<li><a href="https://squidfunk.github.io/mkdocs-material/getting-started/">Material for MkDocs</a> (<code>mkdocs-material 9.6.19</code>)</li>
-<li>[Awesome-nav] (<code>mkdocs-awesome-nav 3.2.0</code>)</li>
+<li><a href="https://www.python.org/downloads/">Python 3</a> (3.11.3)</li>
+<li><a href="https://pypi.org/project/pip/">Pip</a> (25.2)</li>
+<li><a href="https://www.mkdocs.org/getting-started/">MkDocs</a> (1.6.1)</li>
+<li><a href="https://squidfunk.github.io/mkdocs-material/getting-started/">Material for MkDocs</a> (9.6.19)</li>
+<li><a href="https://lukasgeiter.github.io/mkdocs-awesome-nav/">Awesome-nav</a> (3.2.0)</li>
+<li><a href="https://pages.github.com">GitHub Pages</a></li>
 </ul>
-<h3 id="pdf-generation">PDF generation</h3>
+<h3 id="for-pdf-generation">For PDF generation</h3>
 <ul>
-<li>[TeXLive] (2025)</li>
+<li><a href="https://www.tug.org/texlive/">TeXLive</a> (2025)</li>
 </ul>
 <h2 id="platform-dependencies">Platform dependencies</h2>
 <p>Agda-Material has been developed and tested on MacBook laptops
 with Apple M1 and M3 chips running macOS Sequoia (15.5) with CLI Tools.</p>
-<p>Please report any issues with using Agda-Material on other platforms,
+<p>Please report any <a href="https://github.com/pdmosses/agda-material/issues">issues</a> with using Agda-Material on other platforms,
 including all relevant details.</p>
-<p>Pull requests for addressing such issues are welcome. They should include the
+<p><a href="https://github.com/pdmosses/agda-material/pulls">Pull requests</a> for addressing such issues are welcome. They should include the
 results of tests that demonstrate the benefit of the PR.</p>
 <h2 id="getting-started">Getting started</h2>
-<p>To use Agda-Material, either create a copy of it as a fresh repository
+<p>To use Agda-Material, either create a copy of it as a fresh repository,
 or copy the files to an existing repository.</p>
-<p>In both cases, update the content of the Markdown files in <code>docs</code>
-and the settings in <code>mkdocs.yml</code> <em>before</em> generating a website or a PDF.</p>
+<p>Then update the content of the Markdown files in <code>docs</code> and the settings in <code>mkdocs.yml</code>.</p>
 <h3 id="create-a-fresh-repository">Create a fresh repository</h3>
-<p>On [pdmosses/agda-material]:</p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Click on the <strong>Use this template</strong> button (near the top of the page)</li>
+<p>Browse the <a href="https://github.com/pdmosses/agda-material/">Agda-Material repository</a>:</p>
+<ul>
+<li>Click on the <strong>Use this template</strong> button (near the top of the page)</li>
 </ul>
 <p>Locally: </p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Clone the resulting repository</li>
+<ul>
+<li>Clone the resulting repository</li>
 </ul>
-<h3 id="copy-files-to-your-existing-repository">Copy files to your existing repository</h3>
-<p>On [pdmosses/agda-material]:</p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Click on <strong>&lt;&gt; Code</strong> then <strong>Clone</strong> or <strong>Download</strong></li>
+<h3 id="copy-files-to-an-existing-repository">Copy files to an existing repository</h3>
+<p>Browse the <a href="https://github.com/pdmosses/agda-material/">Agda-Material repository</a>:</p>
+<ul>
+<li>Click on <strong>&lt;&gt; Code</strong>, then on <strong>Clone</strong> or <strong>Download</strong></li>
 </ul>
 <p>Locally:</p>
-<ul class="task-list">
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Copy/merge the following files and directories from <code>agda-material</code>
+<ul>
+<li>
+<p>Copy/merge the following files and directories from <code>agda-material</code>
   to your repository:</p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>Makefile</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>mkdocs.yml</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>agda-custom.tex</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>agda/*</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>docs/*</code></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>.gitignore</code></li>
+<ul>
+<li><code>Makefile</code></li>
+<li><code>mkdocs.yml</code></li>
+<li><code>agda-custom.sty</code></li>
+<li><code>unicode.sty</code></li>
+<li><code>agda/*</code></li>
+<li><code>docs/*</code></li>
+<li><code>.gitignore</code></li>
 </ul>
 </li>
 </ul>
@@ -1339,14 +1341,15 @@ and the settings in <code>mkdocs.yml</code> <em>before</em> generating a website
 <li>
 <p>In a terminal:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>agda-material
-make
+make<span class="w"> </span>preview
 </code></pre></div>
 </li>
 <li>
 <p>Then in a web browser:</p>
 <ul>
 <li>Open <code>localhost:8000/agda-material</code></li>
-<li>Check that the local site corresponds to <code>https://pdmosses.github.io/agda-material</code></li>
+<li>Check that the local preview of the generated website corresponds
+  to <code>https://pdmosses.github.io/agda-material/</code></li>
 </ul>
 </li>
 <li>
@@ -1365,7 +1368,24 @@ make
 </li>
 </ol>
 <h2 id="using-agda-material">Using Agda-Material</h2>
-<h3 id="update-markdown-files-and-settings">Update Markdown files and settings</h3>
+<h3 id="replace-the-agda-source-files">Replace the Agda source files</h3>
+<p>Remove the Agda-Material test files in <code>agda</code>, then add your own Agda files.</p>
+<p>By default:</p>
+<ul>
+<li>all Agda source files are located in the <code>agda</code> directory or its sub-directories</li>
+<li>the ROOT file at <code>agda/index.lagda</code> defines the module <code>index</code> to import all other modules</li>
+</ul>
+<p>The defaults can be changed to match your repository by editing the <code>Makefile</code>.</p>
+<p>To check the type correctness of your Agda modules:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>check<span class="w"> </span>
+</code></pre></div>
+<p>Any type-checking errors are reported.</p>
+<h3 id="generate-highlighted-listings-of-all-the-agda-code">Generate highlighted listings of all the Agda code</h3>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>all
+</code></pre></div>
+<p>The log of generating any missing or outdated PDFs of the highlighted listings
+is shown.</p>
+<h3 id="deploy-a-generated-website-to-github-pages">Deploy a generated website to GitHub Pages</h3>
 <p>Update the following fields in <code>mkdocs.yml</code>:</p>
 <ul>
 <li><code>site_name</code></li>
@@ -1373,35 +1393,19 @@ make
 <li><code>repo_name</code></li>
 <li><code>repo_url</code></li>
 </ul>
-<h3 id="replace-the-agda-source-files">Replace the Agda source files</h3>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>check<span class="w"> </span>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>deploy
 </code></pre></div>
-<p>Any type-checking errors are shown.</p>
-<h3 id="generate-highlighted-listings-of-all-the-agda-code">Generate highlighted listings of all the Agda code</h3>
-<div class="highlight"><pre><span></span><code>make<span class="w"> </span>all
-</code></pre></div>
-<p>The log of generating any missing or outdated PDFs of the highlighted listings
-is shown.</p>
 <h3 id="further-commands">Further commands</h3>
+<p>Show a summary of all available <code>make</code> commands:</p>
 <div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nb">help</span>
 </code></pre></div>
-<p>A summary of all available <code>make</code> commands is shown.</p>
 <h2 id="contributing">Contributing</h2>
-<p>Please use the <a href="https://github.com/pdmosses/agda-material/issues">issue tracker</a> to report any issues that arise.</p>
+<p>Please report any <a href="https://github.com/pdmosses/agda-material/issues">issues</a> that arise.</p>
 <p>Comments and suggestions for improvement are welcome, and can be added as [Discussions].</p>
 <h2 id="contact">Contact</h2>
 <p>Peter Mosses</p>
-<p>p.d.mosses@tudelft.nl</p>
-<p>https://pdmosses.github.io</p>
-<div class="footnote">
-<hr />
-<ol>
-<li id="fn:copy">
-<p>In case of name clashes with existing files or directories, it may be
-necessary to move them, or to modify the <code>Makefile</code>.&#160;<a class="footnote-backref" href="#fnref:copy" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-</ol>
-</div>
+<p><a href="mailto:p.d.mosses@tudelft.nl">p.d.mosses@tudelft.nl</a></p>
+<p><a href="https://pdmosses.github.io">pdmosses.github.io</a></p>
 
 
 
