@@ -33,7 +33,7 @@ TEMP  := /tmp
 SHELL=/bin/sh
 
 # Shell command for calling Agda:
-AGDA := agda --include-path=$(DIR) --trace-imports=0
+AGDA := agda --include-path=$(DIR) --trace-imports=0 --interaction-exit-on-error
 
 # Shell command for generating PDF from LaTeX:
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
@@ -50,7 +50,7 @@ endef
 
 # Target files:
 HTML-FILES := $(subst $(TEMP)/,$(HTML)/,$(shell \
-		rm -rf $(TEMP)/*.html; \
+		rm -f $(TEMP)/*.html; \
 		$(AGDA) --html --html-dir=$(TEMP) $(ROOT); \
 		ls $(TEMP)/*.html))
 # e.g., docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html
@@ -81,7 +81,7 @@ AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
 # e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
 
 # Target files:
-MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(IMPORT-PATHS)))
+MD-FILES := $(addprefix $(MD)/,$(subst index/index.md,index.md,$(addsuffix /index.md,$(IMPORT-PATHS))))
 # e.g., docs/md/Agda/Primitive.md docs/md/Test/All.md docs/md/Test/Sub/Base.md
 
 # Target files:
@@ -165,7 +165,8 @@ $(MD-FILES) &:: $(AGDA-FILES)
 	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
 	@for FILE in $(MD)/*; do \
 	  BASENAME=$${FILE%.*}; \
-	  MDFILE=$${BASENAME//./\/}.md; \
+	  MDFILE=$${BASENAME//./\/}/index.md; \
+	  MDFILE=$${MDFILE/index\/index.md/index.md}; \
 	  RELATIVE=`echo $$BASENAME | sd '^$(MD)/' '.' | sd '\.index$$' '' | sd '\.[^.]*' '../'`; \
 	  export MDFILE; \
 	  case $$FILE in \
@@ -224,10 +225,10 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
 
-# Preview the generated website
+# Serve the generated website for a local preview
 
-.PHONY: preview
-preview: all
+.PHONY: serve
+serve:
 	@mkdocs serve
 
 # Update and build the website, then deploy it on GitHub Pages from the gh-pages branch
