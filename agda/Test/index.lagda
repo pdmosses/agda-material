@@ -1,7 +1,7 @@
 First text line
 
 \begin{code}
-module Test.All where
+module Test.index where
 
 import Test.Sub.Base
 
