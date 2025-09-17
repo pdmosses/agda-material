@@ -81,15 +81,15 @@ AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
 # e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
 
 # Target files:
-MD-FILES := $(addprefix $(MD)/,$(subst index/index.md,index.md,$(addsuffix /index.md,$(IMPORT-PATHS))))
+MD-FILES := $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS)))
 # e.g., docs/md/Agda/Primitive.md docs/md/Test/All.md docs/md/Test/Sub/Base.md
 
 # Target files:
 LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
 # e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
 
-LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\section{$(p)}\input{$(p)})
-# e.g., \n\section{index}\input{index}\n\section{Test/All}\input{Test/All}...
+LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
+# e.g., \n\section{index}\input{index}\n\section{Test.index}\input{Test/index}...
 
 AGDA-STYLE := conor
 
@@ -166,8 +166,7 @@ $(MD-FILES) &:: $(AGDA-FILES)
 	@for FILE in $(MD)/*; do \
 	  BASENAME=$${FILE%.*}; \
 	  MDFILE=$${BASENAME//./\/}/index.md; \
-	  MDFILE=$${MDFILE/index\/index.md/index.md}; \
-	  RELATIVE=`echo $$BASENAME | sd '^$(MD)/' '.' | sd '\.index$$' '' | sd '\.[^.]*' '../'`; \
+	  RELATIVE=`echo $$BASENAME | sd '^$(MD)/' '.' | sd '\.[^.]*' '../'`; \
 	  export MDFILE; \
 	  case $$FILE in \
 	    *.html) \
@@ -181,7 +180,6 @@ $(MD-FILES) &:: $(AGDA-FILES)
 	        sd '(href="[A-Za-z][^".]*)\.' '$$1/' $$FILE; \
 	      done; \
 	      sd 'href="([A-Za-z])' "href=\"$$RELATIVE\$$1" $$FILE; \
-	      sd '(href="[^"]*)index/' '$$1.' $$FILE; \
 	      mkdir -p `dirname $$MDFILE`; \
 	      printf "%s\ntitle: %s\n%s\n\n# %s\n\n" \
 	             "---" \
