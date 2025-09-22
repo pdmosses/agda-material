@@ -48,6 +48,10 @@ define NEWLINE
 
 endef
 
+EMPTY :=
+
+SPACE := $(EMPTY) $(EMPTY)
+
 # Target files:
 HTML-FILES := $(subst $(TEMP)/,$(HTML)/,$(shell \
 		rm -rf $(TEMP)/*.html; \
@@ -81,7 +85,7 @@ AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
 # e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
 
 # Target files:
-MD-FILES := $(addprefix $(MD)/,$(addsuffix .md,$(IMPORT-PATHS)))
+MD-FILES := $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS)))
 # e.g., docs/md/Agda/Primitive.md docs/md/Test/All.md docs/md/Test/Sub/Base.md
 
 # Target files:
@@ -119,7 +123,7 @@ endef
 # RULES
 
 .PHONY: all
-all: check html md latex doc pdf
+all: check html md # latex doc pdf
 
 # Check Agda source files:
 
@@ -127,18 +131,13 @@ all: check html md latex doc pdf
 check:
 	@$(AGDA) $(ROOT)
 
-# Generate HTML web pages:
+# Copy generated HTML web pages:
 
 .PHONY: html
-html: $(HTML-FILES)
-
-$(HTML-FILES) &:: $(AGDA-FILES)
+html: $(AGDA-FILES)
 	@$(AGDA) --html --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages:
-
-.PHONY: md
-md: $(MD-FILES)
 
 # `agda --html --html-highlight=code ROOT.lagda` produces highlighted HTML files
 # from plain `agda` and literate `lagda` source files. However, the extension is
@@ -157,39 +156,37 @@ md: $(MD-FILES)
 # omitted for local links where the id is in the same file. Similarly, the
 # links to modules in the same directory could be optimized.
 
-$(MD-FILES) &:: $(AGDA-FILES)
-	@$(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
-	@for FILE in $(MD)/*; do \
-	  BASENAME=$${FILE%.*}; \
-	  MDFILE=$${BASENAME//./\/}.md; \
-	  RELATIVE=`echo $$BASENAME | sd '^$(MD)/' '.' | sd '\.index$$' '' | sd '\.[^.]*' '../'`; \
-	  export MDFILE; \
-	  case $$FILE in \
-	    *.html) \
-	      sd '\A' '<pre class="Agda">' $$FILE; \
-	      sd '\z' '</pre>' $$FILE;; \
-	  esac; \
-	  case $$FILE in \
-	    *.html | *.tex) \
-	      sd '(href="[A-Za-z][^"]*)\.html' '$$1/' $$FILE; \
-	      while grep -q 'href="[A-Z][^".]*\.' $$FILE; do \
-	        sd '(href="[A-Za-z][^".]*)\.' '$$1/' $$FILE; \
-	      done; \
-	      sd 'href="([A-Za-z])' "href=\"$$RELATIVE\$$1" $$FILE; \
-	      sd '(href="[^"]*)index/' '$$1.' $$FILE; \
-	      mkdir -p `dirname $$MDFILE`; \
-	      printf "%s\ntitle: %s\n%s\n\n# %s\n\n" \
-	             "---" \
-		     `basename -s ".md" $$MDFILE` \
-		     "---" \
-		     $${BASENAME##*/} > $$MDFILE; \
-	      cat $$FILE >> $$MDFILE;; \
-	  esac; \
-	  case $$FILE in \
-	    *.html | *.tex | */Agda.css) \
-	      rm $$FILE;; \
-	  esac \
+.PHONY: md
+md: $(MD-FILES)
+
+# It is unclear how to use order-only prerequisites to ensure that $(MD)
+# has been initialized. The following use of md-init is a workaround.
+
+.PHONY: md-init
+md-init:
+	@if [ ! -d $(MD) ] ; then \
+	    $(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
+	fi
+
+$(MD-FILES): $(MD)/%/index.md: $(HTML-FILES) md-init
+	@mkdir -p $(@D)
+# Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
+	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
+	    mv -f $(MD)/$(subst /,.,$*).html $@; sd '\A' '<pre class="Agda">' $@; sd '\z' '</pre>' $@; \
+	else \
+	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
+	fi
+# Prepend front matter:
+	@sd -- '\A' '---\ntitle: $(*F)\nhide: toc\n---\n\n# $(subst /,.,$*)\n\n' $@
+# Use directory URLs:
+	@sd '(href="[A-Za-z][^"]*)\.html' '$$1/' $@
+# Replace `.`-separated filenames in URLs by `/`-separated paths:
+	@while grep -q 'href="[A-Z][^".]*\.' $@; do \
+	    sd '(href="[A-Za-z][^".]*)\.' '$$1/' $@; \
 	done
+# Prefix paths by relative path to top level:
+	@sd 'href="([A-Za-z])' 'href="$(subst $(SPACE),$(EMPTY),$(foreach d,$(subst /, ,$*),../))$$1' $@
+#	@sd '(href="[^"]*)index/' '$$1.' $@
 
 # Generate LaTeX source files for use in latex documents:
 
@@ -220,22 +217,35 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
 
-# Remove all ROOT-generated files
+# Serve the generated website for a local preview
+
+.PHONY: serve
+serve:
+	@mkdocs serve
+
+# Update and build the website, then deploy it on GitHub Pages from the gh-pages branch
+
+.PHONY: deploy
+deploy:
+	@mkdocs gh-deploy --force
+
+
+# Remove all generated files
 
 .PHONY: clean clean-html clean-md clean-latex clean-pdf
 clean: clean-html clean-md clean-latex clean-pdf
 
 clean-html:
-	@rm -rf $(HTML-FILES)
+	@rm -rf $(HTML)
 
 clean-md:
-	@rm -rf $(MD-FILES)
+	@rm -rf $(MD)
 
 clean-latex:
-	@rm -rf $(LATEX-FILES) $(LATEX)/$(NAME).doc.{aux,log,out,ptb,tex,toc}
+	@rm -rf $(LATEX)
 
 clean-pdf:
-	@rm -rf $(PDF)/$(NAME).pdf
+	@rm -rf $(PDF)
 
 # Texts
 
@@ -256,15 +266,15 @@ make doc:
 make pdf:
   Generate pdf in $(PDF)
 make clean:
-  Remove ROOT-generated files
+  Remove generated files
 make clean-md:
-  Remove ROOT-generated Markdown files
+  Remove generated Markdown files
 make clean-html:
-  Remove ROOT-generated HTML files
+  Remove generated HTML files
 make clean-latex:
-  Remove ROOT-generated LaTeX files
+  Remove generated LaTeX files
 make clean-pdf:
-  Remove ROOT-generated PDF file
+  Remove generated PDF file
 
 endef
 
