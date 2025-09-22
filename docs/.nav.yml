@@ -1,11 +1,13 @@
 nav:
-  - README.md
-  - About: about.md
-  - md/index.md
-  - Test3: md/Test.md
-  - md/*
+  - index.md
+  - Test:
+    - md/index/index.md
+    - md/Test/*
+  - Library:
+    - md/Library/index.md
+    - md/*
   - HTML: html/index.html
-  - PDF: pdf/index.pdf
+  # - PDF: pdf/index.pdf
 
 preserve_directory_names: true
 

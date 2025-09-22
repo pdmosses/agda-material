@@ -5,7 +5,7 @@ web pages and LaTeX files.
 
 This is the README page for the repository [pdmosses/agda-material].
 It explains how to install, test, and make use of Agda-Material.
-See the [About] page for an overview of motivation and features.
+See the [home] page for an overview of motivation and features.
 
 ## Repository contents
 
@@ -16,11 +16,12 @@ The repository contains the following files:
     - `docs/javascripts`: directory for added Javascript files
     - `docs/stylesheets`: directory for added CSS files
     - `docs/.nav.yml`: configuration file for navigation panels
-    - `docs/about.md`: Markdown source for the [About] page
-    - `docs/README.md`: Markdown source for the home page
-- `agda-custom.tex`: file for overriding commands defined in `agda.sty`
+    - `docs/index.md`: Markdown source for the [home] page of the generated website
+- `agda-custom.sty`: package for overriding commands defined in `agda.sty`
+- `agda-unicode.sty`: package mapping Unicode characters for Agda to LaTeX
 - `Makefile`: automation of website and PDF generation
-- `mkdocs.yml`: configuration file for generated websites
+- `mkdocs.yml`: configuration file for the generated website
+- `README.md`: this page
 - `UNLICENSE`: release into the public domain
 
 The repository does not contain any generated files.
@@ -39,16 +40,16 @@ The location of the directory `docs` can be configured by setting `docs_dir` in
 ## Software dependencies
 
 - [Agda] (2.7.0)
-- [GNU Make]
+- [GNU Make] (3.81)
 - [sd] (1.0.0)
 
 ### Website generation
 
-- [Python 3] (`python 3.11.3`)
-- [Pip] (`pip 25.2`)
-- [MkDocs] (`mkdocs 1.6.1`)
-- [Material for MkDocs] (`mkdocs-material 9.6.19`)
-- [Awesome-nav] (`mkdocs-awesome-nav 3.2.0`)
+- [Python 3] (3.11.3)
+- [Pip] (25.2)
+- [MkDocs] (1.6.1)
+- [Material for MkDocs] (9.6.19)
+- [Awesome-nav] (3.2.0)
 
 ### PDF generation
 
@@ -59,7 +60,7 @@ The location of the directory `docs` can be configured by setting `docs_dir` in
 Agda-Material has been developed and tested on MacBook laptops
 with Apple M1 and M3 chips running macOS Sequoia (15.5) with CLI Tools.
 
-Please report any issues with using Agda-Material on other platforms,
+Please report any [issues] with using Agda-Material on other platforms,
 including all relevant details.
 
 Pull requests for addressing such issues are welcome. They should include the
@@ -67,10 +68,10 @@ results of tests that demonstrate the benefit of the PR.
 
 ## Getting started
 
-To use Agda-Material, either create a copy of it as a fresh repository
-or copy the files to an existing repository.
+To use Agda-Material, *either* create a copy of it as a fresh repository
+*or* copy the files to an existing repository.
 
-In both cases, update the content of the Markdown files in `docs`
+In *both* cases, update the content of the Markdown files in `docs`
 and the settings in `mkdocs.yml` *before* generating a website or a PDF.
 
 ### Create a fresh repository
@@ -174,20 +175,21 @@ Comments and suggestions for improvement are welcome, and can be added as [Discu
 
 Peter Mosses
 
-p.d.mosses@tudelft.nl
+[p.d.mosses@tudelft.nl](mailto:p.d.mosses@tudelft.nl)
 
-https://pdmosses.github.io
+[pdmosses.github.io](https://pdmosses.github.io)
 
-[^copy]: In case of name clashes with existing files or directories, it may be
-    necessary to move them, or to modify the `Makefile`.
+[Home]: https://pdmosses.github.io/agda-material/
+[pdmosses/agda-material]: https://github.com/pdmosses/agda-material/
+[Issues]: https://github.com/pdmosses/agda-material/issues
 
-[Agda-Material Repo]: https://github.com/pdmosses/agda-material/
-[Issue tracker]: https://github.com/pdmosses/agda-material/issues
-[Homepage]: https://pdmosses.github.io/agda-material/
-[Agda]: https://agda.readthedocs.io/en/stable/getting-started/installation.html
-[Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
-[GitHub Pages]: https://pages.github.com
-[GitHub Actions]: https://github.com/features/actions/
-[MacTeX 2025]: https://tug.org/mactex/
-[TeX Live 2025]: https://www.tug.org/texlive/
+[Agda]: https://agda.readthedocs.io/en/stable/getting-started/index.html
 [GNU Make]: https://www.gnu.org/software/make/manual/make.html
+[sd]: https://github.com/chmln/sd/
+[Python 3]: https://www.python.org/downloads/
+[Pip]: https://pypi.org/project/pip/
+[MkDocs]: https://www.mkdocs.org/getting-started/
+[Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
+[Awesome-nav]: https://lukasgeiter.github.io/mkdocs-awesome-nav/
+[GitHub Pages]: https://pages.github.com
+[TeXLive]: https://www.tug.org/texlive/
