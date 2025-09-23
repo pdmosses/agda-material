@@ -2,20 +2,20 @@
 
 # Command to update all files generated from the default test modules:
 #
-# make all
+# make website
 
 ##############################################################################
 # PARAMETERS
 #
-# Name   Purpose                 Default
-# ----------------------------------------------
-# DIR    import include-path     agda
-# ROOT   root module file        agda/index.lagda
-# HTML   generated HTML files    docs/html
-# MD     generated MD files      docs/md
-# PDF    generated PDF files     docs/pdf
-# LATEX  generated LATEX files   latex
-# TEMP   temporary files         /tmp
+# Name   Purpose
+# ----------------------------
+# DIR    import include-path
+# ROOT   root module file
+# HTML   generated HTML files
+# MD     generated MD files
+# PDF    generated PDF files
+# LATEX  generated LATEX files
+# TEMP   temporary files
 
 # DEFAULTS
 
@@ -25,7 +25,7 @@ HTML  := docs/html
 MD    := docs/md
 PDF   := docs/pdf
 LATEX := latex
-TEMP  := /tmp
+TEMP  := /tmp/html
 
 ##############################################################################
 # VARIABLES
@@ -46,7 +46,7 @@ endef
 
 # Shell commands for calling Agda:
 AGDA-Q := agda --include-path=$(DIR) --trace-imports=0
-AGDA-V := agda --include-path=$(DIR)
+AGDA-V := agda --include-path=$(DIR) --trace-imports=3
 
 # Shell command for generating PDF from LaTeX:
 PDFLATEX := pdflatex -shell-escape -interaction=errorstopmode
@@ -56,10 +56,11 @@ NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
 # e.g., Test.All
 
 # Target files:
-HTML-FILES := $(subst $(TEMP)/,$(HTML)/,$(shell \
+HTML-FILES := $(sort $(patsubst $(DIR)/%,$(HTML)/%,$(ROOT:lagda=html)) \
+		$(subst $(TEMP)/,$(HTML)/,$(shell \
 		rm -rf $(TEMP)/*.html; \
 		$(AGDA-Q) --html --html-dir=$(TEMP) $(ROOT); \
-		ls $(TEMP)/*.html))
+		ls $(TEMP)/*.html)))
 # e.g., docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html
 
 # Names of modules imported (perhaps indirectly) by ROOT:
@@ -98,6 +99,7 @@ LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
 LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
 # e.g., \n\pagebreak[3]\n\section{index}\input{index}\n\pagebreak[3]\n\section{Test/All}\input{Test/All}...
 
+AGDA-DOC := $(NAME).doc
 AGDA-STYLE := conor
 AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
 AGDA-UNICODE := $(patsubst %/,../,$(LATEX)/)agda-unicode
@@ -168,13 +170,13 @@ website:
 
 .PHONY: check
 check:
-	@$(AGDA-V) $(ROOT)
+	@$(AGDA-V) $(ROOT)  | grep $(shell pwd)
 
-# Copy generated HTML web pages:
+# Generate HTML web pages:
 
 .PHONY: html
 html: $(AGDA-FILES)
-	@$(AGDA-V) --html --html-dir=$(HTML) $(ROOT)
+	@$(AGDA-Q) --html --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages:
 
@@ -204,7 +206,7 @@ md: $(MD-FILES)
 .PHONY: md-init
 md-init:
 	@if [ ! -d $(MD) ] ; then \
-	    $(AGDA-V) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
+	    $(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
 	fi
 
 $(MD-FILES): $(MD)/%/index.md: $(HTML-FILES) md-init
@@ -233,15 +235,15 @@ $(MD-FILES): $(MD)/%/index.md: $(HTML-FILES) md-init
 latex: $(LATEX-FILES)
 
 $(LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
-	@$(AGDA-V) --latex --latex-dir=$(LATEX) $<
+	@$(AGDA-Q) --latex --latex-dir=$(LATEX) $<
 
 # Generate a LaTeX document to format the generated LaTeX files:
 
 .PHONY: doc
-doc: $(LATEX)/$(NAME).doc.tex
+doc: $(LATEX)/$(AGDA-DOC).tex
 
 export LATEXDOC
-$(LATEX)/$(NAME).doc.tex:
+$(LATEX)/$(AGDA-DOC).tex:
 	@echo "$$LATEXDOC" > $@
 
 # Generate a PDF using $(PDFLATEX)
@@ -249,12 +251,12 @@ $(LATEX)/$(NAME).doc.tex:
 .PHONY: pdf
 pdf: $(PDF)/$(NAME).pdf
 
-$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
-	@cd $(LATEX); \
-	  $(PDFLATEX) $(NAME).doc.tex 1>/dev/null; \
-	  $(PDFLATEX) $(NAME).doc.tex 1>/dev/null; \
-	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
-	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
+$(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
+	cd $(LATEX); \
+	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
+	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
+	  rm -f $(AGDA-DOC).{aux,log,out,ptb,toc}
+	@mkdir -p $(PDF) && mv -f $(LATEX)/$(AGDA-DOC).pdf $(PDF)/$(NAME).pdf
 
 # Serve the generated website for a local preview
 
@@ -332,21 +334,21 @@ DIR:          $(DIR)
 ROOT:         $(ROOT)
 NAME:         $(NAME)
 
-IMPORT-NAMES (1-5): $(wordlist 1, 5, $(IMPORT-NAMES))
+IMPORT-NAMES (1-9): $(wordlist 1, 9, $(IMPORT-NAMES))
 
-IMPORT-PATHS (1-5): $(wordlist 1, 5, $(IMPORT-PATHS))
+IMPORT-PATHS (1-9): $(wordlist 1, 9, $(IMPORT-PATHS))
 
-MODULE-NAMES (1-5): $(wordlist 1, 5, $(MODULE-NAMES))
+MODULE-NAMES (1-9): $(wordlist 1, 9, $(MODULE-NAMES))
 
-AGDA-NAMES   (1-5): $(wordlist 1, 5, $(AGDA-NAMES))
+AGDA-NAMES   (1-9): $(wordlist 1, 9, $(AGDA-NAMES))
 
-AGDA-PATHS   (1-5): $(wordlist 1, 5, $(AGDA-PATHS))
+AGDA-PATHS   (1-9): $(wordlist 1, 9, $(AGDA-PATHS))
 
-AGDA-FILES   (1-5): $(wordlist 1, 5, $(AGDA-FILES))
+AGDA-FILES   (1-9): $(wordlist 1, 9, $(AGDA-FILES))
 
-HTML-FILES   (1-5): $(wordlist 1, 5, $(HTML-FILES))
+HTML-FILES   (1-9): $(wordlist 1, 9, $(HTML-FILES))
 
-MD-FILES     (1-5): $(wordlist 1, 5, $(MD-FILES))
+MD-FILES     (1-9): $(wordlist 1, 9, $(MD-FILES))
 
 LATEXDOC:
 
@@ -357,6 +359,8 @@ LATEX-FILES:  $(LATEX-FILES)
 LATEX-INPUTS:
 $(LATEX-INPUTS)
 
+AGDA-DOC:      $(AGDA-DOC)
+AGDA-STYLE:    $(AGDA-STYLE)
 AGDA-CUSTOM:   $(AGDA-CUSTOM)
 AGDA-UNICODE:  $(AGDA-UNICODE)
 
