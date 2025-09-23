@@ -32,8 +32,21 @@ TEMP  := /tmp
 
 SHELL=/bin/sh
 
-# Shell command for calling Agda:
-AGDA := agda --include-path=$(DIR) --trace-imports=0
+# Characters:
+
+EMPTY :=
+
+SPACE := $(EMPTY) $(EMPTY)
+
+# A single newline:
+define NEWLINE :=
+
+
+endef
+
+# Shell commands for calling Agda:
+AGDA-Q := agda --include-path=$(DIR) --trace-imports=0
+AGDA-V := agda --include-path=$(DIR)
 
 # Shell command for generating PDF from LaTeX:
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
@@ -42,20 +55,10 @@ PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
 NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
 # e.g., Test.All
 
-# A single newline:
-define NEWLINE
-
-
-endef
-
-EMPTY :=
-
-SPACE := $(EMPTY) $(EMPTY)
-
 # Target files:
 HTML-FILES := $(subst $(TEMP)/,$(HTML)/,$(shell \
 		rm -rf $(TEMP)/*.html; \
-		$(AGDA) --html --html-dir=$(TEMP) $(ROOT); \
+		$(AGDA-Q) --html --html-dir=$(TEMP) $(ROOT); \
 		ls $(TEMP)/*.html))
 # e.g., docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html
 
@@ -92,11 +95,12 @@ MD-FILES := $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS)))
 LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
 # e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
 
-LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\section{$(p)}\input{$(p)})
-# e.g., \n\section{index}\input{index}\n\section{Test/All}\input{Test/All}...
+LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
+# e.g., \n\pagebreak[3]\n\section{index}\input{index}\n\pagebreak[3]\n\section{Test/All}\input{Test/All}...
 
 AGDA-STYLE := conor
 AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
+AGDA-UNICODE := $(patsubst %/,../,$(LATEX)/)agda-unicode
 
 define LATEXDOC
 \\documentclass[a4paper]{article}
@@ -107,7 +111,8 @@ define LATEXDOC
 \\usepackage{hyperref}
 
 \\usepackage[$(AGDA-STYLE)]{agda}
-\\input{$(AGDA-CUSTOM)}
+\\usepackage{$(AGDA-UNICODE)}
+\\usepackage{$(AGDA-CUSTOM)}
 
 \\title{$(NAME)}
 \\begin{document}
@@ -122,20 +127,48 @@ endef
 ##############################################################################
 # RULES
 
-.PHONY: all
-all: check html md # latex doc pdf
+.PHONY: help
+export HELP
+help:
+	@echo "$$HELP"
+
+.PHONY: debug
+export DEBUG
+debug:
+	@echo "$$DEBUG"
+
+# Clean and regenerate the website:
+
+.PHONY: website
+website:
+	@echo Generating a website for the Agda standard library may take about 2 mins
+	@echo Clean ...
+	@$(MAKE) clean
+	@echo Generate HTML ...
+	@$(MAKE) html
+	@echo Generate Markdown ...
+	@$(MAKE) md
+	@echo Generate LaTeX inputs ...
+	@$(MAKE) latex
+	@echo Generate LaTeX document ...
+	@$(MAKE) doc
+	@echo Generate PDF ...
+	@$(MAKE) pdf
+	@echo ... finished
+	@echo To preview the generated webite:
+	@echo "    make serve"
 
 # Check Agda source files:
 
 .PHONY: check
 check:
-	@$(AGDA) $(ROOT)
+	@$(AGDA-V) $(ROOT)
 
 # Copy generated HTML web pages:
 
 .PHONY: html
 html: $(AGDA-FILES)
-	@$(AGDA) --html --html-dir=$(HTML) $(ROOT)
+	@$(AGDA-V) --html --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages:
 
@@ -159,13 +192,13 @@ html: $(AGDA-FILES)
 .PHONY: md
 md: $(MD-FILES)
 
-# It is unclear how to use order-only prerequisites to ensure that $(MD)
+# It is unclear to me how to use order-only prerequisites to ensure that $(MD)
 # has been initialized. The following use of md-init is a workaround.
 
 .PHONY: md-init
 md-init:
 	@if [ ! -d $(MD) ] ; then \
-	    $(AGDA) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
+	    $(AGDA-V) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
 	fi
 
 $(MD-FILES): $(MD)/%/index.md: $(HTML-FILES) md-init
@@ -194,7 +227,7 @@ $(MD-FILES): $(MD)/%/index.md: $(HTML-FILES) md-init
 latex: $(LATEX-FILES)
 
 $(LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
-	@$(AGDA) --latex --latex-dir=$(LATEX) $<
+	@$(AGDA-V) --latex --latex-dir=$(LATEX) $<
 
 # Generate a LaTeX document to format the generated LaTeX files:
 
@@ -210,7 +243,7 @@ $(LATEX)/$(NAME).doc.tex:
 .PHONY: pdf
 pdf: $(PDF)/$(NAME).pdf
 
-$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).tex
+$(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
 	@cd $(LATEX); \
 	  $(PDFLATEX) $(NAME).doc.tex; \
 	  $(PDFLATEX) $(NAME).doc.tex; \
@@ -228,7 +261,6 @@ serve:
 .PHONY: deploy
 deploy:
 	@mkdocs gh-deploy --force
-
 
 # Remove all generated files
 
@@ -251,30 +283,40 @@ clean-pdf:
 
 define HELP
 
-make all
-  Generate web pages and pdfs for ROOT
-make check:
-  Check that loading the Agda source files for $(ROOT) does not report errors
-make html:
+make (or make help)
+  Display this list of make targets
+make website
+  Generate website for $(ROOT)
+make check
+  Check loading the Agda source files for $(ROOT)
+make serve
+  Serve the generated website locally
+make deploy
+  Deploy the website on GitHub Pages 
+make html
   Generate web page sources in ${HTML}
-make md:
+make md
   Generate web page sources in $(MD)
-make latex:
-  Generate latex sources in $(LATEX)
+make latex
+  Generate LaTeX inputs in $(LATEX)
 make doc:
-  Generate latex document source in $(LATEX)
+  Generate LaTeX document in $(LATEX)
 make pdf:
-  Generate pdf in $(PDF)
-make clean:
-  Remove generated files
-make clean-md:
-  Remove generated Markdown files
-make clean-html:
-  Remove generated HTML files
-make clean-latex:
-  Remove generated LaTeX files
-make clean-pdf:
-  Remove generated PDF file
+  Generate PDF in $(PDF)
+make clean
+  Remove all generated files
+make clean-html
+  Remove generated HTML
+make clean-md
+  Remove generated Markdown
+make clean-latex
+  Remove generated LaTeX
+make clean-pdf
+  Remove generated PDF
+make debug
+  Display the values of variables
+
+Note: all make commands load $(ROOT) to initialize HTML-FILES
 
 endef
 
@@ -284,21 +326,21 @@ DIR:          $(DIR)
 ROOT:         $(ROOT)
 NAME:         $(NAME)
 
-IMPORT-NAMES: $(IMPORT-NAMES)
+IMPORT-NAMES (1-5): $(wordlist 1, 5, $(IMPORT-NAMES))
 
-IMPORT-PATHS: $(IMPORT-PATHS)
+IMPORT-PATHS (1-5): $(wordlist 1, 5, $(IMPORT-PATHS))
 
-MODULE-NAMES: $(MODULE-NAMES)
+MODULE-NAMES (1-5): $(wordlist 1, 5, $(MODULE-NAMES))
 
-AGDA-NAMES:   $(AGDA-NAMES)
+AGDA-NAMES   (1-5): $(wordlist 1, 5, $(AGDA-NAMES))
 
-AGDA-PATHS:   $(AGDA-PATHS)
+AGDA-PATHS   (1-5): $(wordlist 1, 5, $(AGDA-PATHS))
 
-AGDA-FILES:   $(AGDA-FILES)
+AGDA-FILES   (1-5): $(wordlist 1, 5, $(AGDA-FILES))
 
-HTML-FILES:   $(HTML-FILES)
+HTML-FILES   (1-5): $(wordlist 1, 5, $(HTML-FILES))
 
-MD-FILES:     $(MD-FILES)
+MD-FILES     (1-5): $(wordlist 1, 5, $(MD-FILES))
 
 LATEXDOC:
 
@@ -309,16 +351,7 @@ LATEX-FILES:  $(LATEX-FILES)
 LATEX-INPUTS:
 $(LATEX-INPUTS)
 
-AGDA-CUSTOM:  $(AGDA-CUSTOM)
+AGDA-CUSTOM:   $(AGDA-CUSTOM)
+AGDA-UNICODE:  $(AGDA-UNICODE)
 
 endef
-
-.PHONY: help
-export HELP
-help:
-	@echo "$$HELP"
-
-.PHONY: debug
-export DEBUG
-debug:
-	@echo "$$DEBUG"

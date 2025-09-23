@@ -2,12 +2,13 @@ nav:
   - index.md
   - Test:
     - md/index/index.md
-    - md/Test/*
+    - Test3: md/Test/index.md
+    - md/Test/
   - Library:
-    - md/Library/index.md
+    - Library/index.md
     - md/*
   - HTML: html/index.html
-  # - PDF: pdf/index.pdf
+  - PDF: pdf/index.pdf
 
 preserve_directory_names: true
 
