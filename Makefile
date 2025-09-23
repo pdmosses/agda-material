@@ -49,7 +49,7 @@ AGDA-Q := agda --include-path=$(DIR) --trace-imports=0
 AGDA-V := agda --include-path=$(DIR)
 
 # Shell command for generating PDF from LaTeX:
-PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
+PDFLATEX := pdflatex -shell-escape -interaction=errorstopmode
 
 # Name of ROOT module:
 NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
@@ -245,8 +245,8 @@ pdf: $(PDF)/$(NAME).pdf
 
 $(PDF)/$(NAME).pdf: $(LATEX)/$(NAME).doc.tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
 	@cd $(LATEX); \
-	  $(PDFLATEX) $(NAME).doc.tex; \
-	  $(PDFLATEX) $(NAME).doc.tex; \
+	  $(PDFLATEX) $(NAME).doc.tex 1>/dev/null; \
+	  $(PDFLATEX) $(NAME).doc.tex 1>/dev/null; \
 	  rm -f $(NAME).doc.{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(NAME).doc.pdf $(PDF)/$(NAME).pdf
 
