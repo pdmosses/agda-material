@@ -139,24 +139,30 @@ debug:
 
 # Clean and regenerate the website:
 
+# Note: Generating a website for the Agda standard library may take about 2 mins
+
 .PHONY: website
 website:
-	@echo Generating a website for the Agda standard library may take about 2 mins
+	@echo
+	@echo Clean and generate the website for $(ROOT)
+	@echo
 	@echo Clean ...
 	@$(MAKE) clean
-	@echo Generate HTML ...
+	@echo Generate HTML in $(HTML) ...
 	@$(MAKE) html
-	@echo Generate Markdown ...
+	@echo Generate Markdown in $(MD) ...
 	@$(MAKE) md
-	@echo Generate LaTeX inputs ...
+	@echo Generate LaTeX inputs in $(LATEX) ...
 	@$(MAKE) latex
-	@echo Generate LaTeX document ...
+	@echo Generate LaTeX document in $(LATEX) ...
 	@$(MAKE) doc
-	@echo Generate PDF ...
+	@echo Generate PDF in $(PDF) ...
 	@$(MAKE) pdf
 	@echo ... finished
+	@echo
 	@echo To preview the generated webite:
 	@echo "    make serve"
+	@echo
 
 # Check Agda source files:
 
