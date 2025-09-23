@@ -50,15 +50,16 @@ AGDA-V := agda --include-path=$(DIR) --trace-imports=3
 
 # Shell command for generating PDF from LaTeX:
 PDFLATEX := pdflatex -shell-escape -interaction=errorstopmode
+BIBTEX := bibtex
 
 # Name of ROOT module:
 NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
 # e.g., Test.All
 
 # Target files:
-HTML-FILES := $(sort $(patsubst $(DIR)/%,$(HTML)/%,$(ROOT:lagda=html)) \
+HTML-FILES := $(sort $(HTML)/$(subst /,.,$(patsubst $(DIR)/%,%,$(ROOT:lagda=html))) \
 		$(subst $(TEMP)/,$(HTML)/,$(shell \
-		rm -rf $(TEMP)/*.html; \
+		rm -f $(TEMP)/*.html; \
 		$(AGDA-Q) --html --html-dir=$(TEMP) $(ROOT); \
 		ls $(TEMP)/*.html)))
 # e.g., docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html
@@ -89,7 +90,7 @@ AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
 # e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
 
 # Target files:
-MD-FILES := $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS)))
+MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
 # e.g., docs/md/Agda/Primitive.md docs/md/Test/All.md docs/md/Test/Sub/Base.md
 
 # Target files:
@@ -170,7 +171,7 @@ website:
 
 .PHONY: check
 check:
-	@$(AGDA-V) $(ROOT)  | grep $(shell pwd)
+	@$(AGDA-V) $(ROOT) | grep $(shell pwd)
 
 # Generate HTML web pages:
 
@@ -252,7 +253,7 @@ $(LATEX)/$(AGDA-DOC).tex:
 pdf: $(PDF)/$(NAME).pdf
 
 $(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
-	cd $(LATEX); \
+	@cd $(LATEX); \
 	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
 	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
 	  rm -f $(AGDA-DOC).{aux,log,out,ptb,toc}
