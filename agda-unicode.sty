@@ -1,6 +1,13 @@
-% Copied from https://github.com/armkeh/unicode-sty/blob/master/unicode.sty
+% agda-unicode.sty
+
+% A package for use when generating highlighted PDFs from Agda code.
+
+% Disclaimer: This is not an official Agda package.
+
+% CHANGELOG
 
 % @pdmosses 2025009-17:
+% Copied from https://github.com/armkeh/unicode-sty/blob/master/unicode.sty
 % Fixed:
 % \newunicodechar{𝒌}{\ensuremath{\mathbf{k}}} %\newunicodechar{𝒌}{\ensuremath{\mathbf{l}}}
 % \newunicodechar{𝒍}{\ensuremath{\mathbf{l}}} %\newunicodechar{𝒍}{\ensuremath{\mathbf{m}}}
@@ -12,9 +19,8 @@
 % \newunicodechar{‵}{\ensuremath{`}} % added
 % \newunicodechar{‶}{\ensuremath{``}} % added
 % Now no warnings when used with pdflatex.
+% \ProvidesPackage{unicode}
 % Renamed to agda-unicode.sty.
-
-\ProvidesPackage{agda-unicode}
 
 \usepackage{newunicodechar}
 
