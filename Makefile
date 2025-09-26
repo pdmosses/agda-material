@@ -56,6 +56,8 @@ BIBTEX := bibtex
 NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
 # e.g., Test.All
 
+NAME-HEAD := $(firstword $(subst .,$(SPACE),$(NAME)))
+
 # Target files:
 HTML-FILES := $(sort $(HTML)/$(subst /,.,$(patsubst $(DIR)/%,%,$(ROOT:lagda=html))) \
 		$(subst $(TEMP)/,$(HTML)/,$(shell \
@@ -201,16 +203,11 @@ html: $(AGDA-FILES)
 .PHONY: md
 md: $(MD-FILES)
 
-# It is unclear to me how to use order-only prerequisites to ensure that $(MD)
-# has been initialized. The following use of md-init is a workaround.
+$(MD)/$(NAME-HEAD):
+	@$(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
 
-.PHONY: md-init
-md-init:
-	@if [ ! -d $(MD) ] ; then \
-	    $(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT); \
-	fi
-
-$(MD-FILES): $(MD)/%/index.md: $(HTML-FILES) md-init
+# Use an order-only prerequisite to generate HTML files in $(MD):
+$(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)/$(NAME-HEAD)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
@@ -277,16 +274,16 @@ deploy:
 clean: clean-html clean-md clean-latex clean-pdf
 
 clean-html:
-	@rm -rf $(HTML)
+	@rm -rf $(HTML-FILES)
 
 clean-md:
-	@rm -rf $(MD)
+	@rm -rf $(MD)/$(NAME-HEAD)
 
 clean-latex:
-	@rm -rf $(LATEX)
+	@rm -rf $(LATEX-FILES)
 
 clean-pdf:
-	@rm -rf $(PDF)
+	@rm -f $(PDF)/$(NAME).pdf
 
 # Texts
 
@@ -334,6 +331,7 @@ define DEBUG
 DIR:          $(DIR)
 ROOT:         $(ROOT)
 NAME:         $(NAME)
+NAMe-HEAD:    $(NAME-HEAD)
 
 IMPORT-NAMES (1-9): $(wordlist 1, 9, $(IMPORT-NAMES))
 
