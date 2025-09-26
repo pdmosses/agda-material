@@ -49,15 +49,12 @@ AGDA-Q := agda --include-path=$(DIR) --trace-imports=0
 AGDA-V := agda --include-path=$(DIR) --trace-imports=3
 
 # Shell command for generating PDF from LaTeX:
-PDFLATEX := pdflatex -shell-escape -interaction=errorstopmode
+PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
 BIBTEX := bibtex
 
 # Name of ROOT module:
 NAME := $(subst /,.,$(patsubst $(DIR)/%,%,$(basename $(ROOT))))
 # Test.All
-
-NAME-HEAD := $(firstword $(subst .,$(SPACE),$(NAME)))
-# Test
 
 # Target files:
 HTML-FILES := $(sort \
@@ -206,11 +203,11 @@ html: $(AGDA-FILES)
 md: $(MD-FILES)
 
 # Create HTML files in $(MD):
-$(MD)/$(NAME-HEAD):
+$(MD):
 	@$(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
 
 # Use an order-only prerequisite:
-$(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)/$(NAME-HEAD)
+$(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
@@ -334,7 +331,6 @@ define DEBUG
 DIR:          $(DIR)
 ROOT:         $(ROOT)
 NAME:         $(NAME)
-NAMe-HEAD:    $(NAME-HEAD)
 
 IMPORT-NAMES (1-9): $(wordlist 1, 9, $(IMPORT-NAMES))
 
