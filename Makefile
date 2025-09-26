@@ -20,7 +20,7 @@
 # DEFAULTS
 
 DIR   := agda
-ROOT  := agda/index.lagda
+ROOT  := agda/Test/All.lagda
 HTML  := docs/html
 MD    := docs/md
 PDF   := docs/pdf
@@ -53,54 +53,56 @@ PDFLATEX := pdflatex -shell-escape -interaction=errorstopmode
 BIBTEX := bibtex
 
 # Name of ROOT module:
-NAME := $(subst /,.,$(subst $(DIR)/,,$(basename $(ROOT))))
-# e.g., Test.All
+NAME := $(subst /,.,$(patsubst $(DIR)/%,%,$(basename $(ROOT))))
+# Test.All
 
 NAME-HEAD := $(firstword $(subst .,$(SPACE),$(NAME)))
+# Test
 
 # Target files:
-HTML-FILES := $(sort $(HTML)/$(subst /,.,$(patsubst $(DIR)/%,%,$(ROOT:lagda=html))) \
-		$(subst $(TEMP)/,$(HTML)/,$(shell \
+HTML-FILES := $(sort \
+	$(HTML)/$(NAME).html \
+	$(patsubst $(TEMP)/%,$(HTML)/%,$(shell \
 		rm -f $(TEMP)/*.html; \
 		$(AGDA-Q) --html --html-dir=$(TEMP) $(ROOT); \
 		ls $(TEMP)/*.html)))
-# e.g., docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html
+# docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html docs/html/Test.html
 
 # Names of modules imported (perhaps indirectly) by ROOT:
 IMPORT-NAMES := $(subst $(HTML)/,,$(basename $(HTML-FILES)))
-# e.g., Agda.Primitive Test.All Test.Sub.Base
+# Agda.Primitive Test.All Test.Sub.Base Test
 
 # Paths of modules imported (perhaps indirectly) by ROOT:
 IMPORT-PATHS := $(subst .,/,$(IMPORT-NAMES))
-# e.g., Agda/Primitive Test/All Test/Sub/Base
+# Agda/Primitive Test/All Test/Sub/Base Test
 
 # Names of modules in DIR:
 MODULE-NAMES := $(sort $(subst /,.,$(subst $(DIR)/,,$(basename $(shell \
 		find $(DIR) -name '*.lagda')))))
-# e.g., Test Test.All Test.Sub.Base Test.Sub.Not-Imported
+# Test Test.All Test.Sub.Base Test.Sub.Not-Imported index
 
 # Names of imported modules in DIR:
 AGDA-NAMES := $(filter $(MODULE-NAMES),$(IMPORT-NAMES))
-# e.g., Test.All Test.Sub.Base
+# Test.All Test.Sub.Base Test
 
 # Paths of imported modules in DIR:
 AGDA-PATHS := $(subst .,/,$(AGDA-NAMES))
-# e.g., Test/All Test/Sub/Base
+# Test/All Test/Sub/Base Test
 
 # Agda source files:
 AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
-# e.g., agda/Test/All.lagda agda/Test/Sub/Base.lagda
+# agda/Test/All.lagda agda/Test/Sub/Base.lagda agda/Test.lagda
 
 # Target files:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
-# e.g., docs/md/Agda/Primitive.md docs/md/Test/All.md docs/md/Test/Sub/Base.md
+# docs/md/Agda/Primitive/index.md docs/md/Test/All/index.md docs/md/Test/Sub/Base/index.md docs/md/Test/index.md
 
 # Target files:
 LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
-# e.g., latex/Test/All.tex latex/Test/Sub/Base.tex
+# latex/Test/All.tex latex/Test/Sub/Base.tex latex/Test.tex
 
 LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
-# e.g., \n\pagebreak[3]\n\section{index}\input{index}\n\pagebreak[3]\n\section{Test/All}\input{Test/All}...
+# \pagebreak[3]\section{Test.All}\input{Test/All}\n\pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base}\n\pagebreak[3]\section{Test}\input{Test}
 
 AGDA-DOC := $(NAME).doc
 AGDA-STYLE := conor
@@ -152,7 +154,7 @@ website:
 	@echo Clean and generate the website for $(ROOT)
 	@echo
 	@echo Clean ...
-	@$(MAKE) clean
+	@$(MAKE) clean-all
 	@echo Generate HTML in $(HTML) ...
 	@$(MAKE) html
 	@echo Generate Markdown in $(MD) ...
@@ -203,10 +205,11 @@ html: $(AGDA-FILES)
 .PHONY: md
 md: $(MD-FILES)
 
+# Create HTML files in $(MD):
 $(MD)/$(NAME-HEAD):
 	@$(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
 
-# Use an order-only prerequisite to generate HTML files in $(MD):
+# Use an order-only prerequisite:
 $(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)/$(NAME-HEAD)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
@@ -270,20 +273,20 @@ deploy:
 
 # Remove all generated files
 
-.PHONY: clean clean-html clean-md clean-latex clean-pdf
-clean: clean-html clean-md clean-latex clean-pdf
+.PHONY: clean-all clean-html clean-md clean-latex clean-pdf
+clean-all: clean-html clean-md clean-latex clean-pdf
 
 clean-html:
-	@rm -rf $(HTML-FILES)
+	@rm -rf $(HTML)
 
 clean-md:
-	@rm -rf $(MD)/$(NAME-HEAD)
+	@rm -rf $(MD)
 
 clean-latex:
-	@rm -rf $(LATEX-FILES)
+	@rm -rf $(LATEX)
 
 clean-pdf:
-	@rm -f $(PDF)/$(NAME).pdf
+	@rm -rf $(PDF)
 
 # Texts
 
