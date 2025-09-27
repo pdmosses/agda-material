@@ -52,8 +52,10 @@ AGDA-V := agda --include-path=$(DIR) --trace-imports=3
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
 BIBTEX := bibtex
 
-# Name of ROOT module:
-NAME := $(subst /,.,$(patsubst $(DIR)/%,%,$(basename $(ROOT))))
+# Path and name of ROOT module:
+NAME-PATH := $(patsubst $(DIR)/%,%,$(basename $(ROOT)))
+# Test/All
+NAME := $(subst /,.,$(NAME-PATH))
 # Test.All
 
 # Target files:
@@ -202,12 +204,13 @@ html: $(AGDA-FILES)
 .PHONY: md
 md: $(MD-FILES)
 
-# Create HTML files in $(MD):
-$(MD):
+# Create HTML files and ROOT directory in $(MD):
+$(MD)/$(NAME-PATH):
 	@$(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
+	@mkdir -p $(MD)/$(NAME-PATH)
 
 # Use an order-only prerequisite:
-$(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)
+$(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)/$(NAME-PATH)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
@@ -331,6 +334,7 @@ define DEBUG
 DIR:          $(DIR)
 ROOT:         $(ROOT)
 NAME:         $(NAME)
+NAME-PATH:    $(NAME-PATH)
 
 IMPORT-NAMES (1-9): $(wordlist 1, 9, $(IMPORT-NAMES))
 
