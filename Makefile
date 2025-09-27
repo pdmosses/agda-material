@@ -27,6 +27,12 @@ PDF   := docs/pdf
 LATEX := latex
 TEMP  := /tmp/html
 
+# DIR needs to be a prefix of ROOT; the other parameters are independent.
+
+# To generate a website from more than one ROOT value:
+# - edit the rule for `website` to call `$(MAKE) part-website ROOT=...`
+# - edit the rule for `check` to call `$(MAKE) part-check ROOT=...`
+
 ##############################################################################
 # VARIABLES
 
@@ -150,30 +156,52 @@ debug:
 .PHONY: website
 website:
 	@echo
-	@echo Clean and generate the website for $(ROOT)
-	@echo
-	@echo Clean ...
+	@echo "Clean and generate the website ..."
 	@$(MAKE) clean-all
-	@echo Generate HTML in $(HTML) ...
-	@$(MAKE) html
-	@echo Generate Markdown in $(MD) ...
-	@$(MAKE) md
-	@echo Generate LaTeX inputs in $(LATEX) ...
-	@$(MAKE) latex
-	@echo Generate LaTeX document in $(LATEX) ...
-	@$(MAKE) doc
-	@echo Generate PDF in $(PDF) ...
-	@$(MAKE) pdf
-	@echo ... finished
 	@echo
-	@echo To preview the generated webite:
+	@echo "Generate section for $(ROOT) ..."
+	@$(MAKE) part-website
+	@echo
+# 	@echo "Generate section for ??? ..."
+# 	@$(MAKE) part-website ROOT=???
+# 	@echo
+	@echo "... finished"
+	@echo
+	@echo "To preview the generated webite:"
 	@echo "    make serve"
 	@echo
+
+.PHONY: part-website
+part-website:
+	@echo "HTML pages     -> $(HTML) ..."
+	@$(MAKE) html
+	@echo "Markdown pages -> $(MD) ..."
+	@$(MAKE) md
+	@echo "LaTeX inputs   -> $(LATEX) ..."
+	@$(MAKE) latex
+	@echo "LaTeX document -> $(LATEX) ..."
+	@$(MAKE) doc
+	@echo "PDF document   -> $(PDF) ..."
+	@$(MAKE) pdf
 
 # Check Agda source files:
 
 .PHONY: check
 check:
+	@echo
+	@echo "Check the Agda code ..."
+	@echo
+	@echo "Loading $(ROOT) ..."
+	@$(MAKE) part-check
+	@echo
+# 	@echo "Loading ??? ..."
+# 	@$(MAKE) part-check ROOT=???
+# 	@echo
+	@echo "... finished"
+	@echo
+
+.PHONY: part-check
+part-check:
 	@$(AGDA-V) $(ROOT) | grep $(shell pwd)
 
 # Generate HTML web pages:
@@ -302,32 +330,35 @@ make serve
   Serve the generated website locally
 make deploy
   Deploy the website on GitHub Pages 
-make html
-  Generate web page sources in ${HTML}
-make md
-  Generate web page sources in $(MD)
-make latex
-  Generate LaTeX inputs in $(LATEX)
-make doc:
-  Generate LaTeX document in $(LATEX)
-make pdf:
-  Generate PDF in $(PDF)
-make clean
-  Remove all generated files
-make clean-html
-  Remove generated HTML
-make clean-md
-  Remove generated Markdown
-make clean-latex
-  Remove generated LaTeX
-make clean-pdf
-  Remove generated PDF
-make debug
-  Display the values of variables
-
-Note: all make commands load $(ROOT) to initialize HTML-FILES
 
 endef
+
+# The following auxiliary targets should not be needed
+
+# make html
+#   Generate web page sources in ${HTML}
+# make md
+#   Generate web page sources in $(MD)
+# make latex
+#   Generate LaTeX inputs in $(LATEX)
+# make doc
+#   Generate LaTeX document in $(LATEX)
+# make pdf
+#   Generate PDF in $(PDF)
+# make clean-all
+#   Remove all generated files
+# make clean-html
+#   Remove generated HTML
+# make clean-md
+#   Remove generated Markdown
+# make clean-latex
+#   Remove generated LaTeX
+# make clean-pdf
+#   Remove generated PDF
+# make debug
+#   Display the values of variables
+
+# Note: all make commands load $(ROOT) to initialize HTML-FILES
 
 define DEBUG
 
