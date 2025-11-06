@@ -1,20 +1,49 @@
-\ProvidesPackage{agda-custom}
+% agda-custom.sty
 
-% This package should be used after the agda package.
+% A package for use when generating highlighted PDFs from Agda code.
 
-% It is intended for overriding definitions in the agda package
-% and for loading further packages, defining Unicode characters, etc.
+% Disclaimer: This is not an official Agda package.
 
-% The following definitions are required for formatting agda/Test.lagda
+% This package should be used after the agda and agda-unicode packages.
+% It is intended for overriding definitions, loading further packages, etc.
 
-% To control the typesetting of individual symbols:
+% N.B. The package agda-unicode.sty defines 100s of Unicode characters. 
 
+% Example (not to be used together with agda-unicode.sty):
+%
+% \newunicodechar{ℕ}{\ensuremath{\mathbb N}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Typesetting of individual symbols:
 \renewcommand{\AgdaSymbol}[1]
   {\AgdaNoSpaceMath{\textcolor{AgdaSymbol}{\AgdaFontStyle{\AgdaFormat{#1}{#1}}}}}
 
-% Typeset -> as \to, and \ as \lambda:
-
+% Typeset '->' as \to, and '\' as \lambda:
 \DeclareRobustCommand{\AgdaFormat}[2]{%
   \ifthenelse{\equal{#1}{->}}{\ensuremath\to}{%
      \ifthenelse{\equal{#1}{\textbackslash{}}}{\ensuremath\lambda}{%
       #2}}}
+
+% Add thin spaces around '_':
+\renewcommand{\AgdaUnderscore}{\,\_\,}
+% N.B. This affects the alignment of infix and postfix operator declarations.
+% Ideally, spaces would be inserted only between '_' and non-space characters.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font styles
+
+% agda.sty:
+% \newcommand{\AgdaFontStyle}[1]{\textsf{#1}}
+% \ifthenelse{\equal{\AgdaColourScheme}{bw}}{
+%     \newcommand{\AgdaKeywordFontStyle}[1]{\underline{#1}}
+% }{
+%     \newcommand{\AgdaKeywordFontStyle}[1]{\textsf{#1}}
+% }
+% \newcommand{\AgdaStringFontStyle}[1]{\texttt{#1}}
+% \newcommand{\AgdaCommentFontStyle}[1]{\texttt{#1}}
+% \newcommand{\AgdaBoundFontStyle}[1]{\textit{#1}}
+
+% The author's personal preferences:
+\renewcommand{\AgdaStringFontStyle}[1]{\textrm{#1}}
+\renewcommand{\AgdaCommentFontStyle}[1]{\texttt{\small#1}}
+\renewcommand{\AgdaBoundFontStyle}[1]{\textsf{#1}}

@@ -55,14 +55,19 @@ markdown_extensions:
   - footnotes
   - md_in_html
   - meta
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.mark
   - pymdownx.superfences
   - pymdownx.tasklist:
       custom_checkbox: true
   - tables
+  - pymdownx.tilde
 
 plugins:
 - search
