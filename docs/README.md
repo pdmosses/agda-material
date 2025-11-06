@@ -103,7 +103,8 @@ Locally:
 
     - [ ] `Makefile`
     - [ ] `mkdocs.yml`
-    - [ ] `agda-custom.tex`
+    - [ ] `agda-custom.sty`
+    - [ ] `agda-unicode.sty`
     - [ ] `agda/*`
     - [ ] `docs/*`
     - [ ] `.gitignore`
