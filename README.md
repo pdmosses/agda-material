@@ -25,6 +25,7 @@ The repository contains the following files:
 - `UNLICENSE`: release into the public domain
 
 The repository does not contain any generated files.
+
 By default, Agda-Material creates generated files in the following directories:
 
 - `docs/html`: HTML files
@@ -34,21 +35,25 @@ By default, Agda-Material creates generated files in the following directories:
 
 The default directories for Agda source code and generated files can be changed
 by editing the `Makefile`.
+
 The location of the directory `docs` can be configured by setting `docs_dir` in
 `mkdocs.yml`.
 
 ## Software dependencies
 
-- [Agda] (2.7.0)
+Agda-Material has been tested with the software versions listed below.
+It should produce similar results with other recent versions.
+
+- [Agda] (2.8.0)
 - [GNU Make] (3.81)
 - [sd] (1.0.0)
 
 ### Website generation
 
-- [Python 3] (3.11.3)
-- [Pip] (25.2)
+- [Python 3] (3.14.0)
+- [Pip] (25.3)
 - [MkDocs] (1.6.1)
-- [Material for MkDocs] (9.6.19)
+- [Material for MkDocs] (9.6.23)
 - [Awesome-nav] (3.2.0)
 
 ### PDF generation
@@ -108,7 +113,8 @@ Locally:
 
     ```shell
     cd agda-material
-    make
+    make check
+    make website
     ```
 
 2.  Then in a web browser:
@@ -119,7 +125,7 @@ Locally:
 3.  In the terminal:
 
     ```shell
-    make clean
+    make clean-all
     ```
 
 4.  Check that the following generated files have all been removed:
@@ -131,9 +137,9 @@ Locally:
 
 ## Using Agda-Material
 
-### Update Markdown files and settings
+### Update the MkDocs settings
 
-Update the following fields in `mkdocs.yml`:
+Update the following fields in `mkdocs.yml` to refer to your GitHub repository:
 
 - `site_name`
 - `site_url`
@@ -142,20 +148,32 @@ Update the following fields in `mkdocs.yml`:
 
 ### Replace the Agda source files
 
+- Remove the `agda` directory.
+- Add your own Agda source files.
+- Edit the default values for `DIR` and `ROOT` in `Makefile`.
+
 ```sh
 make check 
 ```
 
-Any type-checking errors are shown.
+Agda loads all the source files imported by `ROOT`, reporting any errors.
 
 ### Generate highlighted listings of all the Agda code
 
 ```sh
-make all
+make website
 ```
 
 The log of generating any missing or outdated PDFs of the highlighted listings
 is shown.
+
+### Generate highlighted listings of all the Agda code
+
+```sh
+make deploy
+```
+
+The generated website is deployed on GitHub Pages.
 
 ### Further commands
 
