@@ -1,31 +1,45 @@
 # Makefile for generating websites and pdfs from Agda sources
 
-# Command to update all files generated from the default test modules:
+# Update all generated files:
 #
 # make website
+#
+# Browse locally:
+#
+# make serve
+# make verse
+#
+# Deploy on GitHub Pages:
+#
+# make deploy
+# make remove
+# make initial VERSION=...
+# make latest  VERSION=...
 
 ##############################################################################
 # PARAMETERS
 #
-# Name   Purpose
-# ----------------------------
-# DIR    import include-path
-# ROOT   root module file
-# HTML   generated HTML files
-# MD     generated MD files
-# PDF    generated PDF files
-# LATEX  generated LATEX files
-# TEMP   temporary files
+# Name    Purpose
+# -----------------------------
+# DIR     import include-path
+# ROOT    root module file
+# HTML    generated HTML files
+# MD      generated MD files
+# PDF     generated PDF files
+# LATEX   generated LATEX files
+# TEMP    temporary files
+# VERSION for versioned websites
 
 # DEFAULTS
 
-DIR   := agda
-ROOT  := agda/Test/All.lagda
-HTML  := docs/html
-MD    := docs/md
-PDF   := docs/pdf
-LATEX := latex
-TEMP  := /tmp/html
+DIR     := agda
+ROOT    := agda/Test/All.lagda
+HTML    := docs/html
+MD      := docs/md
+PDF     := docs/pdf
+LATEX   := latex
+TEMP    := /tmp/html
+VERSION := v0.1
 
 # DIR needs to be a prefix of ROOT; the other parameters are independent.
 
@@ -149,9 +163,9 @@ export DEBUG
 debug:
 	@echo "$$DEBUG"
 
-# Clean and regenerate the website:
+# `make website` cleans and regenerates the website:
 
-# Note: Generating a website for the Agda standard library may take about 2 mins
+# Note: Generating a website for the Agda standard library may take about 2 mins.
 
 .PHONY: website
 website:
@@ -184,7 +198,7 @@ part-website:
 	@echo "PDF document   -> $(PDF) ..."
 	@$(MAKE) pdf
 
-# Check Agda source files:
+# `make check` loads Agda source files, reporting the local imported files:
 
 .PHONY: check
 check:
@@ -275,7 +289,7 @@ export LATEXDOC
 $(LATEX)/$(AGDA-DOC).tex:
 	@echo "$$LATEXDOC" > $@
 
-# Generate a PDF using $(PDFLATEX)
+# Generate a PDF using $(PDFLATEX):
 
 .PHONY: pdf
 pdf: $(PDF)/$(NAME).pdf
@@ -287,17 +301,43 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	  rm -f $(AGDA-DOC).{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(AGDA-DOC).pdf $(PDF)/$(NAME).pdf
 
-# Serve the generated website for a local preview
+# `make serve` provides a local preview of an unversioned website
+# or just the current version of a versioned website:
 
 .PHONY: serve
 serve:
 	@mkdocs serve
 
-# Update and build the website, then deploy it on GitHub Pages from the gh-pages branch
+# `make verse` provides a local preview of all versions of a website:
+
+.PHONY: verse
+verse:
+	@mike serve
+
+# `make deploy` publishes an unversioned website on GitHub Pages.
 
 .PHONY: deploy
 deploy:
-	@mkdocs gh-deploy --force
+	@mkdocs gh-deploy --force --ignore-version
+
+# `make remove` removes a published website and any versions of it.
+
+.PHONY: remove
+remove:
+	@mike delete --push --all --allow-empty
+
+# `make initial VERSION=...` publishes the initial version of the generated website:
+
+.PHONY: initial
+initial: remove
+	@mike deploy --push $(VERSION) latest
+	@mike set-default --push latest
+
+# `make latest VERSION=...` publishes or updates the latest version of the generated website:
+
+.PHONY: latest
+latest:
+	@mike deploy --push $(VERSION) latest --update-aliases
 
 # Remove all generated files
 

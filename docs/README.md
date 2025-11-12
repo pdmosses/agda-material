@@ -52,10 +52,11 @@ It should produce similar results with other recent versions.
 ### Website generation
 
 - [Python 3] (3.14.0)
-- [Pip] (25.3)
+- [pipx] (1.8.0)
 - [MkDocs] (1.6.1)
 - [Material for MkDocs] (9.6.23)
 - [Awesome-nav] (3.2.0)
+- [mike] (2.0.0)
 
 ### PDF generation
 
@@ -179,6 +180,12 @@ make website
 The log of generating any missing or outdated PDFs of the highlighted listings
 is shown.
 
+### Browse the website locally
+
+```sh
+make serve
+```
+
 ### Publish the website on GitHub Pages
 
 ```sh
@@ -187,7 +194,37 @@ make deploy
 
 The generated website is deployed on GitHub Pages.
 
-### Further commands
+## Versioning
+
+### Deploy the initial version
+
+```sh
+make initial VERSION=...
+```
+
+The generated website is deployed as the initial version (e.g., `v0.1`).
+
+### Deploy or update the latest version
+
+```sh
+make latest VERSION=...
+```
+
+An updated version of the generated website is deployed as the latest version (e.g., `v0.2`).
+
+If the specified version has previously been deployed, it is redeployed with the current content.
+
+The browser can switch between versions using a version selector menu.
+
+### Browse the deployed versions locally
+
+```sh
+make verse
+```
+
+Any local changes to the latest version are displayed.
+
+## Further commands
 
 ```sh
 make help
@@ -219,9 +256,10 @@ Peter Mosses
 [GNU Make]: https://www.gnu.org/software/make/manual/make.html
 [sd]: https://github.com/chmln/sd/
 [Python 3]: https://www.python.org/downloads/
-[Pip]: https://pypi.org/project/pip/
+[pipx]: https://pipx.pypa.io/stable/
 [MkDocs]: https://www.mkdocs.org/getting-started/
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
 [Awesome-nav]: https://lukasgeiter.github.io/mkdocs-awesome-nav/
+[mike]: https://github.com/jimporter/mike/
 [GitHub Pages]: https://pages.github.com
 [TeXLive]: https://www.tug.org/texlive/

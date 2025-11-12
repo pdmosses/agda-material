@@ -35,6 +35,10 @@ theme:
     - search.suggest
     - search.highlight
 
+extra:
+  version:
+    provider: mike
+
 extra_css:
   - stylesheets/Agda-material.css
   - stylesheets/Agda-md.css
