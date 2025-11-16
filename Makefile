@@ -1,56 +1,85 @@
 # Makefile for generating websites and pdfs from Agda sources
 
-# Update all generated files:
-#
-# make website
-#
-# Browse locally:
-#
+# Peter Mosses (@pdmosses)
+# November 2025
+
+##############################################################################
+# MAIN TARGETS
+
+# SHOW EXPLANATIONS OF THE MAIN TARGETS:
+# make help
+
+# CHECK THE AGDA CODE:
+# make check
+
+# GENERATE, BROWSE AND DEPLOY A WEBSITE:
+# make web
 # make serve
-# make verse
-#
-# Deploy on GitHub Pages:
-#
 # make deploy
-# make remove
+
+# DEPLOY A VERSION OF A GENERATED WEBSITE:
 # make initial VERSION=...
-# make latest  VERSION=...
+# make default VERSION=...
+# make extra VERSION=...
+# make delete  VERSION=...
+# make serve-all
+
+# GENERATE A PDF LISTING THE AGDA FILES:
+# make pdf
+
+# UPDATE WEBSITE AND PDF:
+# make all
+
+# REMOVE ALL GENERATED FILES:
+# make clean-all
+
+# SHOW VARIABLE VALUES:
+# make debug
 
 ##############################################################################
 # PARAMETERS
 #
 # Name    Purpose
 # -----------------------------
-# DIR     import include-path
-# ROOT    root module file
-# HTML    generated HTML files
-# MD      generated MD files
-# PDF     generated PDF files
-# LATEX   generated LATEX files
-# TEMP    temporary files
-# VERSION for versioned websites
+# DIR     Agda import include-path
+# ROOT    Agda root module source file
+#
+# VERSION for versioned website deployment
+#
+# HTML    generated directory for HTML files
+# MD      generated directory for Markdown files
+# PDF     generated directory for PDF files
+# LATEX   generated directory for LaTeX files
+# TEMP    generated directory for temporary files
 
-# DEFAULTS
+# PARAMETER DEFAULTS
 
 DIR     := agda
 ROOT    := agda/Test/All.lagda
+
+# DIR needs to be a prefix of ROOT; the other parameters are independent.
+# Generation of multi-ROOT websites requires multiple calls of make.
+
+VERSION := false
+
+# It is recommended to omit patch numbers in semantic versioning.
+# Version identifiers that "look like" versions (e.g. 1.2.3, 1.0b1, v1.0)
+# are treated as ordinary versions, whereas other identifiers, like devel,
+# are treated as development versions, and placed above ordinary versions.
+# (The value `false` is overridden when deploying or deleting a version.)
+
 HTML    := docs/html
 MD      := docs/md
 PDF     := docs/pdf
 LATEX   := latex
 TEMP    := /tmp/html
-VERSION := v0.1
 
-# DIR needs to be a prefix of ROOT; the other parameters are independent.
-
-# To generate a website from more than one ROOT value:
-# - edit the rule for `website` to call `$(MAKE) part-website ROOT=...`
-# - edit the rule for `check` to call `$(MAKE) part-check ROOT=...`
+# All files in the docs directory are rendered in the generated website.
+# Top-level navigation links are specified in docs/.nav.yml; the lower
+# navigation levels reflect the directory hierarchy of the source files.
 
 ##############################################################################
 # VARIABLES
-
-SHELL=/bin/sh
 
 # Characters:
 
@@ -64,27 +93,73 @@ define NEWLINE :=
 
 endef
 
-# Shell commands for calling Agda:
+# Shell commands:
+
+SHELL=/bin/sh
+
+PROJECT := $(shell pwd)
+
 AGDA-Q := agda --include-path=$(DIR) --trace-imports=0
 AGDA-V := agda --include-path=$(DIR) --trace-imports=3
 
-# Shell command for generating PDF from LaTeX:
-PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
-BIBTEX := bibtex
+##############################################################################
+# HELPFUL TARGETS
 
-# Path and name of ROOT module:
+# `make` without a target is equivalent to `make help`. It lists the main
+# targets and their purposes:
+
+.PHONY: help
+export HELP
+help:
+	@echo "$$HELP"
+
+# `make debug` shows the values of most of the variables assigned in this file:
+
+.PHONY: debug
+export DEBUG
+debug:
+	@echo "$$DEBUG"
+
+# The illustrative values below are from generating the Agda-Material website.
+
+##############################################################################
+# CHECK THE AGDA CODE
+
+# `make check` loads ROOT, reporting all imported files located in DIR:
+
+.PHONY: check
+check:
+	@echo
+	@echo "Checking $(ROOT) ..."
+	@echo
+	@$(AGDA-V) $(ROOT) | grep $(PROJECT)/$(DIR)/ | sed -e 's#$(PROJECT)/##'
+	@$(AGDA-Q) $(ROOT) 2>&1 | sed -n -e '1,/error:/p' | sed '1d' | sed -e 's#$(PROJECT)/##'
+	@echo
+	@echo "... finished"
+	
+##############################################################################
+# GENERATE WEBPAGES
+
+# ROOT module path relative to DIR:
 NAME-PATH := $(patsubst $(DIR)/%,%,$(basename $(ROOT)))
 # Test/All
+
+# ROOT module name:
 NAME := $(subst /,.,$(NAME-PATH))
 # Test.All
 
-# Target files:
+# Target files for HTML generation:
 HTML-FILES := $(sort \
 	$(HTML)/$(NAME).html \
 	$(patsubst $(TEMP)/%,$(HTML)/%,$(shell \
-		rm -f $(TEMP)/*.html; \
-		$(AGDA-Q) --html --html-dir=$(TEMP) $(ROOT); \
-		ls $(TEMP)/*.html)))
+		rm -rf $(TEMP); \
+		$(AGDA-Q) --html --html-dir=$(TEMP) $(ROOT) > /dev/null; \
+		if [ -d $(TEMP) ]; then \
+		  ls $(TEMP)/*.html; \
+		else \
+		  mkdir $(TEMP); \
+		  echo $(TEMP)/ERROR.html; \
+		fi)))
 # docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html docs/html/Test.html
 
 # Names of modules imported (perhaps indirectly) by ROOT:
@@ -95,152 +170,69 @@ IMPORT-NAMES := $(subst $(HTML)/,,$(basename $(HTML-FILES)))
 IMPORT-PATHS := $(subst .,/,$(IMPORT-NAMES))
 # Agda/Primitive Test/All Test/Sub/Base Test
 
-# Names of modules in DIR:
+# Names of all modules located in DIR:
 MODULE-NAMES := $(sort $(subst /,.,$(subst $(DIR)/,,$(basename $(shell \
 		find $(DIR) -name '*.lagda')))))
 # Test Test.All Test.Sub.Base Test.Sub.Not-Imported index
 
-# Names of imported modules in DIR:
+# Names of imported modules located in DIR:
 AGDA-NAMES := $(filter $(MODULE-NAMES),$(IMPORT-NAMES))
 # Test.All Test.Sub.Base Test
 
-# Paths of imported modules in DIR:
+# Paths to imported modules located in DIR:
 AGDA-PATHS := $(subst .,/,$(AGDA-NAMES))
 # Test/All Test/Sub/Base Test
 
-# Agda source files:
+# Imported Agda source files located in DIR:
 AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
 # agda/Test/All.lagda agda/Test/Sub/Base.lagda agda/Test.lagda
 
-# Target files:
+# Target files for Markdown generation:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
 # docs/md/Agda/Primitive/index.md docs/md/Test/All/index.md docs/md/Test/Sub/Base/index.md docs/md/Test/index.md
 
-# Target files:
-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
-# latex/Test/All.tex latex/Test/Sub/Base.tex latex/Test.tex
+# `make web` generates the HTML and Markdown sources for all web pages.
+# Note: Generating a website for the Agda standard library takes a few minutes.
 
-LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
-# \pagebreak[3]\section{Test.All}\input{Test/All}\n\pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base}\n\pagebreak[3]\section{Test}\input{Test}
-
-AGDA-DOC := $(NAME).doc
-AGDA-STYLE := conor
-AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
-AGDA-UNICODE := $(patsubst %/,../,$(LATEX)/)agda-unicode
-
-define LATEXDOC
-\\documentclass[a4paper]{article}
-\\usepackage{parskip}
-\\usepackage[T1]{fontenc}
-\\usepackage{microtype}
-\\DisableLigatures[-]{encoding = T1, family = tt* }
-\\usepackage{hyperref}
-
-\\usepackage[$(AGDA-STYLE)]{agda}
-\\usepackage{$(AGDA-UNICODE)}
-\\usepackage{$(AGDA-CUSTOM)}
-
-\\title{$(NAME)}
-\\begin{document}
-\\maketitle
-\\tableofcontents
-\\newpage
-$(LATEX-INPUTS)
-
-\\end{document}
-endef
-
-##############################################################################
-# RULES
-
-.PHONY: help
-export HELP
-help:
-	@echo "$$HELP"
-
-.PHONY: debug
-export DEBUG
-debug:
-	@echo "$$DEBUG"
-
-# `make website` cleans and regenerates the website:
-
-# Note: Generating a website for the Agda standard library may take about 2 mins.
-
-.PHONY: website
-website:
+.PHONY: web
+web:
 	@echo
-	@echo "Clean and generate the website ..."
-	@$(MAKE) clean-all
+	@echo "Generating HTML and Markdown for $(ROOT) ..."
 	@echo
-	@echo "Generate section for $(ROOT) ..."
-	@$(MAKE) part-website
-	@echo
-# 	@echo "Generate section for ??? ..."
-# 	@$(MAKE) part-website ROOT=???
-# 	@echo
-	@echo "... finished"
-	@echo
-	@echo "To preview the generated webite:"
-	@echo "    make serve"
-	@echo
-
-.PHONY: part-website
-part-website:
-	@echo "HTML pages     -> $(HTML) ..."
+	@echo "HTML     -> $(HTML) ..."
 	@$(MAKE) html
-	@echo "Markdown pages -> $(MD) ..."
+	@echo "Markdown -> $(MD) ..."
 	@$(MAKE) md
-	@echo "LaTeX inputs   -> $(LATEX) ..."
-	@$(MAKE) latex
-	@echo "LaTeX document -> $(LATEX) ..."
-	@$(MAKE) doc
-	@echo "PDF document   -> $(PDF) ..."
-	@$(MAKE) pdf
-
-# `make check` loads Agda source files, reporting the local imported files:
-
-.PHONY: check
-check:
 	@echo
-	@echo "Check the Agda code ..."
-	@echo
-	@echo "Loading $(ROOT) ..."
-	@$(MAKE) part-check
-	@echo
-# 	@echo "Loading ??? ..."
-# 	@$(MAKE) part-check ROOT=???
-# 	@echo
 	@echo "... finished"
-	@echo
-
-.PHONY: part-check
-part-check:
-	@$(AGDA-V) $(ROOT) | grep $(shell pwd)
 
 # Generate HTML web pages:
 
+# If agda could print a list of *all* the source files imported by ROOT,
+# the html target could be skipped when *none* of them have changed.
+# Restricting html generation to just the changed files seems more difficult.
+
 .PHONY: html
-html: $(AGDA-FILES)
+html:
 	@$(AGDA-Q) --html --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages:
 
-# `agda --html --html-highlight=code ROOT.lagda` produces highlighted HTML files
-# from plain `agda` and literate `lagda` source files. However, the extension is
-# `tex` for HTML produced from `lagda` files. It is `html` for `agda` files, but
-# needs to be wrapped in `<pre class="Agda">...</pre>` tags.
+# `agda --html --html-highlight=code ROOT.lagda` produces highlighted HTML
+# from plain `agda` and literate `lagda` source files. The file extension is
+# `tex` for HTML produced from `lagda` files; it is `html` for `agda` files,
+# but the files needs to be wrapped in `<pre class="Agda">...</pre>` tags.
 
-# The links in the files assume they are all in the same directory, and that the
-# files have extension `.html`. Adjusting them to hierarchical links with
-# directory URLs involves replacing the dots in the basenames of the files by
-# slashes, prefixing the href by the relative path to the top of the hierarchy,
-# and appending a slash to the file path. All URLs that start with A-Z or a-z
-# are assumed to be links to modules, and adjusted (also in the prose of
-# literate Agda source files).
+# The links in the HTML files assume they are all in the same directory, and
+# that all files have extension `.html`. Adjusting them to hierarchical links
+# with directory URLs involves replacing the dots in the basenames of the files
+# by slashes, prefixing the href by the path to the top of the hierarchy, and
+# appending a slash to the file path. All URLs that start with A-Z or a-z are
+# assumed to be links to modules, and adjusted in the same way (also in the
+# prose parts of the HTML produced from `lagda` files).
 
 # The links generated by Agda always start with the file name. This could be
-# omitted for local links where the id is in the same file. Similarly, the
+# omitted for local links where the target is in the same file. Similarly, the
 # links to modules in the same directory could be optimized.
 
 .PHONY: md
@@ -268,31 +260,199 @@ $(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)/$(NAME-PATH)
 	@while grep -q 'href="[A-Z][^".]*\.' $@; do \
 	    sd '(href="[A-Za-z][^".]*)\.' '$$1/' $@; \
 	done
-# Prefix paths by relative path to top level:
+# Prefix paths by the relative path to the top level:
 	@sd 'href="([A-Za-z])' 'href="$(subst $(SPACE),$(EMPTY),$(foreach d,$(subst /, ,$*),../))$$1' $@
 #	@sd '(href="[^"]*)index/' '$$1.' $@
+	
+##############################################################################
+# BROWSE AND DEPLOY THE GENERATED WEBSITE
 
-# Generate LaTeX source files for use in latex documents:
+# `make serve` provides a local preview of an unversioned website:
 
-.PHONY: latex
-latex: $(LATEX-FILES)
+.PHONY: serve
+serve:
+	@mkdocs serve
+
+# The following warning may appear until a PDF has been generated:
+#
+# WARNING -  A reference to 'pdf/...' is included in the 'nav' configuration,
+#            which is not found in the documentation files.
+#
+# It can be suppressed by removing the cited lin in `docs/.nav.yml`.
+
+# `make deploy` publishes an unversioned website on GitHub Pages:
+
+.PHONY: deploy
+deploy:
+	@mkdocs gh-deploy --force --ignore-version
+
+# (The `ignore-version` option is required due to an potential conflict
+# between mkdocs and mike version numbers.)
+
+##############################################################################
+# DEPLOY A WEBSITE VERSION
+
+# N.B. To deploy website versions, uncomment the following lines in mkdocs.yml:
+# extra:
+#   version:
+#     provider: mike
+
+# Agda-Material supports a simplified form of version deployment:
+# - make initial VERSION=...
+# - make default VERSION=...
+# - make extra VERSION=...
+# - make delete  VERSION=...
+# - make serve-all
+# For additional generality, use the `mike` commands documented at
+# https://github.com/jimporter/mike.
+
+# `make initial VERSION=...` deletes any previously deployed website (versioned
+# or not), publishes the current generated website as the specified version,
+# and makes it the default version.
+
+.PHONY: initial
+initial:
+	@if [ $(VERSION) != false ] ; then \
+	    mike delete --all --allow-empty ; \
+	    mike deploy $(VERSION) default ; \
+	    mike set-default default --push ; \
+	    echo "Deployed $(VERSION) as the only version" ; \
+	else \
+	    echo "Error: missing VERSION" ; \
+	fi
+
+# `make default VERSION=...` publishes or updates the specified version of the
+# generated website and ensures that it is the default version:
+
+.PHONY: default
+default:
+	@if [ $(VERSION) != false ] ; then \
+	    mike deploy $(VERSION) default --update-aliases --push ; 
+	    echo "Deployed $(VERSION) as the default version" \
+	else \
+	    echo "Error: missing VERSION" ; \
+	fi
+
+# `make extra VERSION=...` publishes or updates an extra version of the
+# generated website, without updating the default version:
+
+.PHONY: extra
+extra:
+	@if [ $(VERSION) != false ] ; then \
+	    mike deploy $(VERSION) --push ; 
+	    echo "Deployed $(VERSION) as an extra version" \
+	else \
+	    echo "Error: missing VERSION" ; \
+	fi
+
+# `make delete VERSION=...` removes a published version of a website.
+# If this is the default version, this can break existing links to the website!
+# To avoid that, first use `make default` to change the default to a
+# different version. Note that `make initial` deletes all published versions,
+# but then publishes the specified version as the default.
+
+.PHONY: delete
+delete:
+	@if [ $(VERSION) != false ] ; then \
+	    mike delete $(VERSION) --allow-empty --push ; 
+	    echo "Deleted $(VERSION)" \
+	else \
+	    echo "Error: missing VERSION" ; \
+	fi
+
+# `make serve-versions` provides a local preview of a versioned website.
+
+.PHONY: serve-all
+serve-all:
+	@mike serve
+
+##############################################################################
+# GENERATE PDF
+
+PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
+BIBTEX := bibtex
+
+# Target files for LaTeX generated from Agda source files:
+LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
+# latex/Test/All.tex latex/Test/Sub/Base.tex latex/Test.tex
+
+# LaTeX source code for formatting generated LaTeX:
+LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
+# \pagebreak[3]\section{Test.All}\input{Test/All}\n\pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base}\n\pagebreak[3]\section{Test}\input{Test}
+
+# Filename for generated LaTeX document:
+AGDA-DOC := $(NAME).doc
+
+# Source code of generated LaTeX document:
+
+AGDA-STYLE := conor
+AGDA-CUSTOM := $(patsubst %/,../,$(LATEX)/)agda-custom
+AGDA-UNICODE := $(patsubst %/,../,$(LATEX)/)agda-unicode
+
+define LATEXDOC
+\\documentclass[a4paper]{article}
+\\usepackage{parskip}
+\\usepackage[T1]{fontenc}
+\\usepackage{microtype}
+\\DisableLigatures[-]{encoding = T1, family = tt* }
+\\usepackage{hyperref}
+
+\\usepackage[$(AGDA-STYLE)]{agda}
+\\usepackage{$(AGDA-UNICODE)}
+\\usepackage{$(AGDA-CUSTOM)}
+
+\\title{$(NAME)}
+\\begin{document}
+\\maketitle
+\\tableofcontents
+\\newpage
+$(LATEX-INPUTS)
+
+\\end{document}
+endef
+
+##############################################################################
+# GENERATE LATEX FILES AND FORMAT A PDF DOCUMENT 
+
+# `make pdf` generates some LaTeX files and a PDF:
+
+.PHONY: pdf
+pdf:
+	@echo
+	@echo "Generating PDF for $(ROOT) ..."
+	@echo
+	@echo "LaTeX inputs   -> $(LATEX) ..."
+	@$(MAKE) latex-inputs
+	@echo "LaTeX document -> $(LATEX) ..."
+	@$(MAKE) latex-document
+	@echo "PDF document   -> $(PDF) ..."
+	@$(MAKE) pdf-document
+	@echo
+	@echo "... finished"
+
+# The following targets are auxiliary, and not intended for direct use.
+
+# `make latex-inputs` generates LaTeX source files for use in a LaTeX document:
+
+.PHONY: latex-inputs
+latex-inputs: $(LATEX-FILES)
 
 $(LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
 	@$(AGDA-Q) --latex --latex-dir=$(LATEX) $<
 
-# Generate a LaTeX document to format the generated LaTeX files:
+# `make latex-document` generates a LaTeX document file:
 
-.PHONY: doc
-doc: $(LATEX)/$(AGDA-DOC).tex
+.PHONY: latex-document
+latex-document: $(LATEX)/$(AGDA-DOC).tex
 
 export LATEXDOC
 $(LATEX)/$(AGDA-DOC).tex:
 	@echo "$$LATEXDOC" > $@
 
-# Generate a PDF using $(PDFLATEX):
+# `make pdf-document` generates a PDF from the generated LaTeX document file:
 
-.PHONY: pdf
-pdf: $(PDF)/$(NAME).pdf
+.PHONY: pdf-document
+pdf-document: $(PDF)/$(NAME).pdf
 
 $(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
 	@cd $(LATEX); \
@@ -301,62 +461,49 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 	  rm -f $(AGDA-DOC).{aux,log,out,ptb,toc}
 	@mkdir -p $(PDF) && mv -f $(LATEX)/$(AGDA-DOC).pdf $(PDF)/$(NAME).pdf
 
-# `make serve` provides a local preview of an unversioned website
-# or just the current version of a versioned website:
+##############################################################################
+# GENERATE ALL
 
-.PHONY: serve
-serve:
-	@mkdocs serve
+# `make all` checks the Agda code, and generates the webpages and PDF.
 
-# `make verse` provides a local preview of all versions of a website:
+.PHONY: all
+all: check web pdf
 
-.PHONY: verse
-verse:
-	@mike serve
+##############################################################################
+# REMOVE GENERATED FILES
 
-# `make deploy` publishes an unversioned website on GitHub Pages.
+# `make clean-all` removes all generated files.
 
-.PHONY: deploy
-deploy:
-	@mkdocs gh-deploy --force --ignore-version
-
-# `make remove` removes a published website and any versions of it.
-
-.PHONY: remove
-remove:
-	@mike delete --push --all --allow-empty
-
-# `make initial VERSION=...` publishes the initial version of the generated website:
-
-.PHONY: initial
-initial: remove
-	@mike deploy --push $(VERSION) latest
-	@mike set-default --push latest
-
-# `make latest VERSION=...` publishes or updates the latest version of the generated website:
-
-.PHONY: latest
-latest:
-	@mike deploy --push $(VERSION) latest --update-aliases
-
-# Remove all generated files
-
-.PHONY: clean-all clean-html clean-md clean-latex clean-pdf
+.PHONY: clean-all
 clean-all: clean-html clean-md clean-latex clean-pdf
 
+# `make clean-html` removes the entire HTML directory.
+
+.PHONY: clean-html
 clean-html:
 	@rm -rf $(HTML)
 
+# `make clean-md` removes the entire MD directory.
+
+.PHONY: clean-md
 clean-md:
 	@rm -rf $(MD)
+
+# It seems difficult to restrict removal to files generated *only* by
+# the current ROOT, due to the possibility of shared imports.
+
+# `make clean-latex` removes the entire LATEX directory:
 
 clean-latex:
 	@rm -rf $(LATEX)
 
+# `make clean-pdf` removes the entire PDF directory:
+
 clean-pdf:
 	@rm -rf $(PDF)
 
-# Texts
+##############################################################################
+# HELPFUL TEXTS
 
 define HELP
 
@@ -372,31 +519,6 @@ make deploy
   Deploy the website on GitHub Pages 
 
 endef
-
-# The following auxiliary targets should not be needed
-
-# make html
-#   Generate web page sources in ${HTML}
-# make md
-#   Generate web page sources in $(MD)
-# make latex
-#   Generate LaTeX inputs in $(LATEX)
-# make doc
-#   Generate LaTeX document in $(LATEX)
-# make pdf
-#   Generate PDF in $(PDF)
-# make clean-all
-#   Remove all generated files
-# make clean-html
-#   Remove generated HTML
-# make clean-md
-#   Remove generated Markdown
-# make clean-latex
-#   Remove generated LaTeX
-# make clean-pdf
-#   Remove generated PDF
-# make debug
-#   Display the values of variables
 
 # Note: all make commands load $(ROOT) to initialize HTML-FILES
 

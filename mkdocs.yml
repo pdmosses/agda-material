@@ -3,6 +3,13 @@ site_url: https://pdmosses.github.io/agda-material/
 repo_name: pdmosses/agda-material
 repo_url: https://github.com/pdmosses/agda-material
 
+# To deploy website versions:
+# - install mike (https://github.com/jimporter/mike/)
+# - uncomment the following lines:
+extra:
+  version:
+    provider: mike
+
 use_directory_urls: true
 
 theme:
@@ -34,10 +41,6 @@ theme:
     - navigation.top
     - search.suggest
     - search.highlight
-
-extra:
-  version:
-    provider: mike
 
 extra_css:
   - stylesheets/Agda-material.css
