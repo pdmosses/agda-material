@@ -1,6 +1,8 @@
 nav:
-  - About: about.md
-  - README: README.md
+  - about.md
+  - README: 
+    - README.md
+    - user-guide.md
   - Test:
     - md/Test/All/index.md
     - Test3: md/Test/index.md
