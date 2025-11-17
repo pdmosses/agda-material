@@ -1,0 +1,48 @@
+.Agda { color: var(--md-code-fg-color); background-color: var(--md-code-bg-color) }
+
+[data-md-color-scheme="slate"] {
+
+  /* Aspects. */
+  .Agda .Comment       { color: #FF7F24 }
+  /* .Agda .Background    { } */
+  /* .Agda .Markup        { color: #000000 } */
+  .Agda .Keyword       { color: #FF9932 }
+  .Agda .String        { color: #DD4D4D }
+  .Agda .Number        { color: #9010E0 }
+  .Agda .Symbol        { color: #BFBFBF }
+  .Agda .PrimitiveType { color: #8080FF }
+  /* .Agda .Pragma        { color: black } */
+  /* .Agda .Operator      { } */
+  .Agda .Hole          { background: #B4EEB4 }
+
+  /* NameKinds. */
+  /* .Agda .Bound                  { color: black } */
+  /* .Agda .Generalizable          { color: black } */
+  .Agda .InductiveConstructor   { color: #29CC29 }
+  .Agda .CoinductiveConstructor { color: #29CC29 }
+  .Agda .Datatype               { color: #8080FF }
+  .Agda .Field                  { color: #F570B7 }
+  .Agda .Function               { color: #8080FF }
+  .Agda .Macro                  { color: #73BAA2 }
+  .Agda .Module                 { color: #CD80FF }
+  .Agda .Postulate              { color: #8080FF }
+  .Agda .Primitive              { color: #8080FF }
+  .Agda .Record                 { color: #8080FF }
+
+  /* OtherAspects. */
+  /* .Agda .DottedPattern        {} */
+  .Agda .UnsolvedMeta         { /* color: black; */ background: #806B00 }
+  .Agda .UnsolvedConstraint   { /* color: black; */ background: #806B00 }
+  .Agda .TerminationProblem   { /* color: black; */ background: #802400 }
+  .Agda .IncompletePattern    { /* color: black; */ background: #CD80FF }
+  .Agda .Error                { color: #FF0000; text-decoration: underline }
+  .Agda .TypeChecks           { /* color: black; */ background: #006080 }
+  .Agda .Deadcode             { /* color: black; */ background: #808080 }
+  .Agda .ShadowingInTelescope { /* color: black; */ background: #808080 }
+
+  /* Standard attributes. */
+  .Agda a { text-decoration: none }
+  .Agda a[href]:hover { background-color: #B4EEB4 }
+  .Agda [href].hover-highlight { background-color: #B4EEB4; }
+
+}
