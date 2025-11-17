@@ -1,25 +1,23 @@
-Copied from examples/syntax/highlighting/Test3.lagda in the agda/agda repository,
-with additional literate prose by @pdmosses
+-- This test file currently lacks module-related stuff.
 
-This test file currently lacks module-related stuff.
+{- Nested
+   {- comment. -} -}
 
-And interesting uses of shadowing.
-
-\begin{code}
 module Test where
 
 infix  12 _!
 infixl  7 _+_ _-_
 infixr  2 -_
 
+postulate x : Set
+
+f : (Set -> Set -> Set) -> Set
+f _*_ = x * x
+
 data ℕ : Set where
   zero : ℕ
   suc  : ℕ -> ℕ
-\end{code}
 
-The type Set is declared in the built-in module Agda.Primitive.
-
-\begin{code}
 _+_ : ℕ -> ℕ -> ℕ
 zero  + n = n
 suc m + n = suc (m + n)
@@ -64,11 +62,19 @@ postulate
   Char   : Set
   Float  : Set
 
+data Int : Set where
+  pos    : ℕ → Int
+  negsuc : ℕ → Int
+
 {-# BUILTIN STRING  String #-}
 {-# BUILTIN CHAR    Char   #-}
 {-# BUILTIN FLOAT   Float  #-}
 
 {-# BUILTIN NATURAL ℕ      #-}
+
+{-# BUILTIN INTEGER       Int    #-}
+{-# BUILTIN INTEGERPOS    pos    #-}
+{-# BUILTIN INTEGERNEGSUC negsuc #-}
 
 data [_] (a : Set) : Set where
   []  : [ a ]
@@ -96,4 +102,3 @@ nat = 45
 
 float : Float
 float = 45.0e-37
-\end{code}

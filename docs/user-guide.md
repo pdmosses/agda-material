@@ -53,7 +53,10 @@ but hyperlinks from names to declarations are not supported.
 | `make`       | Effect                                               |
 | ------------ | ---------------------------------------------------- |
 | `serve`      | browse the generated web pages using a local server  |
-| `deploy`     | publish the generated web pages on GitHub Pages      |
+| `deploy`     | publish the generated web pages on GitHub Pages[^1]  |
+
+[^1]:
+    In case of an [`RPC failed`][RPC failed] error, try running `git config --global http.postBuffer 10g`.
 
 ## Deploying versions of websites
 
@@ -103,3 +106,4 @@ For further version management commands, see the [mike] documentation.
 
 [README]: README.md
 [mike]: https://github.com/jimporter/mike/
+[RPC failed]: https://stackoverflow.com/questions/15240815/

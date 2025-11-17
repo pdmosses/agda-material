@@ -3,7 +3,9 @@ First text line
 \begin{code}
 module Test.All where
 
-import Test
+-- import Test
+import Test2
+import Test3
 import Test.Sub.Base
 
 -- Just testing...

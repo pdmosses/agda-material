@@ -4,8 +4,9 @@ nav:
     - README.md
     - user-guide.md
   - Test:
-    - md/Test/All/index.md
-    - Test3: md/Test/index.md
+    - Test/index.md
+    - Test2: md/Test2/index.md
+    - Test3: md/Test3/index.md
     - md/Test/
   - Library:
     - Library/index.md
