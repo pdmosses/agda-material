@@ -20,7 +20,7 @@
 # DEPLOY A VERSION OF A GENERATED WEBSITE:
 # make initial VERSION=...
 # make default VERSION=...
-# make extra VERSION=...
+# make extra   VERSION=...
 # make delete  VERSION=...
 # make serve-all
 
@@ -37,7 +37,7 @@
 # make debug
 
 ##############################################################################
-# PARAMETERS
+# COMMAND LINE ARGUMENTS
 #
 # Name    Purpose
 # -----------------------------
@@ -52,21 +52,13 @@
 # LATEX   generated directory for LaTeX files
 # TEMP    generated directory for temporary files
 
-# PARAMETER DEFAULTS
+# ARGUMENT DEFAULT VALUES
 
 DIR     := agda
 ROOT    := agda/Test/index.lagda
 
-# DIR needs to be a prefix of ROOT; the other parameters are independent.
+# DIR needs to be a prefix of ROOT; the other arguments are independent.
 # Generation of multi-ROOT websites requires multiple calls of make.
-
-VERSION := false
-
-# It is recommended to omit patch numbers in semantic versioning.
-# Version identifiers that "look like" versions (e.g. 1.2.3, 1.0b1, v1.0)
-# are treated as ordinary versions, whereas other identifiers, like devel,
-# are treated as development versions, and placed above ordinary versions.
-# (The value `false` is overridden when deploying or deleting a version.)
 
 HTML    := docs/html
 MD      := docs/md
@@ -77,6 +69,20 @@ TEMP    := /tmp/html
 # All files in the docs directory are rendered in the generated website.
 # Top-level navigation links are specified in docs/.nav.yml; the lower
 # navigation levels reflect the directory hierarchy of the source files.
+
+##############################################################################
+# CONTENTS
+#
+# VARIABLES
+# HELPFUL TARGETS
+# CHECK THE AGDA CODE
+# GENERATE WEBPAGES
+# BROWSE AND DEPLOY THE GENERATED WEBSITE
+# DEPLOY, DELETE, AND BROWSE WEBSITE VERSIONS
+# GENERATE A PDF
+# GENERATE ALL
+# REMOVE GENERATED FILES
+# HELPFUL TEXTS
 
 ##############################################################################
 # VARIABLES
@@ -276,13 +282,31 @@ serve:
 
 .PHONY: deploy
 deploy:
+ifndef VERSION
 	@mkdocs gh-deploy --force --ignore-version
+else
+	@echo "Error: VERSION value set"
+	@echo "Use one of the following commands to deploy version v:"
+	@echo "  make initial VERSION=v"
+	@echo "  make default VERSION=v"
+	@echo "  make extra   VERSION=v"
+endif
 
-# (The `ignore-version` option is required due to an potential conflict
+# (The `ignore-version` option is added due to an potential conflict
 # between mkdocs and mike version numbers.)
 
 ##############################################################################
-# DEPLOY A WEBSITE VERSION
+# DEPLOY, DELETE, AND BROWSE WEBSITE VERSIONS
+
+VERSION =
+
+# The make commands for deploying or deleting a version require VERSION to be
+# defined by either passing it as an argument or assigning it as a default.
+
+# It is recommended to omit patch numbers in semantic versioning.
+# Version identifiers that "look like" versions (e.g. 1.2.3, 1.0b1, v1.0)
+# are treated as ordinary versions, whereas other identifiers, like devel,
+# are treated as development versions, and placed above ordinary versions.
 
 # N.B. To deploy website versions, uncomment the following lines in mkdocs.yml:
 # extra:
@@ -304,38 +328,38 @@ deploy:
 
 .PHONY: initial
 initial:
-	@if [ $(VERSION) != false ] ; then \
-	    mike delete --all --allow-empty ; \
-	    mike deploy $(VERSION) default ; \
-	    mike set-default default --push ; \
-	    echo "Deployed $(VERSION) as the only version" ; \
-	else \
-	    echo "Error: missing VERSION" ; \
-	fi
+ifdef VERSION
+	@mike delete --all --allow-empty
+	@mike deploy $(VERSION) default
+	@mike set-default default --push
+	@echo "Deployed $(VERSION) as the only version"
+else 
+	@echo "Error: missing VERSION"
+endif
 
 # `make default VERSION=...` publishes or updates the specified version of the
 # generated website and ensures that it is the default version:
 
 .PHONY: default
 default:
-	@if [ $(VERSION) != false ] ; then \
-	    mike deploy $(VERSION) default --update-aliases --push ; \
-	    echo "Deployed $(VERSION) as the default version" ; \
-	else \
-	    echo "Error: missing VERSION" ; \
-	fi
+ifdef VERSION
+	@mike deploy $(VERSION) default --update-aliases --push
+	@echo "Deployed $(VERSION) as the default version"
+else
+	@echo "Error: missing VERSION"
+endif
 
 # `make extra VERSION=...` publishes or updates an extra version of the
 # generated website, without updating the default version:
 
 .PHONY: extra
 extra:
-	@if [ $(VERSION) != false ] ; then \
-	    mike deploy $(VERSION) --push ; \
-	    echo "Deployed $(VERSION) as an extra version" ; \
-	else \
-	    echo "Error: missing VERSION" ; \
-	fi
+ifdef VERSION
+	@mike deploy $(VERSION) --push
+	@echo "Deployed $(VERSION) as an extra version"
+else
+	@echo "Error: missing VERSION"
+endif
 
 # `make delete VERSION=...` removes a published version of a website.
 # If this is the default version, this can break existing links to the website!
@@ -345,12 +369,12 @@ extra:
 
 .PHONY: delete
 delete:
-	@if [ $(VERSION) != false ] ; then \
-	    mike delete $(VERSION) --allow-empty --push ; \
-	    echo "Deleted $(VERSION)" ; \
-	else \
-	    echo "Error: missing VERSION" ; \
-	fi
+ifdef VERSION
+	@mike delete $(VERSION) --allow-empty --push
+	@echo "Deleted $(VERSION)"
+else
+	@echo "Error: missing VERSION"
+endif
 
 # `make serve-versions` provides a local preview of a versioned website.
 
@@ -359,7 +383,7 @@ serve-all:
 	@mike serve
 
 ##############################################################################
-# GENERATE PDF
+# GENERATE A PDF
 
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
 BIBTEX := bibtex
@@ -411,9 +435,6 @@ $(LATEX-INPUTS)
 
 \\end{document}
 endef
-
-##############################################################################
-# GENERATE LATEX FILES AND FORMAT A PDF DOCUMENT 
 
 # `make pdf` generates some LaTeX files and a PDF:
 
@@ -525,14 +546,38 @@ define HELP
 
 make (or make help)
   Display this list of make targets
-make web
-  Generate web pages for $(ROOT)
 make check
   Check loading the Agda source files for $(ROOT)
+
+make web
+  Generate web pages for $(ROOT)
+make pdf
+  Generate a PDF for $(ROOT) (optional)
+make clean-all
+  Remove *all* generated files !!!
+make all
+  Combine clean-all, check, web, and pdf
 make serve
-  Serve the generated website locally
+  Browse a generated website locally
 make deploy
-  Deploy the website on GitHub Pages 
+  Deploy an (unversioned) website on GitHub Pages 
+
+Note: Generated files should *not* be committed to the remote repository.
+
+VERSIONING OF GENERATED WEBSITES
+
+make initial VERSION=v
+  Deploy version v as the only version on GitHub Pages
+make default VERSION=v
+  Deploy version v as the default version
+make extra VERSION=v
+  Deploy version v
+make delete VERSION=v
+  Remove deployed version v from GitHub Pages
+make serve-all
+  Browse a generated website and its deployed versions locally
+
+Note: Deployment does *not* push local commits to the remote repository.
 
 endef
 
