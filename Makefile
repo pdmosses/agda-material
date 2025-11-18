@@ -27,7 +27,7 @@
 # GENERATE A PDF LISTING THE AGDA FILES:
 # make pdf
 
-# UPDATE WEBSITE AND PDF:
+# CLEAN UPDATE THE WEBSITE AND PDF:
 # make all
 
 # REMOVE ALL GENERATED FILES:
@@ -55,7 +55,7 @@
 # PARAMETER DEFAULTS
 
 DIR     := agda
-ROOT    := agda/Test/All.lagda
+ROOT    := agda/Test/index.lagda
 
 # DIR needs to be a prefix of ROOT; the other parameters are independent.
 # Generation of multi-ROOT websites requires multiple calls of make.
@@ -142,11 +142,11 @@ check:
 
 # ROOT module path relative to DIR:
 NAME-PATH := $(patsubst $(DIR)/%,%,$(basename $(ROOT)))
-# Test/All
+# Test/index
 
 # ROOT module name:
 NAME := $(subst /,.,$(NAME-PATH))
-# Test.All
+# Test.index
 
 # Target files for HTML generation:
 HTML-FILES := $(sort \
@@ -160,36 +160,28 @@ HTML-FILES := $(sort \
 		  mkdir $(TEMP); \
 		  echo $(TEMP)/ERROR.html; \
 		fi)))
-# docs/html/Agda.Primitive.html docs/html/Test.All.html docs/html/Test.Sub.Base.html docs/html/Test.html
+# docs/html/Agda.Primitive.html docs/html/Test.Sub.Base.html docs/html/Test.html docs/html/Test.index.html docs/html/Test2.html
 
 # Names of modules imported (perhaps indirectly) by ROOT:
 IMPORT-NAMES := $(subst $(HTML)/,,$(basename $(HTML-FILES)))
-# Agda.Primitive Test.All Test.Sub.Base Test
+# Agda.Primitive Test.Sub.Base Test Test.index Test2
 
 # Paths of modules imported (perhaps indirectly) by ROOT:
 IMPORT-PATHS := $(subst .,/,$(IMPORT-NAMES))
-# Agda/Primitive Test/All Test/Sub/Base Test
+# Agda/Primitive Test/Sub/Base Test Test/index Test2
 
 # Names of all modules located in DIR:
-MODULE-NAMES := $(sort $(subst /,.,$(subst $(DIR)/,,$(basename $(shell \
-		find $(DIR) -name '*.lagda')))))
-# Test Test.All Test.Sub.Base Test.Sub.Not-Imported index
+LOCAL-FILES := $(sort $(subst $(DIR)/,,$(shell \
+		find $(DIR) -name '*.agda' -or -name '*.lagda')))
+# Test.agda Test/Sub/Base.lagda Test/Sub/Not-Imported.lagda Test/index.lagda Test2.agda Test3.lagda index.lagda
 
 # Names of imported modules located in DIR:
-AGDA-NAMES := $(filter $(MODULE-NAMES),$(IMPORT-NAMES))
-# Test.All Test.Sub.Base Test
-
-# Paths to imported modules located in DIR:
-AGDA-PATHS := $(subst .,/,$(AGDA-NAMES))
-# Test/All Test/Sub/Base Test
-
-# Imported Agda source files located in DIR:
-AGDA-FILES := $(addprefix $(DIR)/,$(addsuffix .lagda,$(AGDA-PATHS)))
-# agda/Test/All.lagda agda/Test/Sub/Base.lagda agda/Test.lagda
+LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(LOCAL-FILES)))
+# Test/Sub/Base.lagda Test.agda Test/index.lagda Test2.agda
 
 # Target files for Markdown generation:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
-# docs/md/Agda/Primitive/index.md docs/md/Test/All/index.md docs/md/Test/Sub/Base/index.md docs/md/Test/index.md
+# docs/md/Agda/Primitive/index.md docs/md/Test/Sub/Base/index.md docs/md/Test/index.md docs/md/Test/index/index.md docs/md/Test2/index.md
 
 # `make web` generates the HTML and Markdown sources for all web pages.
 # Note: Generating a website for the Agda standard library takes a few minutes.
@@ -244,7 +236,7 @@ $(MD)/$(NAME-PATH):
 	@mkdir -p $(MD)/$(NAME-PATH)
 
 # Use an order-only prerequisite:
-$(MD-FILES): $(MD)/%/index.md: $(AGDA-FILES) | $(MD)/$(NAME-PATH)
+$(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) | $(MD)/$(NAME-PATH)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
@@ -327,8 +319,8 @@ initial:
 .PHONY: default
 default:
 	@if [ $(VERSION) != false ] ; then \
-	    mike deploy $(VERSION) default --update-aliases --push ; 
-	    echo "Deployed $(VERSION) as the default version" \
+	    mike deploy $(VERSION) default --update-aliases --push ; \
+	    echo "Deployed $(VERSION) as the default version" ; \
 	else \
 	    echo "Error: missing VERSION" ; \
 	fi
@@ -339,8 +331,8 @@ default:
 .PHONY: extra
 extra:
 	@if [ $(VERSION) != false ] ; then \
-	    mike deploy $(VERSION) --push ; 
-	    echo "Deployed $(VERSION) as an extra version" \
+	    mike deploy $(VERSION) --push ; \
+	    echo "Deployed $(VERSION) as an extra version" ; \
 	else \
 	    echo "Error: missing VERSION" ; \
 	fi
@@ -354,8 +346,8 @@ extra:
 .PHONY: delete
 delete:
 	@if [ $(VERSION) != false ] ; then \
-	    mike delete $(VERSION) --allow-empty --push ; 
-	    echo "Deleted $(VERSION)" \
+	    mike delete $(VERSION) --allow-empty --push ; \
+	    echo "Deleted $(VERSION)" ; \
 	else \
 	    echo "Error: missing VERSION" ; \
 	fi
@@ -372,16 +364,25 @@ serve-all:
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
 BIBTEX := bibtex
 
+# Filter plain and literate Agda files
+AGDA-FILES := $(filter %.agda,$(LOCAL-IMPORT-FILES))
+# Test.agda Test2.agda
+LAGDA-FILES := $(filter %.lagda,$(LOCAL-IMPORT-FILES))
+# Test/Sub/Base.lagda Test/index.lagda
+
 # Target files for LaTeX generated from Agda source files:
-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(AGDA-PATHS)))
-# latex/Test/All.tex latex/Test/Sub/Base.tex latex/Test.tex
+AGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(basename $(AGDA-FILES))))
+# latex/Test.tex latex/Test2.tex
+LAGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(basename $(LAGDA-FILES))))
+# latex/Test/Sub/Base.tex latex/Test/index.tex
 
 # LaTeX source code for formatting generated LaTeX:
-LATEX-INPUTS := $(foreach p,$(AGDA-PATHS),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
-# \pagebreak[3]\section{Test.All}\input{Test/All}\n\pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base}\n\pagebreak[3]\section{Test}\input{Test}
+LATEX-INPUTS := $(foreach p,$(sort $(basename $(AGDA-FILES) $(LAGDA-FILES))),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
+# \pagebreak[3]\section{Test}\input{Test} \pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base} \pagebreak[3]\section{Test.index}\input{Test/index} \pagebreak[3]\section{Test2}\input{Test2}
 
 # Filename for generated LaTeX document:
 AGDA-DOC := $(NAME).doc
+# Test.index.doc
 
 # Source code of generated LaTeX document:
 
@@ -435,9 +436,19 @@ pdf:
 # `make latex-inputs` generates LaTeX source files for use in a LaTeX document:
 
 .PHONY: latex-inputs
-latex-inputs: $(LATEX-FILES)
+latex-inputs: $(AGDA-LATEX-FILES) $(LAGDA-LATEX-FILES)
 
-$(LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
+$(AGDA-LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.agda
+	@LAGDA=$(patsubst %.agda,%.lagda,$<); \
+	    printf "\\\\begin{code}\\n" > $$LAGDA; \
+	    cat $< >> $$LAGDA; \
+	    printf "\\n\\\\end{code}" >> $$LAGDA; \
+	    mv $< $<.hide; \
+	    $(AGDA-Q) --latex --latex-dir=$(LATEX) $$LAGDA; \
+	    rm $$LAGDA; \
+	    mv $<.hide $<
+
+$(LAGDA-LATEX-FILES): $(LATEX)/%.tex: $(DIR)/%.lagda
 	@$(AGDA-Q) --latex --latex-dir=$(LATEX) $<
 
 # `make latex-document` generates a LaTeX document file:
@@ -464,10 +475,15 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(
 ##############################################################################
 # GENERATE ALL
 
-# `make all` checks the Agda code, and generates the webpages and PDF.
+# `make all` checks the Agda code, deletes any previously generated files,
+# then generates web pages and a PDF with highlighted listings of the code.
 
 .PHONY: all
-all: check web pdf
+all:
+	@$(MAKE) check
+	@$(MAKE) clean-all
+	@$(MAKE) web
+	@$(MAKE) pdf
 
 ##############################################################################
 # REMOVE GENERATED FILES
@@ -509,8 +525,8 @@ define HELP
 
 make (or make help)
   Display this list of make targets
-make website
-  Generate website for $(ROOT)
+make web
+  Generate web pages for $(ROOT)
 make check
   Check loading the Agda source files for $(ROOT)
 make serve
@@ -526,30 +542,29 @@ define DEBUG
 
 DIR:          $(DIR)
 ROOT:         $(ROOT)
-NAME:         $(NAME)
+PROJECT:      $(PROJECT)
 NAME-PATH:    $(NAME-PATH)
+NAME:         $(NAME)
+
+HTML-FILES   (1-9): $(wordlist 1, 9, $(HTML-FILES))
 
 IMPORT-NAMES (1-9): $(wordlist 1, 9, $(IMPORT-NAMES))
 
 IMPORT-PATHS (1-9): $(wordlist 1, 9, $(IMPORT-PATHS))
 
-MODULE-NAMES (1-9): $(wordlist 1, 9, $(MODULE-NAMES))
+LOCAL-FILES  (1-9): $(wordlist 1, 9, $(LOCAL-FILES))
 
-AGDA-NAMES   (1-9): $(wordlist 1, 9, $(AGDA-NAMES))
-
-AGDA-PATHS   (1-9): $(wordlist 1, 9, $(AGDA-PATHS))
-
-AGDA-FILES   (1-9): $(wordlist 1, 9, $(AGDA-FILES))
-
-HTML-FILES   (1-9): $(wordlist 1, 9, $(HTML-FILES))
+LOCAL-IMPORT-FILES (1-9): $(wordlist 1, 9, $(LOCAL-IMPORT-FILES))
 
 MD-FILES     (1-9): $(wordlist 1, 9, $(MD-FILES))
 
-LATEXDOC:
+AGDA-FILES:   $(AGDA-FILES)
 
-$(LATEXDOC)
+LAGDA-FILES:  $(LAGDA-FILES)
 
-LATEX-FILES:  $(LATEX-FILES)
+AGDA-LATEX-FILES:   $(AGDA-LATEX-FILES)
+
+LAGDA-LATEX-FILES:  $(LAGDA-LATEX-FILES)
 
 LATEX-INPUTS:
 $(LATEX-INPUTS)
@@ -558,5 +573,9 @@ AGDA-DOC:      $(AGDA-DOC)
 AGDA-STYLE:    $(AGDA-STYLE)
 AGDA-CUSTOM:   $(AGDA-CUSTOM)
 AGDA-UNICODE:  $(AGDA-UNICODE)
+
+LATEXDOC:
+
+$(LATEXDOC)
 
 endef
