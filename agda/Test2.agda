@@ -1,6 +1,6 @@
 module Test2 where
 
-open import Test3 as Test
+open import Test
 
 -- Testing the inter-file goto facility.
 
