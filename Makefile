@@ -139,7 +139,8 @@ check:
 	@echo "Checking $(ROOT) ..."
 	@echo
 	@$(AGDA-V) $(ROOT) | grep $(PROJECT)/$(DIR)/ | sed -e 's#$(PROJECT)/##'
-	@$(AGDA-Q) $(ROOT) 2>&1 | sed -n -e '1,/error:/p' | sed '1d' | sed -e 's#$(PROJECT)/##'
+	@$(AGDA-Q) $(ROOT) 2>&1 | sed -n -e '1,/error:/p' | sed '1d' \
+						     | sed -e 's#$(PROJECT)/##'
 	@echo
 	@echo "... finished"
 	
@@ -166,28 +167,22 @@ HTML-FILES := $(sort \
 		  mkdir $(TEMP); \
 		  echo $(TEMP)/ERROR.html; \
 		fi)))
-# docs/html/Agda.Primitive.html docs/html/Test.Sub.Base.html docs/html/Test.html docs/html/Test.index.html docs/html/Test2.html
-
-# Names of modules imported (perhaps indirectly) by ROOT:
-IMPORT-NAMES := $(subst $(HTML)/,,$(basename $(HTML-FILES)))
-# Agda.Primitive Test.Sub.Base Test Test.index Test2
+# docs/html/Agda.Primitive.html docs/html/Test.Sub.Base.html
+# docs/html/Test.html docs/html/Test.index.html docs/html/Test2.html
 
 # Paths of modules imported (perhaps indirectly) by ROOT:
-IMPORT-PATHS := $(subst .,/,$(IMPORT-NAMES))
+IMPORT-PATHS := $(subst .,/,$(subst $(HTML)/,,$(basename $(HTML-FILES))))
 # Agda/Primitive Test/Sub/Base Test Test/index Test2
 
-# Names of all modules located in DIR:
-LOCAL-FILES := $(sort $(subst $(DIR)/,,$(shell \
-		find $(DIR) -name '*.agda' -or -name '*.lagda')))
-# Test.agda Test/Sub/Base.lagda Test/Sub/Not-Imported.lagda Test/index.lagda Test2.agda Test3.lagda index.lagda
-
 # Names of imported modules located in DIR:
-LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(LOCAL-FILES)))
+LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(sort $(subst $(DIR)/,,$(shell \
+		find $(DIR) -name '*.agda' -or -name '*.lagda')))))
 # Test/Sub/Base.lagda Test.agda Test/index.lagda Test2.agda
 
 # Target files for Markdown generation:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
-# docs/md/Agda/Primitive/index.md docs/md/Test/Sub/Base/index.md docs/md/Test/index.md docs/md/Test/index/index.md docs/md/Test2/index.md
+# docs/md/Agda/Primitive/index.md docs/md/Test/Sub/Base/index.md
+# docs/md/Test/index.md docs/md/Test/index/index.md docs/md/Test2/index.md
 
 # `make web` generates the HTML and Markdown sources for all web pages.
 # Note: Generating a website for the Agda standard library takes a few minutes.
@@ -242,16 +237,19 @@ $(MD)/$(NAME-PATH):
 	@mkdir -p $(MD)/$(NAME-PATH)
 
 # Use an order-only prerequisite:
-$(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) | $(MD)/$(NAME-PATH)
+$(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) \
+				| $(MD)/$(NAME-PATH)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
-	    mv -f $(MD)/$(subst /,.,$*).html $@; sd '\A' '<pre class="Agda">' $@; sd '\z' '</pre>' $@; \
+	    mv -f $(MD)/$(subst /,.,$*).html $@; \
+	    sd '\A' '<pre class="Agda">' $@; sd '\z' '</pre>' $@; \
 	else \
 	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
 	fi
 # Prepend front matter:
-	@sd -- '\A' '---\ntitle: $(*F)\nhide: toc\n---\n\n# $(subst /,.,$*)\n\n' $@
+	@sd -- '\A' \
+		'---\ntitle: $(*F)\nhide: toc\n---\n\n# $(subst /,.,$*)\n\n' $@
 # Use directory URLs:
 	@sd '(href="[A-Za-z][^"]*)\.html' '$$1/' $@
 # Replace `.`-separated filenames in URLs by `/`-separated paths:
@@ -259,8 +257,9 @@ $(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) | $(MD)/$(
 	    sd '(href="[A-Za-z][^".]*)\.' '$$1/' $@; \
 	done
 # Prefix paths by the relative path to the top level:
-	@sd 'href="([A-Za-z])' 'href="$(subst $(SPACE),$(EMPTY),$(foreach d,$(subst /, ,$*),../))$$1' $@
-#	@sd '(href="[^"]*)index/' '$$1.' $@
+	@sd 'href="([A-Za-z])' \
+	'href="$(subst $(SPACE),$(EMPTY),$(foreach d,$(subst /, ,$*),../))$$1' \
+	$@
 	
 ##############################################################################
 # BROWSE AND DEPLOY THE GENERATED WEBSITE
@@ -276,7 +275,7 @@ serve:
 # WARNING -  A reference to 'pdf/...' is included in the 'nav' configuration,
 #            which is not found in the documentation files.
 #
-# It can be suppressed by removing the cited lin in `docs/.nav.yml`.
+# It can be suppressed by removing the cited line in `docs/.nav.yml`.
 
 # `make deploy` publishes an unversioned website on GitHub Pages:
 
@@ -395,14 +394,21 @@ LAGDA-FILES := $(filter %.lagda,$(LOCAL-IMPORT-FILES))
 # Test/Sub/Base.lagda Test/index.lagda
 
 # Target files for LaTeX generated from Agda source files:
-AGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(basename $(AGDA-FILES))))
+AGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,\
+			$(basename $(AGDA-FILES))))
 # latex/Test.tex latex/Test2.tex
-LAGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,$(basename $(LAGDA-FILES))))
+LAGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,\
+			$(basename $(LAGDA-FILES))))
 # latex/Test/Sub/Base.tex latex/Test/index.tex
 
 # LaTeX source code for formatting generated LaTeX:
-LATEX-INPUTS := $(foreach p,$(sort $(basename $(AGDA-FILES) $(LAGDA-FILES))),$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\input{$(p)})
-# \pagebreak[3]\section{Test}\input{Test} \pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base} \pagebreak[3]\section{Test.index}\input{Test/index} \pagebreak[3]\section{Test2}\input{Test2}
+LATEX-INPUTS := $(foreach p,$(sort $(basename $(AGDA-FILES) $(LAGDA-FILES))),\
+		$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\
+		\input{$(p)})
+# \pagebreak[3]\section{Test}\input{Test}
+# \pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base}
+# \pagebreak[3]\section{Test.index}\input{Test/index}
+# \pagebreak[3]\section{Test2}\input{Test2}
 
 # Filename for generated LaTeX document:
 AGDA-DOC := $(NAME).doc
@@ -486,7 +492,8 @@ $(LATEX)/$(AGDA-DOC).tex:
 .PHONY: pdf-document
 pdf-document: $(PDF)/$(NAME).pdf
 
-$(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
+$(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty \
+		    $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
 	@cd $(LATEX); \
 	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
 	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
@@ -593,11 +600,7 @@ NAME:         $(NAME)
 
 HTML-FILES   (1-9): $(wordlist 1, 9, $(HTML-FILES))
 
-IMPORT-NAMES (1-9): $(wordlist 1, 9, $(IMPORT-NAMES))
-
 IMPORT-PATHS (1-9): $(wordlist 1, 9, $(IMPORT-PATHS))
-
-LOCAL-FILES  (1-9): $(wordlist 1, 9, $(LOCAL-FILES))
 
 LOCAL-IMPORT-FILES (1-9): $(wordlist 1, 9, $(LOCAL-IMPORT-FILES))
 
