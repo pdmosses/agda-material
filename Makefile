@@ -6,6 +6,12 @@
 ##############################################################################
 # MAIN TARGETS
 
+# MAKE ALL ROOT LANGUAGES:
+# make clean-all
+# make all ROOT=agda/LC/index.lagda
+# make all ROOT=agda/PCF/index.lagda
+# make all ROOT=agda/Scm/index.lagda
+
 # SHOW EXPLANATIONS OF THE MAIN TARGETS:
 # make help
 
@@ -27,7 +33,7 @@
 # GENERATE A PDF LISTING THE AGDA FILES:
 # make pdf
 
-# CLEAN UPDATE THE WEBSITE AND PDF:
+# UPDATE THE WEBSITE AND PDF:
 # make all
 
 # REMOVE ALL GENERATED FILES:
@@ -35,7 +41,7 @@
 
 # SHOW VARIABLE VALUES:
 # make debug
-# Expected output listed at the end of this file
+# The expected output is listed at the end of this file
 
 ##############################################################################
 # COMMAND LINE ARGUMENTS
@@ -70,6 +76,11 @@ TEMP    := /tmp/html
 # All files in the docs directory are rendered in the generated website.
 # Top-level navigation links are specified in docs/.nav.yml; the lower
 # navigation levels reflect the directory hierarchy of the source files.
+
+# Force sequential execution of phony prerequisites, to avoid use of
+# recipes with recursive calls of $(MAKE):
+
+.NOTPARALLEL:
 
 ##############################################################################
 # CONTENTS
@@ -126,18 +137,13 @@ debug:
 ##############################################################################
 # CHECK THE AGDA CODE
 
-# `make check` loads ROOT, reporting all imported files located in DIR:
+# `make check` loads ROOT, reporting any errors:
 
 .PHONY: check
 check:
-	@echo
-	@echo "Checking $(ROOT) ..."
-	@echo
-	@$(AGDA-V) $(ROOT) | grep $(PROJECT)/$(DIR)/ | sed -e 's#$(PROJECT)/##'
-	@$(AGDA-Q) $(ROOT) 2>&1 | sed -n -e '1,/error:/p' | sed '1d' \
-						     | sed -e 's#$(PROJECT)/##'
-	@echo
-	@echo "... finished"
+	@ { $(AGDA-Q) $(ROOT) 2>&1 > /dev/null && \
+	    echo "Checking Agda sources finished"; } || \
+	  { $(AGDA-V) $(ROOT) 2>&1 | sed -e 's#$(PROJECT)/##'; }
 	
 ##############################################################################
 # GENERATE WEBPAGES
@@ -175,16 +181,8 @@ MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
 # Note: Generating a website for the Agda standard library takes a few minutes.
 
 .PHONY: web
-web:
-	@echo
-	@echo "Generating HTML and Markdown for $(ROOT) ..."
-	@echo
-	@echo "HTML     -> $(HTML) ..."
-	@$(MAKE) html
-	@echo "Markdown -> $(MD) ..."
-	@$(MAKE) md
-	@echo
-	@echo "... finished"
+web: html md
+	@echo "Web pages finished"
 
 # Generate HTML web pages:
 
@@ -234,6 +232,8 @@ $(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) \
 	else \
 	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
 	fi
+# Remove LaTeX page breaks:
+	@sd '\n\\(clearpage|newpage)\n' '' $@
 # Prepend front matter:
 	@sd -- '\A' \
 		'---\ntitle: $(*F)\nhide: toc\n---\n\n# $(subst /,.,$*)\n\n' $@
@@ -426,18 +426,8 @@ endef
 # `make pdf` generates some LaTeX files and a PDF:
 
 .PHONY: pdf
-pdf:
-	@echo
-	@echo "Generating PDF for $(ROOT) ..."
-	@echo
-	@echo "LaTeX inputs   -> $(LATEX) ..."
-	@$(MAKE) latex-inputs
-	@echo "LaTeX document -> $(LATEX) ..."
-	@$(MAKE) latex-document
-	@echo "PDF document   -> $(PDF) ..."
-	@$(MAKE) pdf-document
-	@echo
-	@echo "... finished"
+pdf: latex-inputs latex-document pdf-document
+	@echo "PDF finished"
 
 # The following targets are auxiliary, and not intended for direct use.
 
@@ -473,7 +463,7 @@ $(LATEX)/$(AGDA-DOC).tex:
 .PHONY: pdf-document
 pdf-document: $(PDF)/$(NAME).pdf
 
-$(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty \
+$(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LAGDA-LATEX-FILES) $(LATEX)/agda.sty \
 		    $(LATEX)/$(AGDA-CUSTOM).sty $(LATEX)/$(AGDA-UNICODE).sty
 	@cd $(LATEX); \
 	  $(PDFLATEX) $(AGDA-DOC) 1>/dev/null; \
@@ -488,11 +478,7 @@ $(PDF)/$(NAME).pdf: $(LATEX)/$(AGDA-DOC).tex $(LATEX-FILES) $(LATEX)/agda.sty \
 # then generates web pages and a PDF with highlighted listings of the code.
 
 .PHONY: all
-all:
-	@$(MAKE) check
-	@$(MAKE) clean-all
-	@$(MAKE) web
-	@$(MAKE) pdf
+all: check web pdf
 
 ##############################################################################
 # REMOVE GENERATED FILES
@@ -544,7 +530,7 @@ make pdf
 make clean-all
   Remove *all* generated files !!!
 make all
-  Combine clean-all, check, web, and pdf
+  Combine check, web, and pdf
 make serve
   Browse a generated website locally
 make deploy
@@ -609,7 +595,7 @@ $(LATEXDOC)
 
 endef
 
-# make debug ->
+# agda-material: make debug
 
 # DIR:          agda
 # ROOT:         agda/Test/index.lagda
