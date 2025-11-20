@@ -35,6 +35,7 @@
 
 # SHOW VARIABLE VALUES:
 # make debug
+# Expected output listed at the end of this file
 
 ##############################################################################
 # COMMAND LINE ARGUMENTS
@@ -93,12 +94,6 @@ EMPTY :=
 
 SPACE := $(EMPTY) $(EMPTY)
 
-# A single newline:
-define NEWLINE :=
-
-
-endef
-
 # Shell commands:
 
 SHELL=/bin/sh
@@ -149,11 +144,9 @@ check:
 
 # ROOT module path relative to DIR:
 NAME-PATH := $(patsubst $(DIR)/%,%,$(basename $(ROOT)))
-# Test/index
 
 # ROOT module name:
 NAME := $(subst /,.,$(NAME-PATH))
-# Test.index
 
 # Target files for HTML generation:
 HTML-FILES := $(sort \
@@ -167,22 +160,16 @@ HTML-FILES := $(sort \
 		  mkdir $(TEMP); \
 		  echo $(TEMP)/ERROR.html; \
 		fi)))
-# docs/html/Agda.Primitive.html docs/html/Test.Sub.Base.html
-# docs/html/Test.html docs/html/Test.index.html docs/html/Test2.html
 
 # Paths of modules imported (perhaps indirectly) by ROOT:
 IMPORT-PATHS := $(subst .,/,$(subst $(HTML)/,,$(basename $(HTML-FILES))))
-# Agda/Primitive Test/Sub/Base Test Test/index Test2
 
 # Names of imported modules located in DIR:
 LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(sort $(subst $(DIR)/,,$(shell \
 		find $(DIR) -name '*.agda' -or -name '*.lagda')))))
-# Test/Sub/Base.lagda Test.agda Test/index.lagda Test2.agda
 
 # Target files for Markdown generation:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
-# docs/md/Agda/Primitive/index.md docs/md/Test/Sub/Base/index.md
-# docs/md/Test/index.md docs/md/Test/index/index.md docs/md/Test2/index.md
 
 # `make web` generates the HTML and Markdown sources for all web pages.
 # Note: Generating a website for the Agda standard library takes a few minutes.
@@ -389,30 +376,24 @@ BIBTEX := bibtex
 
 # Filter plain and literate Agda files
 AGDA-FILES := $(filter %.agda,$(LOCAL-IMPORT-FILES))
-# Test.agda Test2.agda
 LAGDA-FILES := $(filter %.lagda,$(LOCAL-IMPORT-FILES))
-# Test/Sub/Base.lagda Test/index.lagda
 
 # Target files for LaTeX generated from Agda source files:
 AGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,\
 			$(basename $(AGDA-FILES))))
-# latex/Test.tex latex/Test2.tex
 LAGDA-LATEX-FILES := $(addprefix $(LATEX)/,$(addsuffix .tex,\
 			$(basename $(LAGDA-FILES))))
-# latex/Test/Sub/Base.tex latex/Test/index.tex
 
 # LaTeX source code for formatting generated LaTeX:
-LATEX-INPUTS := $(foreach p,$(sort $(basename $(AGDA-FILES) $(LAGDA-FILES))),\
-		$(NEWLINE)\pagebreak[3]$(NEWLINE)\section{$(subst /,.,$(p))}\
-		\input{$(p)})
-# \pagebreak[3]\section{Test}\input{Test}
-# \pagebreak[3]\section{Test.Sub.Base}\input{Test/Sub/Base}
-# \pagebreak[3]\section{Test.index}\input{Test/index}
-# \pagebreak[3]\section{Test2}\input{Test2}
+define LATEX-INPUTS
+$(foreach p,$(basename $(AGDA-FILES) $(LAGDA-FILES)),
+\\newpage
+\\section{$(subst /,.,$(p))}
+\\input{$(p)})
+endef
 
 # Filename for generated LaTeX document:
 AGDA-DOC := $(NAME).doc
-# Test.index.doc
 
 # Source code of generated LaTeX document:
 
@@ -627,3 +608,81 @@ LATEXDOC:
 $(LATEXDOC)
 
 endef
+
+# make debug ->
+
+# DIR:          agda
+# ROOT:         agda/Test/index.lagda
+# PROJECT:      /Users/pdm/Projects/Agda/agda-material
+# NAME-PATH:    Test/index
+# NAME:         Test.index
+
+# HTML-FILES   (1-9): docs/html/Agda.Primitive.html docs/html/Test.Sub.Base.html docs/html/Test.html docs/html/Test.index.html docs/html/Test2.html
+
+# IMPORT-PATHS (1-9): Agda/Primitive Test/Sub/Base Test Test/index Test2
+
+# LOCAL-IMPORT-FILES (1-9): Test/Sub/Base.lagda Test.agda Test/index.lagda Test2.agda
+
+# MD-FILES     (1-9): docs/md/Agda/Primitive/index.md docs/md/Test/Sub/Base/index.md docs/md/Test/index.md docs/md/Test/index/index.md docs/md/Test2/index.md
+
+# AGDA-FILES:   Test.agda Test2.agda
+
+# LAGDA-FILES:  Test/Sub/Base.lagda Test/index.lagda
+
+# AGDA-LATEX-FILES:   latex/Test.tex latex/Test2.tex
+
+# LAGDA-LATEX-FILES:  latex/Test/Sub/Base.tex latex/Test/index.tex
+
+# LATEX-INPUTS:
+
+# \newpage
+# \section{Test}
+# \input{Test} 
+# \newpage
+# \section{Test2}
+# \input{Test2} 
+# \newpage
+# \section{Test.Sub.Base}
+# \input{Test/Sub/Base} 
+# \newpage
+# \section{Test.index}
+# \input{Test/index}
+
+# AGDA-DOC:      Test.index.doc
+# AGDA-STYLE:    conor
+# AGDA-CUSTOM:   ../agda-custom
+# AGDA-UNICODE:  ../agda-unicode
+
+# LATEXDOC:
+
+# \documentclass[a4paper]{article}
+# \usepackage{parskip}
+# \usepackage[T1]{fontenc}
+# \usepackage{microtype}
+# \DisableLigatures[-]{encoding = T1, family = tt* }
+# \usepackage{hyperref}
+
+# \usepackage[conor]{agda}
+# \usepackage{../agda-unicode}
+# \usepackage{../agda-custom}
+
+# \title{Test.index}
+# \begin{document}
+# \maketitle
+# \tableofcontents
+# \newpage
+
+# \newpage
+# \section{Test}
+# \input{Test} 
+# \newpage
+# \section{Test2}
+# \input{Test2} 
+# \newpage
+# \section{Test.Sub.Base}
+# \input{Test/Sub/Base} 
+# \newpage
+# \section{Test.index}
+# \input{Test/index}
+
+# \end{document}
