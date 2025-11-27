@@ -172,7 +172,7 @@ IMPORT-PATHS := $(subst .,/,$(subst $(HTML)/,,$(basename $(HTML-FILES))))
 
 # Names of imported modules located in DIR:
 LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(sort $(subst $(DIR)/,,$(shell \
-		find $(DIR) -name '*.agda' -or -name '*.lagda')))))
+		find $(DIR) -name '*.agda' -or -name '*.lagda' -or -name '*.lagda.md')))))
 
 # Target files for Markdown generation:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
@@ -229,6 +229,8 @@ $(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) \
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
 	    mv -f $(MD)/$(subst /,.,$*).html $@; \
 	    sd '\A' '<pre class="Agda">' $@; sd '\z' '</pre>' $@; \
+	elif [ -f $(MD)/$(subst /,.,$*).md ]; then \
+	    mv -f $(MD)/$(subst /,.,$*).md $@; \
 	else \
 	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
 	fi

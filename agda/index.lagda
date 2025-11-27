@@ -7,5 +7,6 @@ or by clicking on the module names in the highlighted code below.
 module index where
 
 import Test.index
+import TestMd
 import Test.Sub.Not-Imported
 \end{code}
