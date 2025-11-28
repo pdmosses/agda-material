@@ -7,12 +7,12 @@ nav:
     - Test/index.md
     - Test: md/Test/index.md
     - Test2: md/Test2/index.md
+    - TestMd: md/TestMd/index.md
     - md/Test/
   - Library:
     - Library/index.md
     - md/*
   - HTML: html/Test.index.html
-  - PDF: pdf/Test.index.pdf
 
 preserve_directory_names: true
 
