@@ -1,4 +1,4 @@
-# Literate agda with markdown
+## Literate agda with markdown
 
 This is a `.lagda.md` file
 
