@@ -3,6 +3,19 @@
 This page summarises how to use Agda-Material to generate a website and a PDF
 with highlighted listings of your (plain and/or literate) Agda source files.
 
+!!! note
+
+    This version generates *web pages* from:
+    
+    - plain Agda files (`*.agda`), and
+    - literate Agda files with LaTeX (`*.lagda`) or Markdown (`*.lagda.md`)
+      markup.
+
+    It generates a *PDF* from:
+    
+    - plain Agda files (`*.agda`), and
+    - literate Agda files with LaTeX (`*.lagda`) markup.
+
 It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material [README] page)
 together with your Agda source files.
