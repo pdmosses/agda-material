@@ -36,6 +36,7 @@ theme:
     - navigation.indexes
     - navigation.instant
     - navigation.instant.progress
+    - navigation.path
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
@@ -50,6 +51,7 @@ extra_css:
   - https://unpkg.com/katex@0/dist/katex.min.css
 
 extra_javascript:
+  - javascripts/highlight-hover.js
 # KaTeX:
   - javascripts/katex.js
   - https://unpkg.com/katex@0/dist/katex.min.js
