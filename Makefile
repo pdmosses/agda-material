@@ -62,7 +62,7 @@
 # ARGUMENT DEFAULT VALUES
 
 DIR     := agda
-ROOT    := agda/Test/index.lagda
+ROOT    := agda/Test/index.agda
 
 # DIR needs to be a prefix of ROOT; the other arguments are independent.
 # Generation of multi-ROOT websites requires multiple calls of make.
@@ -192,14 +192,20 @@ web: html md
 
 .PHONY: html
 html:
-	@$(AGDA-Q) --html --html-dir=$(HTML) $(ROOT)
+	@$(AGDA-Q) --html --highlight-occurrences --html-dir=$(HTML) $(ROOT)
 
 # Generate Markdown sources for web pages:
 
-# `agda --html --html-highlight=code ROOT.lagda` produces highlighted HTML
-# from plain `agda` and literate `lagda` source files. The file extension is
-# `tex` for HTML produced from `lagda` files; it is `html` for `agda` files,
-# but the files needs to be wrapped in `<pre class="Agda">...</pre>` tags.
+# `agda --html --html-highlight=code ROOT` generates highlighted HTML files
+# from plain and literate Agda source files. The generated file extension
+# depends on the source file extension. It is:
+#  - `html` for `*.agda` files,
+#  - `tex` for `*.lagda` and `*.lagda.tex` files, and
+#  - `md` for `*.lagda.md` files.
+# In the `tex` files, code blocks are in `<pre class="Agda">...</pre>` tags;
+# the entire file needs to be wrapped in those tags, as do the `html` files.
+# For semantic HTML, code is also wrappewd in `<code class="Agda">...</code>`.
+# All the generated files are renamed to `*/index.md` files.
 
 # The links in the HTML files assume they are all in the same directory, and
 # that all files have extension `.html`. Adjusting them to hierarchical links
@@ -218,27 +224,53 @@ md: $(MD-FILES)
 
 # Create HTML files and ROOT directory in $(MD):
 $(MD)/$(NAME-PATH):
-	@$(AGDA-Q) --html --html-highlight=code --html-dir=$(MD) $(ROOT)
+	@$(AGDA-Q) --html --html-highlight=code --highlight-occurrences \
+	    --html-dir=$(MD) $(ROOT)
+	@rm $(MD)/Agda.css
 	@mkdir -p $(MD)/$(NAME-PATH)
 
 # Use an order-only prerequisite:
-$(MD-FILES): $(MD)/%/index.md: $(prefix $(DIR),$(LOCAL-IMPORT-FILES)) \
-				| $(MD)/$(NAME-PATH)
+$(MD-FILES): $(MD)/%/index.md: | $(MD)/$(NAME-PATH)
 	@mkdir -p $(@D)
 # Wrap *.html files in <pre> tags, and rename *.html and *.tex files to *.md:
 	@if [ -f $(MD)/$(subst /,.,$*).html ]; then \
 	    mv -f $(MD)/$(subst /,.,$*).html $@; \
+	    sd '\A' '<pre class="Agda"><code class="Agda">' $@; \
+	    sd '\z' '</code></pre>' $@; \
+	elif [ -f $(MD)/$(subst /,.,$*).tex ]; then \
+	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
+	    sd '<pre class="Agda">' '<code class="Agda">' $@; \
+	    sd '</pre>' '</code>' $@; \
+	    sd '\n\\(clearpage|newpage)\n' '' $@; \
 	    sd '\A' '<pre class="Agda">' $@; sd '\z' '</pre>' $@; \
 	elif [ -f $(MD)/$(subst /,.,$*).md ]; then \
 	    mv -f $(MD)/$(subst /,.,$*).md $@; \
+	    sd '(<pre class="Agda">)' '$$1<code class="Agda">' $@; \
+	    sd '(</pre>)' '</code>$$1' $@; \
 	else \
-	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
+	    rm -f $(MD)/$(subst /,.,$<); \
 	fi
-# Remove LaTeX page breaks:
-	@sd '\n\\(clearpage|newpage)\n' '' $@
-# Prepend front matter:
-	@sd -- '\A' \
-		'---\ntitle: $(*F)\nhide: toc\n---\n\n# $(subst /,.,$*)\n\n' $@
+# Add a section heading for each module, unless ##-headings are already present:
+	@if ! grep -q '^## ' $@; then \
+	    sd '(\n*)([ ]*)(<a .*class="Keyword">module</a>[^<]*<a .*class="Module">)([^<]*)</a>' \
+	        '$$1</code></pre>\n\n## $$2$$4\n\n<pre class="Agda"><code class="Agda">$$2$$3$$4</a>' $@; \
+	    sd '##         ' '###### ' $@; \
+	    sd '##       '   '##### ' $@; \
+	    sd '##     '     '#### ' $@; \
+	    sd '##   '       '### ' $@; \
+	fi
+# Prepend front matter, and ensure a top-level heading:
+	@if grep -q '^# ' $@; then \
+	    sd -- '\A' '---\ntitle: $(*F)\n---\n\n' $@; \
+	else \
+	    sd -- '\A' '---\ntitle: $(*F)\n---\n\n# $(subst /,.,$*)\n\n' $@; \
+	fi
+# Remove the heading for the top module
+	@sd '\n\n## $(subst /,.,$*)\n\n' '' $@
+# Remove superfluous white space:
+	@sd '<pre class="Agda"><code class="Agda">[ \n]*</code></pre>' '' $@
+	@sd '[ \n]+</code></pre>' '</code></pre>' $@
+	@sd '</code></pre>[ \n]*<pre class="Agda"><code class="Agda">' '' $@
 # Use directory URLs:
 	@sd '(href="[A-Za-z][^"]*)\.html' '$$1/' $@
 # Replace `.`-separated filenames in URLs by `/`-separated paths:
