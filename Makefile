@@ -239,10 +239,11 @@ $(MD-FILES): $(MD)/%/index.md: | $(MD)/$(NAME-PATH)
 	    sd '\z' '</code></pre>' $@; \
 	elif [ -f $(MD)/$(subst /,.,$*).tex ]; then \
 	    mv -f $(MD)/$(subst /,.,$*).tex $@; \
-	    sd '<pre class="Agda">' '<code class="Agda">' $@; \
-	    sd '</pre>' '</code>' $@; \
+	    sd '<pre class="Agda">\n' '<code class="Agda">' $@; \
+	    sd '\n</pre>' '</code>' $@; \
 	    sd '\n\\(clearpage|newpage)\n' '' $@; \
-	    sd '\A' '<pre class="Agda">' $@; sd '\z' '</pre>' $@; \
+	    sd '\A' '<pre class="Agda">' $@; \
+	    sd '\z' '</pre>' $@; \
 	elif [ -f $(MD)/$(subst /,.,$*).md ]; then \
 	    mv -f $(MD)/$(subst /,.,$*).md $@; \
 	    sd '(<pre class="Agda">)' '$$1<code class="Agda">' $@; \
@@ -259,18 +260,19 @@ $(MD-FILES): $(MD)/%/index.md: | $(MD)/$(NAME-PATH)
 	    sd '##     '     '#### ' $@; \
 	    sd '##   '       '### ' $@; \
 	fi
+# Remove the heading for the top module
+	@sd '</code></pre>\n\n## $(subst /,.,$*)\n\n<pre class="Agda"><code class="Agda">' \
+	     '' $@
+# Remove superfluous white space:
+	@sd '<pre class="Agda"><code class="Agda">[ \n]*</code></pre>' '' $@
+	@sd '[ \n]+</code></pre>' '</code></pre>' $@
+	@sd '</code></pre>([ \n]*)<pre class="Agda"><code class="Agda">' '$$1' $@
 # Prepend front matter, and ensure a top-level heading:
 	@if grep -q '^# ' $@; then \
 	    sd -- '\A' '---\ntitle: $(*F)\n---\n\n' $@; \
 	else \
 	    sd -- '\A' '---\ntitle: $(*F)\n---\n\n# $(subst /,.,$*)\n\n' $@; \
 	fi
-# Remove the heading for the top module
-	@sd '\n\n## $(subst /,.,$*)\n\n' '' $@
-# Remove superfluous white space:
-	@sd '<pre class="Agda"><code class="Agda">[ \n]*</code></pre>' '' $@
-	@sd '[ \n]+</code></pre>' '</code></pre>' $@
-	@sd '</code></pre>[ \n]*<pre class="Agda"><code class="Agda">' '' $@
 # Use directory URLs:
 	@sd '(href="[A-Za-z][^"]*)\.html' '$$1/' $@
 # Replace `.`-separated filenames in URLs by `/`-separated paths:
