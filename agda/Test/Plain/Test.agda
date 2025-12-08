@@ -3,7 +3,7 @@
 {- Nested
    {- comment. -} -}
 
-module Test where
+module Test.Plain.Test where
 
 infix  12 _!
 infixl  7 _+_ _-_
