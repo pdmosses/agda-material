@@ -16,6 +16,8 @@ with highlighted listings of your (plain and/or literate) Agda source files.
     - plain Agda files (`*.agda`), and
     - literate Agda files with LaTeX (`*.lagda`) markup.
 
+    All other kinds of literate Agda files are ignored.
+
 It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material [README] page)
 together with your Agda source files.
@@ -57,18 +59,24 @@ of your local clone.
 | `clean-all`  | remove all generated files                             |
 | `debug`      | show values of variables (for developer use)           |
 
-Generating a PDF is optional. The rendering and alignment of Agda code
+Generating a PDF is optional.[^1] The rendering and alignment of Agda code
 can be better in PDF than in HTML (especially regarding Unicode characters)
 but hyperlinks from names to declarations are not supported.
+
+[^1]:
+    If you do not want to include a link to a generated PDF in your website,
+    edit `docs/.nav.yml` to remove it. To generate a PDF for local browsing,
+    replace the default for `PDF` in the `Makefile` by a directory that is not
+    included in `docs`.
 
 ## Browsing and deploying generated websites
 
 | `make`       | Effect                                               |
 | ------------ | ---------------------------------------------------- |
 | `serve`      | browse the generated web pages using a local server  |
-| `deploy`     | publish the generated web pages on GitHub Pages[^1]  |
+| `deploy`     | publish the generated web pages on GitHub Pages[^2]  |
 
-[^1]:
+[^2]:
     In case of an [`RPC failed`][RPC failed] error, try running `git config --global http.postBuffer 10g`.
 
 ## Deploying versions of websites

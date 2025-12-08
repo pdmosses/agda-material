@@ -1,12 +1,17 @@
 # About Agda-Material
 
+!!! warning
+
+    This version was deployed from the `dev` branch of the repository
+
 Agda-Material supports **generation of websites and PDFs** with
 **highlighted listings** of (plain or literate) Agda source code.
 
-See the [README] page for how to create a repository for using Agda-Material.
-
-See the [user guide] for a summary of how to generate websites and PDFs with
+See the **[README]** page for how to create a repository for using
 Agda-Material.
+
+See the **[User Guide]** for a summary of how to generate websites and PDFs
+with Agda-Material.
 
 ## Background
 
@@ -41,10 +46,19 @@ GitHub Pages -- optionally with multiple versions.
 
 - **Navigation menu**:
   a generated hierarchical menu with links to all imported Agda modules.
+  Each page shows the path to the current page (so-called breadcrumbs).
+
+- **In-page section navigation**:
+  a page with nested modules has hierarchical sections for the submodules,
+  and displays a list of links to the submodules.
 
 - **Hyperlinks**:
   clicking on a name in a generated web page jumps to its declaration
   and shows the location of the module in the navigation hierarchy.
+
+- **Highlighted occurrences**:
+  hovering over a name highlights *all* the occurrences of that name
+  on the page.
 
 - **Light or dark**:
   users can toggle between light, dark, and automatic color palettes.
@@ -59,6 +73,10 @@ GitHub Pages -- optionally with multiple versions.
 - **Versioning**:
   when multiple versions of a website have been published, users can switch
   between them in the browser.
+
+- **Search**:
+  the browser displays all files that contain occurrences of any of the words
+  specified in the search field.[^1]
 
 ### Generated PDFs
 
@@ -77,6 +95,11 @@ GitHub Pages -- optionally with multiple versions.
 
 - **Adjustable highlighting style**:
   options supported by the LaTeX package `agda.sty` can be selected.
+
+[^1]:
+    Search works best for websites where each page is divided into small
+    sections. It is currently of limited use for websites generated from
+    large Agda modules.
 
   [README]: README.md
   [User Guide]: user-guide.md

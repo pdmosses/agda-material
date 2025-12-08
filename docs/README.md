@@ -6,9 +6,9 @@ web pages and LaTeX files.
 This is the README page for the repository [pdmosses/agda-material].
 It explains how to create a repository for using Agda-Material.
 
-See the [home] page for an overview of motivation and features.
+See the [About] page for an overview of motivation and features.
 
-See the [user guide] for a summary of how to generate websites and PDFs with
+See the [User Guide] for a summary of how to generate websites and PDFs with
 Agda-Material.
 
 ## Repository contents
@@ -23,6 +23,7 @@ The repository contains the following files:
     - `docs/about.md`: Markdown source for the [home] page
     - `docs/README.md`: Markdown source for this [README] page
     - `docs/Library/index.md`: Markdown source for the [Library] page
+    - `docs/Test/index.md`: Markdown source for the [Test] page
 - `agda-custom.sty`: package for overriding commands defined in `agda.sty`
 - `agda-unicode.sty`: package mapping Unicode characters for Agda to LaTeX
 - `Makefile`: automation of website and PDF generation
@@ -47,7 +48,8 @@ The location of the directory `docs` can be configured by setting `docs_dir` in
 ## Software dependencies
 
 Agda-Material has been tested with the software versions listed below.
-It should produce similar results with other recent versions.
+It should produce similar results with other recent versions
+(although [Material for MkDocs] v9.7 has many more features than v9.6).
 
 - [Agda] (2.8.0)
 - [GNU Make] (3.81)
@@ -58,7 +60,7 @@ It should produce similar results with other recent versions.
 - [Python 3] (3.14.0)
 - [pipx] (1.8.0)
 - [MkDocs] (1.6.1)
-- [Material for MkDocs] (9.6.23)
+- [Material for MkDocs] (9.7.0)
 - [Awesome-nav] (3.2.0)
 
 ### Versioned websites
@@ -187,10 +189,11 @@ Peter Mosses
 
 [pdmosses.github.io](https://pdmosses.github.io)
 
-[Home]: about.md
+[About]: about.md
 [README]: README.md
 [User Guide]: user-guide.md
 [Library]: Library/index.md
+[Test]: Test/index.md
 [pdmosses/agda-material]: https://github.com/pdmosses/agda-material/
 [Issues]: https://github.com/pdmosses/agda-material/issues
 
