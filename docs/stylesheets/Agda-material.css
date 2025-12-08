@@ -9,4 +9,14 @@
 
 pre.Agda {
   padding: 1rem;
+  color: var(--md-text-fg-color);
+  background-color: var(--md-text-bg-color);
+  /* font-size: 1em; */
 }
+
+code.Agda {
+  color: var(--md-code-fg-color);
+  background-color: var(--md-code-bg-color);
+  font-size: 1em;
+}
+
