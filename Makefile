@@ -50,6 +50,7 @@
 # -----------------------------
 # DIR     Agda import include-path
 # ROOT    Agda root module source file
+# INDENT  spaces for indenting Agda code (1 or 2)
 #
 # VERSION for versioned website deployment
 #
@@ -66,6 +67,8 @@ ROOT    := agda/Test/index.agda
 
 # DIR needs to be a prefix of ROOT; the other arguments are independent.
 # Generation of multi-ROOT websites requires multiple calls of make.
+
+INDENT  := 2
 
 HTML    := docs/html
 MD      := docs/md
@@ -104,6 +107,12 @@ TEMP    := /tmp/html
 EMPTY :=
 
 SPACE := $(EMPTY) $(EMPTY)
+
+ifeq ($(INDENT),1)
+I := $(SPACE)
+else
+I := $(SPACE)$(SPACE)
+endif
 
 # Shell commands:
 
@@ -169,10 +178,6 @@ HTML-FILES := $(sort \
 
 # Paths of modules imported (perhaps indirectly) by ROOT:
 IMPORT-PATHS := $(subst .,/,$(subst $(HTML)/,,$(basename $(HTML-FILES))))
-
-# Names of imported modules located in DIR:
-LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(sort $(subst $(DIR)/,,$(shell \
-		find $(DIR) -name '*.agda' -or -name '*.lagda' -or -name '*.lagda.md')))))
 
 # Target files for Markdown generation:
 MD-FILES := $(sort $(addprefix $(MD)/,$(addsuffix /index.md,$(IMPORT-PATHS))))
@@ -255,10 +260,10 @@ $(MD-FILES): $(MD)/%/index.md: | $(MD)/$(NAME-PATH)
 	@if ! grep -q '^## ' $@; then \
 	    sd '(\n*)([ ]*)(<a .*class="Keyword">module</a>[^<]*<a .*class="Module">)([^<]*)</a>' \
 	        '$$1</code></pre>\n\n## $$2$$4\n\n<pre class="Agda"><code class="Agda">$$2$$3$$4</a>' $@; \
-	    sd '##         ' '###### ' $@; \
-	    sd '##       '   '##### ' $@; \
-	    sd '##     '     '#### ' $@; \
-	    sd '##   '       '### ' $@; \
+	    sd '## $I$I$I$I' '###### ' $@; \
+	    sd '## $I$I$I'   '##### ' $@; \
+	    sd '## $I$I'     '#### ' $@; \
+	    sd '## $I'       '### ' $@; \
 	fi
 # Remove the heading for the top module
 	@sd '</code></pre>\n\n## $(subst /,.,$*)\n\n<pre class="Agda"><code class="Agda">' \
@@ -291,7 +296,7 @@ $(MD-FILES): $(MD)/%/index.md: | $(MD)/$(NAME-PATH)
 
 .PHONY: serve
 serve:
-	@mkdocs serve
+	@mkdocs serve --livereload
 
 # The following warning may appear until a PDF has been generated:
 #
@@ -409,6 +414,10 @@ serve-all:
 
 PDFLATEX := pdflatex -shell-escape -interaction=nonstopmode
 BIBTEX := bibtex
+
+# Names of imported modules located in DIR:
+LOCAL-IMPORT-FILES := $(foreach n,$(IMPORT-PATHS),$(filter $n.%,$(sort $(subst $(DIR)/,,$(shell \
+		find $(DIR) -name '*.agda' -or -name '*.lagda' -or -name '*.lagda.md')))))
 
 # Filter plain and literate Agda files
 AGDA-FILES := $(filter %.agda,$(LOCAL-IMPORT-FILES))
@@ -598,6 +607,10 @@ define DEBUG
 DIR:          $(DIR)
 ROOT:         $(ROOT)
 PROJECT:      $(PROJECT)
+
+INDENT:       $(INDENT)
+I:            "$I"
+
 NAME-PATH:    $(NAME-PATH)
 NAME:         $(NAME)
 
