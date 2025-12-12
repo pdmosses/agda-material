@@ -40,8 +40,9 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
-    - search.suggest
     - search.highlight
+    - search.share
+    - search.suggest
 
 extra_css:
   - stylesheets/Agda-material.css
@@ -81,5 +82,7 @@ markdown_extensions:
   - pymdownx.tilde
 
 plugins:
-- search
-- awesome-nav
+  - awesome-nav
+  - search:
+      # separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+      separator: '[\s;{}()@"]+|\.(?!\[0-9A-Za-z])'
