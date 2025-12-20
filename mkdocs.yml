@@ -83,6 +83,7 @@ markdown_extensions:
 
 plugins:
   - awesome-nav
-  - search:
+  - search
       # separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
-      separator: '[\s;{}()@"]+|\.(?!\[0-9A-Za-z])'
+      # separator: '[\s;{}()@"]+|\.(?![0-9A-Za-z])'
+      # separator: '[\s;{}()@"]+'
