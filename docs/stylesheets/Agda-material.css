@@ -28,10 +28,3 @@ code.Agda {
 .md-search-result__article > :not(h1, h2, div) {
    display: none;
 }
-
-:root  > * {
-  --md-typeset-mark-color:        #07e5e553;
-}
-
-/* To set a different mark-color for the dark mode, prefix by
-   [data-md-color-scheme="slate"] */
