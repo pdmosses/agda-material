@@ -43,4 +43,8 @@
   .Agda a[href]:hover { background-color: #B4EEB4 }
   .Agda [href].hover-highlight { background-color: #B4EEB4; }
 
+  :root > * {
+    --md-typeset-mark-color: #B4EEB4;
+  }
+
 }

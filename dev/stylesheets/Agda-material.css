@@ -20,3 +20,11 @@ code.Agda {
   font-size: 1em;
 }
 
+/* Search */
+
+/* Hide the previews, as recommended in a discussion answer
+(https://github.com/squidfunk/mkdocs-material/discussions/5817#discussioncomment-6662100) */
+
+.md-search-result__article > :not(h1, h2, div) {
+   display: none;
+}

@@ -191,6 +191,11 @@
       </label>
       <nav class="md-search__options" aria-label="Search">
         
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -335,25 +340,6 @@
     
   
   HTML
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../pdf/Test.index.pdf" class="md-tabs__link">
-        
-  
-  
-    
-  
-  PDF
 
       </a>
     </li>
@@ -710,7 +696,7 @@
   <span class="md-ellipsis">
     
   
-    index
+    Test.index
   
 
     
@@ -732,6 +718,8 @@
   
     
     
+      
+        
       
         
       
@@ -1407,6 +1395,140 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Search
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3_4_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../md/Test/Search/Characters/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Characters
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_3_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Characters
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1659,33 +1781,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pdf/Test.index.pdf" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PDF
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1772,8 +1867,8 @@
 
 
 <h1 id="user-guide">User Guide</h1>
-<p>This page summarises how to use Agda-Material to generate a website and a PDF
-with highlighted listings of your (plain and/or literate) Agda source files.</p>
+<p>This page summarises how to use Agda-Material to generate a website with
+highlighted listings of your (plain and/or literate) Agda source files.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This version generates <em>web pages</em> from:</p>
@@ -1782,12 +1877,8 @@ with highlighted listings of your (plain and/or literate) Agda source files.</p>
 <li>literate Agda files with LaTeX (<code>*.lagda</code>) or Markdown (<code>*.lagda.md</code>)
   markup.</li>
 </ul>
-<p>It generates a <em>PDF</em> from:</p>
-<ul>
-<li>plain Agda files (<code>*.agda</code>), and</li>
-<li>literate Agda files with LaTeX (<code>*.lagda</code>) markup.</li>
-</ul>
-<p>All other kinds of literate Agda files are ignored.</p>
+<p>Imports of other kinds of literate Agda files result in missing pages,
+and to broken links in generated pages!</p>
 </div>
 <p>It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material <a href="../">README</a> page)
@@ -1798,8 +1889,6 @@ of your local clone.</p>
 <p class="admonition-title">Tip</p>
 <p>If you have not already checked your Agda code, run <code>make check</code>.</p>
 <p>Then run <code>make web</code> to generate web pages, and <code>make serve</code> to browse them.</p>
-<p>If you want to include a PDF listing of your code in the website,
-run <code>make pdf</code>, then <code>make serve</code> to access and browse the PDF.</p>
 <p>When you are satisfied with the navigation and content of the website,
 run <code>make deploy</code> to publish it on GitHub Pages.</p>
 <p>If you want to publish multiple versions of your website,
@@ -1834,14 +1923,6 @@ running <code>make deploy</code> replaces the generated website by an empty site
 <td>generate web pages listing ROOT and all imported files</td>
 </tr>
 <tr>
-<td><code>pdf</code></td>
-<td>generate a PDF listing ROOT and local imported files</td>
-</tr>
-<tr>
-<td><code>all</code></td>
-<td>combine the effects of <code>check</code>, <code>web</code>, and <code>pdf</code></td>
-</tr>
-<tr>
 <td><code>clean-all</code></td>
 <td>remove all generated files</td>
 </tr>
@@ -1851,9 +1932,6 @@ running <code>make deploy</code> replaces the generated website by an empty site
 </tr>
 </tbody>
 </table>
-<p>Generating a PDF is optional.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> The rendering and alignment of Agda code
-can be better in PDF than in HTML (especially regarding Unicode characters)
-but hyperlinks from names to declarations are not supported.</p>
 <h2 id="browsing-and-deploying-generated-websites">Browsing and deploying generated websites</h2>
 <table>
 <thead>
@@ -1869,13 +1947,13 @@ but hyperlinks from names to declarations are not supported.</p>
 </tr>
 <tr>
 <td><code>deploy</code></td>
-<td>publish the generated web pages on GitHub Pages<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></td>
+<td>publish the generated web pages on GitHub Pages<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">1</a></sup></td>
 </tr>
 </tbody>
 </table>
 <h2 id="deploying-versions-of-websites">Deploying versions of websites</h2>
 <p><a href="https://github.com/jimporter/mike/">mike</a> makes it easy to deploy multiple versions of your website. It is enabled
-by adding the following setting to <code>mkdocs.yml</code>:</p>
+by the following setting to <code>mkdocs.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">extra</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mike</span>
@@ -1884,8 +1962,9 @@ by adding the following setting to <code>mkdocs.yml</code>:</p>
 that "look like" versions (e.g. <code>1.2.3</code>, <code>1.0b1</code>, <code>v1.0</code>) are treated as
 ordinary versions, whereas other identifiers, like <code>devel</code>, are treated as
 development versions, and placed above ordinary versions.</p>
-<p>When deploying the generated website as a version, other versions of the website remain untouched.
-Deployed versions can however be subsequently updated or deleted.</p>
+<p>When deploying the generated website as a version, other versions of the
+website remain untouched. Deployed versions can however be subsequently
+updated or deleted.</p>
 <p>The Agda-Material <code>make</code> commands support a simple form of version management,
 with <code>default</code> as the only alias for deployed versions.</p>
 <p>If the specified version has already been deployed, redeployment updates the
@@ -1939,14 +2018,9 @@ to the repository.</p>
 <div class="footnote">
 <hr />
 <ol>
-<li id="fn:1">
-<p>If you do not want to include a link to a generated PDF in your website,
-edit <code>docs/.nav.yml</code> to remove it. To generate a PDF for local browsing,
-replace the default for <code>PDF</code> in the <code>Makefile</code> by a directory that is not
-included in <code>docs</code>.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
 <li id="fn:2">
-<p>In case of an <a href="https://stackoverflow.com/questions/15240815/"><code>RPC failed</code></a> error, try running <code>git config --global http.postBuffer 10g</code>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>In case of an <a href="https://stackoverflow.com/questions/15240815/"><code>RPC failed</code></a> error, try running
+<code>git config --global http.postBuffer 10g</code>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -2007,7 +2081,7 @@ included in <code>docs</code>.&#160;<a class="footnote-backref" href="#fnref:1" 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "navigation.expand", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "navigation.path", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "navigation.expand", "navigation.indexes", "navigation.instant", "navigation.instant.progress", "navigation.path", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight", "search.share", "search.suggest"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>

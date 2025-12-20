@@ -2,54 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/about/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/user-guide/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/Library/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/Test/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Agda/Primitive/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Hierarchy/Sub/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Hierarchy/Sub/Base/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Literate/LaTeX/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Literate/Markdown/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Plain/Test/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Plain/Test2/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
+    </url>
+    <url>
+         <loc>https://pdmosses.github.io/agda-material/dev/md/Test/Search/Characters/</loc>
+         <lastmod>2025-12-20</lastmod>
     </url>
     <url>
          <loc>https://pdmosses.github.io/agda-material/dev/md/Test/index/</loc>
-         <lastmod>2025-12-08</lastmod>
+         <lastmod>2025-12-20</lastmod>
     </url>
 </urlset>
