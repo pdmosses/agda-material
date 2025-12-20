@@ -1,7 +1,7 @@
 # Agda-Material
 
 Agda-Material automates the steps that Agda leaves to the user when generating
-web pages and LaTeX files.
+a website with highlighted, hyperlinked listings of Agda code.
 
 This is the README page for the repository [pdmosses/agda-material].
 It explains how to create a repository for using Agda-Material.
@@ -20,13 +20,12 @@ The repository contains the following files:
     - `docs/javascripts`: directory for Javascript files
     - `docs/stylesheets`: directory for CSS files
     - `docs/.nav.yml`: configuration file for navigation panels
-    - `docs/about.md`: Markdown source for the [home] page
+    - `docs/about.md`: Markdown source for the [About] page
     - `docs/README.md`: Markdown source for this [README] page
     - `docs/Library/index.md`: Markdown source for the [Library] page
     - `docs/Test/index.md`: Markdown source for the [Test] page
-- `agda-custom.sty`: package for overriding commands defined in `agda.sty`
-- `agda-unicode.sty`: package mapping Unicode characters for Agda to LaTeX
-- `Makefile`: automation of website and PDF generation
+- `CHANGELOG.md`: summary of significant bug-fixes and feature updates
+- `Makefile`: automation of website generation
 - `mkdocs.yml`: configuration file for the generated website
 - `UNLICENSE`: release into the public domain
 
@@ -36,8 +35,6 @@ By default, Agda-Material creates generated files in the following directories:
 
 - `docs/html`: HTML files
 - `docs/md`: Markdown files
-- `docs/pdf`: PDF files
-- `latex`: LaTeX files
 
 The default directories for Agda source code and generated files can be changed
 by editing the `Makefile`.
@@ -63,13 +60,9 @@ It should produce similar results with other recent versions
 - [Material for MkDocs] (9.7.0)
 - [Awesome-nav] (3.2.0)
 
-### Versioned websites
+### Versioned website deployment
 
 - [mike] (2.0.0)
-
-### PDF generation
-
-- [TeXLive] (2025)
 
 ## Platform dependencies
 
@@ -110,19 +103,17 @@ Locally:
 
     - `Makefile`
     - `mkdocs.yml`
-    - `agda-custom.sty`
-    - `agda-unicode.sty`
     - `agda/*`
     - `docs/*`
     - `.gitignore`
 
 ## Testing Agda-Material
 
-1.  In a terminal:
+1.  In a terminal from the root directory of your repository:
 
     ```shell
-    cd agda-material
-    make all
+    make check
+    make web
     make serve
     ```
 
@@ -137,12 +128,10 @@ Locally:
     make clean-all
     ```
 
-    Check that the following generated directories have all been removed:
+    Check that the following generated directories have been removed:
 
     - `docs/html`
     - `docs/md`
-    - `docs/pdf`
-    - `latex`
 
 ## Preparing to use Agda-Material
 
@@ -162,18 +151,20 @@ In `mkdocs.yml`, update the repository settings:
 - In `Makefile`:
 
     - set the value of `DIR` to the directory containing your Agda modules
-    - set the value of `ROOT` to the path to a module that imports
+    - set the value of `ROOT` to the *name* of a module that imports
       all the other modules to be listed in the website
+    
+    Both `DIR` and `ROOT` can be comma-separated lists.
 
 ### Update Markdown source files and navigation
 
 In the `docs` directory:
 
-- replace `about.md`, `README.md`, and `user-guide.md` by your own file(s)
-- update `.nav.yml` to create the navigation hierarchy for generated websites
+- replace all `*.md` files by your own file(s)
+- your website home page should be named `index.md` or `README.md`
+- update `.nav.yml` to create the navigation hierarchy for the generated website
 
-See the [user guide] for a summary of how to generate websites and PDFs with
-Agda-Material.
+See the [user guide] for a summary of how to generate websites with Agda-Material.
 
 ## Contributing
 

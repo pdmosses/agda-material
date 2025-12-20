@@ -1,7 +1,7 @@
 # User Guide
 
-This page summarises how to use Agda-Material to generate a website and a PDF
-with highlighted listings of your (plain and/or literate) Agda source files.
+This page summarises how to use Agda-Material to generate a website with
+highlighted listings of your (plain and/or literate) Agda source files.
 
 !!! note
 
@@ -11,12 +11,8 @@ with highlighted listings of your (plain and/or literate) Agda source files.
     - literate Agda files with LaTeX (`*.lagda`) or Markdown (`*.lagda.md`)
       markup.
 
-    It generates a *PDF* from:
-    
-    - plain Agda files (`*.agda`), and
-    - literate Agda files with LaTeX (`*.lagda`) markup.
-
-    All other kinds of literate Agda files are ignored.
+    Imports of other kinds of literate Agda files result in missing pages,
+    and to broken links in generated pages!
 
 It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material [README] page)
@@ -30,9 +26,6 @@ of your local clone.
     If you have not already checked your Agda code, run `make check`.
 
     Then run `make web` to generate web pages, and `make serve` to browse them.
-
-    If you want to include a PDF listing of your code in the website,
-    run `make pdf`, then `make serve` to access and browse the PDF.
 
     When you are satisfied with the navigation and content of the website,
     run `make deploy` to publish it on GitHub Pages.
@@ -54,20 +47,8 @@ of your local clone.
 | `help`       | show explanations of the main targets                  |
 | `check`      | load the ROOT source file and all imported files       |
 | `web`        | generate web pages listing ROOT and all imported files |
-| `pdf`        | generate a PDF listing ROOT and local imported files   |
-| `all`        | combine the effects of `check`, `web`, and `pdf`       |
 | `clean-all`  | remove all generated files                             |
 | `debug`      | show values of variables (for developer use)           |
-
-Generating a PDF is optional.[^1] The rendering and alignment of Agda code
-can be better in PDF than in HTML (especially regarding Unicode characters)
-but hyperlinks from names to declarations are not supported.
-
-[^1]:
-    If you do not want to include a link to a generated PDF in your website,
-    edit `docs/.nav.yml` to remove it. To generate a PDF for local browsing,
-    replace the default for `PDF` in the `Makefile` by a directory that is not
-    included in `docs`.
 
 ## Browsing and deploying generated websites
 
@@ -77,12 +58,13 @@ but hyperlinks from names to declarations are not supported.
 | `deploy`     | publish the generated web pages on GitHub Pages[^2]  |
 
 [^2]:
-    In case of an [`RPC failed`][RPC failed] error, try running `git config --global http.postBuffer 10g`.
+    In case of an [`RPC failed`][RPC failed] error, try running
+    `git config --global http.postBuffer 10g`.
 
 ## Deploying versions of websites
 
 [mike] makes it easy to deploy multiple versions of your website. It is enabled
-by adding the following setting to `mkdocs.yml`:
+by the following setting to `mkdocs.yml`:
 
 ```yaml
 extra:
@@ -95,8 +77,9 @@ that "look like" versions (e.g. `1.2.3`, `1.0b1`, `v1.0`) are treated as
 ordinary versions, whereas other identifiers, like `devel`, are treated as
 development versions, and placed above ordinary versions.
 
-When deploying the generated website as a version, other versions of the website remain untouched.
-Deployed versions can however be subsequently updated or deleted.
+When deploying the generated website as a version, other versions of the
+website remain untouched. Deployed versions can however be subsequently
+updated or deleted.
 
 The Agda-Material `make` commands support a simple form of version management,
 with `default` as the only alias for deployed versions.
