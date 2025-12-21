@@ -5,7 +5,6 @@ nav:
     - user-guide.md
   - Test:
     - Test/index.md
-    - md/Test/index/index.md
     - md/Test/
   - Library:
     - Library/index.md

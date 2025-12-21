@@ -207,11 +207,13 @@ gen-md:
 	  done	      
 	@rm -f $(MD)/*.css $(MD)/*.js
 #	Transform each file in MD to a hierarchical index.md file.
-#	when f = $(MD)/A.B.C.x: m is set to the module name A.B.C,
-#	t is set to $(MD)/A/B/C/index.md and d to ../../../../ .
+#	Assumption: For all m, module m and module m.index do not both exist.
+#	When f = $(MD)/A.B.x or $(MD)/A.B.index.x: m is set to A.B,
+#	t is set to $(MD)/A/B/index.md, and d to ../../../ .
 	@for f in $(MD)/*; do \
 	  r=$${f#$(MD)/}; \
 	  m=$${r%.*}; \
+	  if [[ "$$m" == *\.index ]]; then m=$${m%.index}; fi; \
 	  t=$(MD)/$${m//\./\/}/index.md; \
 	  d=$${m//*\./..\/}; d=$${d%\/*}/../../; \
 	  mkdir -p $$(dirname $$t) && mv -f $$f $$t;  \
