@@ -215,7 +215,7 @@ gen-md:
 	  m=$${r%.*}; \
 	  if [[ "$$m" == *\.index ]]; then m=$${m%.index}; fi; \
 	  t=$(MD)/$${m//\./\/}/index.md; \
-	  d=$${m//*\./..\/}; d=$${d%\/*}/../../; \
+	  d=$$(echo $$m | sd '[^.]*.' '../'); \
 	  mkdir -p $$(dirname $$t) && mv -f $$f $$t;  \
 	  case $$f in \
 	    *.html) \
@@ -256,6 +256,7 @@ gen-md:
 	  while grep -q 'href="[A-Z][^".]*\.' $$t; do \
 	    sd '(href="[A-Za-z][^".]*)\.' '$$1/' $$t; \
 	  done; \
+	  sd '(href="[A-Za-z][^"]*/)index/' '$$1' $$t; \
 	  sd 'href="([A-Za-z])' "href=\"$$d\$$1" $$t; \
 	done
 
