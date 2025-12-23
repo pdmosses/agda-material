@@ -70,6 +70,9 @@ SITE    := site
 # Top-level navigation links are specified in docs/.nav.yml; the lower
 # navigation levels reflect the directory hierarchy of the source files.
 
+# The default docs and site directories can be changed in mkdocs.yml,
+# see https://www.mkdocs.org/user-guide/configuration/#build-directories
+
 ##############################################################################
 # CONTENTS
 #
@@ -269,7 +272,8 @@ gen-md:
 ##############################################################################
 # BROWSE THE GENERATED WEBSITE
 
-# `make serve` provides a local preview of an unversioned website:
+# `make serve` provides a local preview of a generated website (ignoring any
+# deployed versions).
 
 .PHONY: serve
 serve:
@@ -411,6 +415,7 @@ delete-all-deployed-versions:
 clean-all:
 	@rm -rf $(HTML)
 	@rm -rf $(MD)
+	@rm -rf $(SITE)
 
 ##############################################################################
 # HELPFUL TEXTS
