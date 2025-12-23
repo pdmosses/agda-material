@@ -8,6 +8,10 @@ See the [README] page for how to create a repository for using Agda-Material.
 See the [user guide] for a summary of how to generate websites and PDFs with
 Agda-Material.
 
+!!! warning
+
+    This version of the website was generated rom the `gen-pdf` branch.
+
 ## Background
 
 Agda can generate highlighted, hyperlinked web pages from a root module,
