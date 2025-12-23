@@ -13,6 +13,7 @@ nav:
     - Library/index.md
     - md/*
   - HTML: html/Test.index.html
+  - PDF: pdf/Test.index.pdf
 
 preserve_directory_names: true
 
