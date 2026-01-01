@@ -1,8 +1,8 @@
 # About Agda-Material
 
-!!! warning
+!!! info
 
-    This version was deployed from the `dev` branch of the repository
+    This version was deployed from the `main` branch of the repository.
 
 Agda-Material supports **generation of websites** with
 **highlighted, hyperlinked listings** of (plain or literate) Agda source code.
@@ -28,6 +28,10 @@ GitHub Pages -- optionally with multiple versions.
 
 ## Main features
 
+After adjusting the parameter settings in the `Makefile` to specify the root
+module and the source directory, you can run the following commands to
+generate, browse, and deploy a website.
+
 - **Automatic regeneration**:
   `make web` generates or updates a website.
 
@@ -38,6 +42,8 @@ GitHub Pages -- optionally with multiple versions.
   `make deploy` publishes the website on GitHub Pages.
 
 ### Generated websites
+
+The websites have the following features.
 
 - **Navigation menu**:
   a generated hierarchical menu with links to all imported Agda modules.

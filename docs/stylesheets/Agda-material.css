@@ -8,7 +8,6 @@
 /* Code display */
 
 pre.Agda {
-  padding: 1rem;
   color: var(--md-text-fg-color);
   background-color: var(--md-text-bg-color);
   /* font-size: 1em; */
