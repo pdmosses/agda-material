@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Test.Space.Markdown</title><link rel="stylesheet" href="Agda.css"><script type="text/javascript" src="highlight-hover.js"></script></head><body><pre class="Agda"><a id="1" class="Markup">```agda
+</a><a id="9" class="Keyword">module</a> <a id="16" href="Test.Space.Markdown.html" class="Module">Test.Space.Markdown</a>
+  <a id="38" class="Keyword">where</a>         <a id="52" class="Comment">-- this line is indented 2 spaces</a>
+<a id="86" class="Keyword">module</a> <a id="93" href="Test.Space.Markdown.html#93" class="Module">_</a> <a id="95" class="Keyword">where</a>  <a id="102" class="Comment">-- this line is not indented</a>
+<a id="131" class="Markup">```
+</a><a id="135" class="Background">
+The above code block starts on the first line, and is followed by a blank line.
+
+The following code block is not preceded by a blank line.
+</a><a id="275" class="Markup">```agda
+</a><a id="283" class="Comment">-- Agda does not require blank lines around code blocks.</a>
+<a id="340" class="Markup">```
+</a><a id="344" class="Background">It is also not followed by a blank line.
+
+The following code block is preceded by a blank line, which is ignored in Markdown.
+
+</a><a id="471" class="Markup">```agda
+</a><a id="479" class="Comment">-- Agda allows blank lines around code blocks</a>
+<a id="525" class="Markup">```
+</a><a id="529" class="Background">
+It is followed by a blank line, which is ignored in Markdown.
+
+Blank lines inside code blocks are preserved:
+
+</a><a id="640" class="Markup">```agda
+</a>
+<a id="649" class="Comment">-- This code line has blank lines around it.</a>
+
+<a id="695" class="Markup">```
+</a><a id="699" class="Background">
+Agda does not generate any Markdown for completely empty code blocks.
+
+</a><a id="771" class="Markup">```agda
+```
+</a><a id="783" class="Background">
+The following empty-looking code block has multiple newlines and spaces:
+
+</a><a id="858" class="Markup">```agda
+</a>    
+  
+<a id="874" class="Markup">```
+</a><a id="878" class="Background">
+They are preserved.
+
+Agda code can be indented:
+
+</a><a id="928" class="Markup">```agda
+</a>  <a id="938" class="Comment">-- This comment is indented 2 spaces.</a>
+
+  <a id="979" class="Keyword">module</a> <a id="986" href="Test.Space.Markdown.html#986" class="Module">_</a>
+    <a id="992" class="Keyword">where</a>
+    <a id="1002" class="Comment">-- This comment is indented 4 spaces.</a>
+
+<a id="1041" class="Comment">-- This comment is not indented.</a>
+<a id="1074" class="Markup">```
+</a><a id="1078" class="Background">
+The code block itself can be indented:
+
+  </a><a id="1121" class="Markup">```agda
+</a>  <a id="1131" class="Comment">-- This indented comment is in an indented code block.</a>
+<a id="1186" class="Markup">  ```</a></pre></body></html>
