@@ -1,0 +1,61 @@
+\begin{code}
+module Test.Space.LaTeX
+  where         -- this line is indented 2 spaces
+module _ where  -- this line is not indented
+\end{code}
+
+The above code block starts on the first line, and is followed by a blank line.
+
+The following code block is not preceded by a blank line.
+\begin{code}
+-- Agda does not require blank lines around code blocks.
+\end{code}
+It is also not followed by a blank line.
+
+The following code block is preceded by a blank line.
+
+\begin{code}
+-- Agda allows blank lines around code blocks
+\end{code}
+
+It is also followed by a blank line.
+
+Blank lines inside code blocks are preserved:
+
+\begin{code}
+
+-- This code line has blank lines around it.
+
+\end{code}
+
+The following code block is completely empty:
+
+\begin{code}
+\end{code}
+
+The following empty-looking code block has multiple newlines and spaces:
+
+\begin{code}
+    
+  
+\end{code}
+
+They are preserved.
+
+Agda code can be indented:
+
+\begin{code}
+  -- This comment is indented 2 spaces.
+
+  module _
+    where
+    -- This comment is indented 4 spaces.
+
+-- This comment is not indented.
+\end{code}
+
+The code block itself can be indented:
+
+  \begin{code}
+  -- This indented comment is in an indented code block.
+  \end{code}
