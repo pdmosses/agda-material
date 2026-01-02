@@ -357,12 +357,8 @@ endif
 .PHONY: default
 default:
 ifdef VERSION
-	@if [[ -z "$$(mike list $(VERSION) | grep default)" ]]; then \
-	    mike set-default $(VERSION) --allow-empty --push; \
-	    echo "The default version is now $(VERSION)"; \
-	else \
-	    echo "The default version is already $(VERSION)"; \
-	fi
+	@mike set-default $(VERSION) --allow-empty --push
+	@echo "The default version is now $(VERSION)"
 else
 	@echo "Error: missing VERSION=..."
 endif
