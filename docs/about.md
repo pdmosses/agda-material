@@ -10,8 +10,8 @@ Agda-Material supports **generation of websites** with
 See the **[README]** page for how to create a repository for using
 Agda-Material.
 
-See the **[User Guide]** for a summary of how to generate websites and PDFs
-with Agda-Material.
+See the **[User Guide]** for a summary of how to generate websites with
+Agda-Material.
 
 ## Background
 

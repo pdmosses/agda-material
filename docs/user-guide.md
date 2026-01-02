@@ -12,7 +12,7 @@ with highlighted listings of your (plain and/or literate) Agda source files.
       markup.
 
     Imports of other kinds of literate Agda files result in missing pages,
-    and to broken links in generated pages!
+    and broken links in generated pages!
 
 It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material [README] page)
