@@ -2,6 +2,9 @@
 
 ## Significant changes in the `main` branch since the latest release
 
+- Material for MkDocs:
+  Upgrade to v9.7.1.
+
 - `docs/javascripts/highlight-hover.js`:
   Ensure generated Markdown pages have been fully loaded before running JS.
 

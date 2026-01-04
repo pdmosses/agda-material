@@ -53,7 +53,7 @@ It should produce similar results with other recent versions
 - [Agda] (2.8.0)
 - [Awesome-nav] (3.2.0)
 - [GNU Make] (3.81)
-- [Material for MkDocs] (9.7.0)
+- [Material for MkDocs] (9.7.1)
 - [mike] (2.0.0)
 - [MkDocs] (1.6.1)
 - [pip] (25.3)
