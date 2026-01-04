@@ -2,6 +2,9 @@
 
 ## Significant changes in the `main` branch since the latest release
 
+- `docs/javascripts/highlight-hover.js`:
+  Ensure generated Markdown pages have been fully loaded before running JS.
+
 - `Makefile`:
   Add targets `clean-html` and `clean-md`.
 
