@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Significant changes in the `main` branch since the latest release
+
+- `Makefile`:
+  Add targets `clean-html` and `clean-md`.
+
 ## Release 0.1.0
 
 This is the *initial* release of Agda-Material.

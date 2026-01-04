@@ -57,6 +57,14 @@ https://pdmosses.github.io/agda-material/
 # SITE    generated directory for deploying the website
 # TEMP    temporary directory
 
+# N.B. The variables HTML and MD affect the URLs of the generated pages.
+# With the above defaults, the URLs of pages in the HTML section of a
+# generated website are prefixed by `html/`, and the URLS of the other
+# generated pages are prefixed by `md/`. It is possible to eliminate those
+# prefixes by setting both variables to `docs`. However, the generation of
+# pages directly in `docs` may then overwrite non-generated files (depending
+# on the names of the Agda modules loaded by ROOT).
+
 # ARGUMENT DEFAULT VALUES
 
 DIR     := agda
@@ -69,14 +77,6 @@ HTML    := docs/html
 MD      := docs/md
 SITE    := site
 TEMP    := temp
-
-# N.B. The variables HTML and MD affect the URLs of the generated pages.
-# With the above defaults, the URLs of pages in the HTML section of a
-# generated website are prefixed by `html/`, and the URLS of the other
-# generated pages are prefixed by `md/`. It is *possible* to eliminate those
-# prefixes by setting both variables to `docs`. However, the generation of
-# pages directly in `docs` may then overwrite non-generated files (depending
-# on the names of the Agda modules loaded by ROOT).
 
 # All files in the docs directory are rendered in the generated website
 # (except for docs/.* files and files explicitly excluded in mkdocs.yml).
@@ -184,20 +184,11 @@ web: gen-html gen-md
 # Generate HTML files in the HTML directory:
 
 .PHONY: gen-html
-gen-html:
-	@if [ $(HTML) != docs ]; then rm -rf $(HTML); fi
+gen-html: clean-html
 	@for r in $(ROOT-FILES); do \
 	    $(AGDA-QUIET) --html --highlight-occurrences \
 	        --html-dir=$(HTML) $$r; \
 	done
-
-# To ensure that the generated website does not include outdated HTML pages
-# for modules that were previously (but are no longer) imported by ROOT,
-# the corresponding `*.html` files in HTML should be removed. If HTML=docs,
-# it is difficult to distinguish such files from non-generated HTML files.
-# To avoid the danger of removing files created by the user, it is left to
-# the user to identify and delete outdated `*.html` files manually when
-# HTML=docs.
 
 # Generate Markdown files in the MD directory:
 
@@ -243,14 +234,14 @@ gen-html:
 # All URLs that do not include a colon are assumed to be links to modules, and
 # get replaced by directory URLs (also in the prose parts).
 
-gen-md:
+gen-md: clean-md
 	@rm -rf $(TEMP)
-	@if [ $(MD) != docs ]; then rm -rf $(MD); fi
 	@for r in $(ROOT-FILES); do \
 	  $(AGDA-QUIET) --html --html-highlight=code --highlight-occurrences \
 	        --html-dir=$(TEMP) $$r; \
 	  done	      
 	@rm -f $(TEMP)/*.css $(TEMP)/*.js
+#
 #	Transform each file in TEMP to a hierarchical index.md file.
 #	Assumption: For all m, module m and module m.index do not both exist.
 #	When f = $(TEMP)/A.B.x or $(MD)/A.B.index.x: m is set to A.B,
@@ -402,11 +393,43 @@ list-all-deployed:
 # `make clean-all` removes all generated files.
 
 .PHONY: clean-all
-clean-all:
+clean-all: clean-html clean-md
 	@rm -rf $(TEMP)
-	@if [ $(HTML) != docs ]; then rm -rf $(HTML); fi
-	@if [ $(MD) != docs ]; then rm -rf $(MD); fi
 	@rm -rf $(SITE)
+
+# To ensure that the generated website does not include outdated HTML pages
+# for modules that were previously (but are no longer) imported by ROOT,
+# the corresponding `*.html` files in HTML should be removed. If HTML=docs,
+# it is difficult to distinguish such files from non-generated HTML files.
+# To avoid the danger of removing files created by the user, it is left to
+# the user to identify and delete outdated `*.html` files manually when
+# HTML=docs. Similarly for the generated directories in MD when MD=docs.
+
+# If docs/*.{html,md,css,js} files are all generated,
+# clean-html could remove them
+
+.PHONY: clean-html
+clean-html:
+ifeq ($(HTML),docs)
+	@echo "Cleaning does not remove generated *.html files in docs"
+# 	@rm -f docs/*.{html,css,js}
+else
+	@rm -rf $(HTML)
+endif
+
+# If the subdirectories of docs that include index.md files are all generated,
+# clean-md could remove them
+
+.PHONY: clean-md
+clean-md:
+ifeq ($(MD),docs)
+	@echo "Cleaning does not remove generated index.md files in docs/**"
+# 	@rm -rf $(shell \
+# 		    find docs/* -name index.md | \
+# 		    sd '(docs/[^/]*)/.*index\.md' '$$1' | sort -u)
+else
+	@rm -rf $(MD)
+endif
 
 ##############################################################################
 # HELPFUL TEXTS
