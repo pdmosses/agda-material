@@ -202,4 +202,3 @@ Peter Mosses
 [Awesome-nav]: https://lukasgeiter.github.io/mkdocs-awesome-nav/
 [mike]: https://github.com/jimporter/mike/
 [GitHub Pages]: https://pages.github.com
-[TeXLive]: https://www.tug.org/texlive/
