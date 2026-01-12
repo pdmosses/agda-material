@@ -11,7 +11,7 @@ pre.Agda {
   color: var(--md-text-fg-color);
   background-color: var(--md-text-bg-color);
   /* font-size: 1em; */
-  font-family: var(--md-text-font-family);
+  /* font-family: var(--md-text-font-family); */
 }
 
 code.Agda {
