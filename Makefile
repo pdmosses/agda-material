@@ -189,6 +189,26 @@ gen-html: clean-html
 	    $(AGDA-QUIET) --html --highlight-occurrences \
 	        --html-dir=$(HTML) $$r; \
 	done
+# 	Replace the href of each module definition by the URL of the MD page
+	@d=$$(echo $(HTML) | sd '[^.]*.' '../'); \
+	for f in $(HTML)/*.html; do \
+	  p=$${f#$(HTML)/}; \
+	  m=$${p%.*}; \
+	  if [[ "$$m" == *\.index ]]; \
+	    then m=$${m%.index}; i="\.index"; \
+	    else i=""; \
+	  fi; \
+	  t=$(subst docs/,,$(MD))/$${m//\./\/}/; \
+	  sd "<a id=\"([^\"]+)\" href=\"$$m$$i.html\" class=\"Module\">" \
+	     "<a id=\"$$1\" href=\"$$d$$t\" class=\"Module Definition\">" \
+	     $$f; \
+	done
+# 	Underline the updated link
+	@printf "\n%s {\n  %s\n  %s\n}" ".Agda a.Module.Definition" \
+		"text-decoration: underline;" \
+		"font-weight: bold;" \
+	    >> $(HTML)/Agda.css
+	@printf "\n%s" ".Agda { font-size: 1rem; }" >> $(HTML)/Agda.css
 
 # Generate Markdown files in the MD directory:
 
@@ -247,8 +267,8 @@ gen-md: clean-md
 #	When f = $(TEMP)/A.B.x or $(MD)/A.B.index.x: m is set to A.B,
 #	t is set to $(MD)/A/B/index.md, and d to ../../../ .
 	@for f in $(TEMP)/*; do \
-	  r=$${f#$(TEMP)/}; \
-	  m=$${r%.*}; \
+	  p=$${f#$(TEMP)/}; \
+	  m=$${p%.*}; \
 	  if [[ "$$m" == *\.index ]]; then m=$${m%.index}; fi; \
 	  t=$(MD)/$${m//\./\/}/index.md; \
 	  d=$$(echo $$m | sd '[^.]*.' '../'); \

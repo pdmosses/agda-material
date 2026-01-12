@@ -2,6 +2,9 @@
 
 ## Significant changes in the `main` branch since the latest release
 
+- `Makefile`:
+  Link the module title on each HTML page to its MD page.
+
 - Material for MkDocs:
   Upgrade to v9.7.1.
 
