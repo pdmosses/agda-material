@@ -11,12 +11,14 @@ pre.Agda {
   color: var(--md-text-fg-color);
   background-color: var(--md-text-bg-color);
   /* font-size: 1em; */
+  font-family: var(--md-text-font-family);
 }
 
 code.Agda {
   color: var(--md-code-fg-color);
   background-color: var(--md-code-bg-color);
   font-size: 1em;
+  /* font-family: var(--md-code-font-family); */
 }
 
 /* Search */
