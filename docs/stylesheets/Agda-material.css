@@ -19,6 +19,13 @@ code.Agda {
   font-size: 1em;
 }
 
+/* Highlight module declaration */
+
+.Agda a.Module.Definition {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 /* Search */
 
 /* Hide the previews, as recommended in a discussion answer
