@@ -189,6 +189,33 @@ gen-html: clean-html
 	    $(AGDA-QUIET) --html --highlight-occurrences \
 	        --html-dir=$(HTML) $$r; \
 	done
+	@printf "\n%s" ".Agda { font-size: 1rem; }" >> $(HTML)/Agda.css
+ifneq ($(filter docs docs/%,$(HTML)),)
+# 	Provided that the HTML pages are included in the generated website:
+# 	replace the href of each module definition by the URL of its MD page,
+#	and add 'Definition` to the class.
+#	When f = $(HTML)/A.B.html or $(HTML)/A.B.index.html: set m to A.B,
+#	i to "" (resp. ".index"), and t to $(MD)/A/B/index.md.
+#	Set d such that $(HTML)$$d is the path to the docs directory.
+	@d=$$(echo $(HTML) | sd '[^/]*/' '../'); \
+	for f in $(HTML)/*.html; do \
+	  p=$${f#$(HTML)/}; \
+	  m=$${p%.*}; \
+	  if [[ "$$m" == *\.index ]]; \
+	    then m=$${m%.index}; i="\.index"; \
+	    else i=""; \
+	  fi; \
+	  t=$(subst docs/,,$(MD))/$${m//\./\/}/; \
+	  sd "<a id=\"([^\"]+)\" href=\"$$m$$i.html\" class=\"Module\">" \
+	     "<a id=\"$$1\" href=\"$$d$$t\" class=\"Module Definition\">" \
+	     $$f; \
+	done
+# 	Add CSS to highlight the module definitions:
+	@printf "\n%s {\n  %s\n  %s\n}" ".Agda a.Module.Definition" \
+		"text-decoration: underline;" \
+		"font-weight: bold;" \
+	    >> $(HTML)/Agda.css
+endif
 
 # Generate Markdown files in the MD directory:
 
@@ -244,8 +271,9 @@ gen-md: clean-md
 #
 #	Transform each file in TEMP to a hierarchical index.md file.
 #	Assumption: For all m, module m and module m.index do not both exist.
-#	When f = $(TEMP)/A.B.x or $(MD)/A.B.index.x: m is set to A.B,
-#	t is set to $(MD)/A/B/index.md, and d to ../../../ .
+#	When f = $(TEMP)/A.B.x or $(TEMP)/A.B.index.x: set m to A.B,
+#	t to $(MD)/A/B/index.md, and d to the relative path ../../ of $(MD).
+#
 	@for f in $(TEMP)/*; do \
 	  r=$${f#$(TEMP)/}; \
 	  m=$${r%.*}; \
