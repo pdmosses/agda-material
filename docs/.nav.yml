@@ -3,6 +3,7 @@ nav:
     - README.md
     - about.md
     - user-guide.md
+    - CHANGELOG: https://github.com/pdmosses/agda-material/blob/main/CHANGELOG.md
   - Test:
     - Test/index.md
     - md/Test/
