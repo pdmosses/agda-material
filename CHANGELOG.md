@@ -1,22 +1,33 @@
 # CHANGELOG
 
-## Significant changes in the `main` branch since the latest release
+## [Unreleased] – 2026-01-14
 
-- `Makefile`:
-  Link the module title on each HTML page to its MD page.
+### Added
 
-- Material for MkDocs:
-  Upgrade to v9.7.1.
+- Link the module name declaration on each HTML page to the MD page, and
+  *vice versa*.
+- Support use of `docs` value for `HTML` and `MD`, to avoid prefixes in URLs.
+- Add Makefile targets `clean-html` and `clean-md`.
+- Add `skip.txt` to avoid false positives when using [linkcheck].
+- Add a link to the CHANGELOG on GitHub in the navigation panel.
 
-- `docs/javascripts/highlight-hover.js`:
-  Ensure generated Markdown pages have been fully loaded before running JS.
+### Changed
 
-- `Makefile`:
-  Add targets `clean-html` and `clean-md`.
+- Upgrade dependency: Material for MkDocs v9.7.1.
 
-## Release 0.1.0
+### Fixed
+
+- Ensure pages have been fully loaded before running
+  `docs/javascripts/highlight-hover.js`.
+- Remove test for unsupported `default` alias.
+
+----
+
+## [0.1.0] – 2026-01-01
 
 This is the *initial* release of Agda-Material.
+
+### Versioning
 
 The code release numbering follows [semantic versioning]: A version number is
 of the form *X.Y.Z*, where *X* is the major version, *Y* is the minor version,
@@ -34,11 +45,13 @@ the minor version *Y*.
     The version numbers of the deployed website omit the patch number *Z*.
 
     Minor updates to the Agda-Material documentation are deployed silently,
-    without releasing a new version.
+    independently of code releases.
 
 The `main` branch of the repo may include unreleased changes. The `dev` branch
 is used for development, and inherently unstable – possibly with significant
 bugs.
+
+### Changed
 
 Much of the code in v0.1.0 has been available in the `main` and `dev` branches
 since November 2025. Users should note the following *significant differences*
@@ -51,21 +64,38 @@ in v0.1.0 regarding use of the `Makefile`:
 - The new variable `SITE` should be set to the directory used by MkDocs to
   to build and deploy the generated website (default `site`).
 
-- The web pages generated from `*.lagda` files are now *pre-formatted:*
-  alignment and newlines are preserved.
+- The CHANGELOG format follows [keepachangelog].
+  
+    (Empty subsections of the CHANGELOG are to be omitted in future releases.)
 
-- The web pages generated from `*.lagda.md` files render Markdown[^1] in the
-  literate prose, including embedded KaTeX and HTML content.
+### Deprecated
+
+### Removed
 
 - PDF generation has been *removed*. The `gen-pdf` branch includes the previous
   code for PDF generation, but is otherwise significantly outdated. A website
   with a PDF that was generated using the `gen-pdf` branch is deployed as
   [version 0.0].
 
+### Fixed
+
+- The web pages generated from `*.lagda` files are now *pre-formatted*:
+  alignment and newlines are preserved.
+
+- The web pages generated from `*.lagda.md` files render Markdown[^1] in the
+  literate prose, including embedded KaTeX and HTML content.
+
+### Security 
+
 [^1]: The underlying static site generator is MkDocs, which uses the [PyMdown]
     variant of Markdown. The `pymdownx` options in `mkdocs.yml` determine
     which PyMdown extensions are rendered.
 
+[keepachangelog]: https://keepachangelog.com/en/1.1.0/
+[linkcheck]: https://github.com/filiph/linkcheck/
+[PyMdown]: https://python-markdown.github.io
 [semantic versioning]: https://semver.org
 [version 0.0]: https://pdmosses.github.io/agda-material/0.0/
-[PyMdown]: https://python-markdown.github.io
+
+[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/pdmosses/agda-material/releases/tag/v0.1.0
