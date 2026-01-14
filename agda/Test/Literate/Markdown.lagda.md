@@ -10,9 +10,7 @@ In generated web pages, prose in files with extension `lagda.md`
 is rendered in a variable-width font:
 
 * Line breaks and alignment in plain text are not preserved, in general.
-
-* Markdown markup is rendered.
-
+* [Markdown] markup is rendered, including various [Python extensions].
 * URLs wrapped in `<...>` become active links.
 
 See [Test.Literate.LaTeX] for an example of a literate Agda file
@@ -34,6 +32,8 @@ LaTeX files with highlighted Agda code cannot be generated directly from files
 with extension `lagda.md`. However, it should be possible to use [Pandoc] to
 convert such files to `lagda` files.
 
+[Markdown]: https://python-markdown.github.io
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/
 [Pandoc]: https://pandoc.org
+[Python extensions]: https://python-markdown.github.io/extensions/
 [Test.Literate.LaTeX]: ../LaTeX/index.md

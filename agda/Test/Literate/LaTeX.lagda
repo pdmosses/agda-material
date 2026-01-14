@@ -10,10 +10,8 @@ In generated web pages, prose in files with extension `lagda` or `lagda.tex`
 is rendered *verbatim* in a fixed-width font:
 
 * Line breaks and alignment are preserved.
-
 * Markup is displayed without rendering.
-
-* URLs do not become active links, but anchor tags do, e.g., <a href="https://pdmosses.github.io/agda-material/">Agda-Material</a>.
+* URLs do not become active links.
 
 See `Test.Literate.Markdown` for an example of a literate Agda file
 where the prose is rendered as Markdown in generated web pages.

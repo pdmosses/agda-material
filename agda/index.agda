@@ -1,5 +1,6 @@
 module index where
 
+import Test.index
 import Test.Hierarchy.Sub
 import Test.Hierarchy.Sub.Base
 import Test.Hierarchy.Sub.Omit
