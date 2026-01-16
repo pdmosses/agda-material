@@ -196,7 +196,7 @@ Peter Mosses
 [GNU Make]: https://www.gnu.org/software/make/manual/make.html
 [sd]: https://github.com/chmln/sd/
 [Python 3]: https://www.python.org/downloads/
-[pip]: https://pip.pypa.io/stable/
+[pip]: https://pypi.org/project/pip/
 [MkDocs]: https://www.mkdocs.org/getting-started/
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/getting-started/
 [Awesome-nav]: https://lukasgeiter.github.io/mkdocs-awesome-nav/
