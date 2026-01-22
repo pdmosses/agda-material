@@ -1,11 +1,11 @@
 # CHANGELOG
 
-## [Unreleased] – 2026-01-14
+## [Unreleased] – 2026-01-22
 
 ### Added
 
 - Link the module name declaration on each HTML page to the MD page, and
-  *vice versa*.
+  *vice versa*, provided that the website includes the HTML pages.
 - Support use of `docs` value for `HTML` and `MD`, to avoid prefixes in URLs.
 - Add Makefile targets `clean-html` and `clean-md`.
 - Add `skip.txt` to avoid false positives when using [linkcheck].
