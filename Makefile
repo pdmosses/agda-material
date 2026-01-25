@@ -331,7 +331,7 @@ gen-md: clean-md
 	  \
 	  u=$${m//\./\/}/; \
 	  h=$(patsubst docs/%,%,$(HTML)/); \
-	  if [ $$h != $(HTML)/ ]; then \
+	  if [ -z "$$h" ] || [ "$$h" != $(HTML)/ ]; then \
 	    sd "<a id=\"([^\"]+)\" href=\"$$d$$u\" class=\"Module\">" \
 	       "<a id=\"$$1\" href=\"$$d$$r$$h$$m$$i.html\" class=\"Module Definition\">" \
 	       $$t; \
