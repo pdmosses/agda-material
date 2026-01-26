@@ -1,5 +1,9 @@
 # About Agda-Material
 
+!!! info
+
+    This version was deployed from the `dev` branch of the repository.
+
 Agda-Material supports **generation of websites** with
 **highlighted, hyperlinked listings** of (plain or literate) Agda source code.
 
