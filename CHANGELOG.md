@@ -19,7 +19,8 @@
 
 - Ensure pages have been fully loaded before running
   `docs/javascripts/highlight-hover.js`.
-- Remove test for unsupported `default` alias.
+- Remove test for unsupported `default` alias. 
+- Update the outdated tip re versioning in the User Guide.
 
 ----
 
