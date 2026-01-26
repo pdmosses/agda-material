@@ -32,8 +32,9 @@ of your local clone.
 
     If you want to publish multiple versions of your website,
     choose a version numbering scheme and the number for the first version,
-    then run `make initial VERSION=...` to replace the previously deployed
-    website on GitHub Pages by your versioned site.
+    then run `make delete-all-deployed` to replace the previously deployed
+    website on GitHub Pages by a clean site *before* deploying your first
+    version with `make deploy VERSION=...`.
 
 ## Generate and browse a website
 
