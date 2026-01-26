@@ -2120,8 +2120,9 @@ of your local clone.</p>
 run <code>make deploy</code> to publish it on GitHub Pages.</p>
 <p>If you want to publish multiple versions of your website,
 choose a version numbering scheme and the number for the first version,
-then run <code>make initial VERSION=...</code> to replace the previously deployed
-website on GitHub Pages by your versioned site.</p>
+then run <code>make delete-all-deployed</code> to replace the previously deployed
+website on GitHub Pages by a clean site <em>before</em> deploying your first
+version with <code>make deploy VERSION=...</code>.</p>
 </div>
 <h2 id="generate-and-browse-a-website">Generate and browse a website</h2>
 <table>
