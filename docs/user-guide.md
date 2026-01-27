@@ -50,7 +50,7 @@ of your local clone.
 | ------------------- | --------------------------------------------------- |
 | `deploy`            | deploy an *unversioned* website on GitHub Pages[^2] |
 | `deploy VERSION=v`  | deploy version `v` of the website on GitHub Pages   |
-| `default VERSION=v` | set the default version to `v`                      |
+| `default VERSION=v` | set alias `default` and redirect the root to `v`    |
 
 [^2]:
     In case of an [`RPC failed`][RPC failed] error, try running
@@ -94,6 +94,13 @@ contents to the current generated website.
 The Agda-Material `make` commands support a simple form of version management.
 For further version management commands, see the [mike] documentation.
 
+!!! warning
+
+    Deleting the `default` version can break existing links to your website!
+
+    To avoid that, first use `make default VERSION=v'` to change the default to
+    a different version.
+
 ## Miscellaneous commands
 
 | `make`       | Effect                                       |
@@ -101,13 +108,6 @@ For further version management commands, see the [mike] documentation.
 | `clean-all`  | remove all generated files                   |
 | `help`       | show explanations of the main targets        |
 | `debug`      | show values of variables (for developer use) |
-
-!!! warning
-
-    Deleting the `default` version can break existing links to your website!
-
-    To avoid that, first use `make default VERSION=v'` to change the default to
-    a different version.
 
 [README]: README.md
 [mike]: https://github.com/jimporter/mike/

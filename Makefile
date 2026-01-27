@@ -394,6 +394,7 @@ endif
 .PHONY: default
 default:
 ifdef VERSION
+	@mike alias $(VERSION) default --update-aliases
 	@mike set-default $(VERSION) --allow-empty --push
 	@echo "The default version is now $(VERSION)"
 else

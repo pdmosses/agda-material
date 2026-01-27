@@ -1,9 +1,13 @@
 # CHANGELOG
 
-## [Unreleased] – 2026-01-22
+## [Unreleased] – 2026-01-27
 
 ### Added
 
+- Enhance `make default VERSION=...` so that it creates or updates the
+  *alias* `default` to point to a previously deployed version. (Previously
+  this command only redirected the root of the website to the specified
+  version, independently of aliases.)
 - Link the module name declaration on each HTML page to the MD page, and
   *vice versa*, provided that the website includes the HTML pages.
 - Support use of `docs` value for `HTML` and `MD`, to avoid prefixes in URLs.
