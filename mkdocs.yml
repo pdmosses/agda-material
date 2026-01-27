@@ -6,9 +6,9 @@ repo_url: https://github.com/pdmosses/agda-material
 # To deploy website versions:
 # - install mike (https://github.com/jimporter/mike/)
 # - uncomment the following lines:
-extra:
-  version:
-    provider: mike
+# extra:
+#   version:
+#     provider: mike
 
 use_directory_urls: true
 
