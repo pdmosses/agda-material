@@ -2166,7 +2166,7 @@ version with <code>make deploy VERSION=...</code>.</p>
 </tr>
 <tr>
 <td><code>default VERSION=v</code></td>
-<td>set the default version to <code>v</code></td>
+<td>set alias <code>default</code> and redirect the root to <code>v</code></td>
 </tr>
 </tbody>
 </table>
@@ -2215,6 +2215,12 @@ running <code>make deploy</code> replaces the generated website by an empty site
 </table>
 <p>The Agda-Material <code>make</code> commands support a simple form of version management.
 For further version management commands, see the <a href="https://github.com/jimporter/mike/">mike</a> documentation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Deleting the <code>default</code> version can break existing links to your website!</p>
+<p>To avoid that, first use <code>make default VERSION=v'</code> to change the default to
+a different version.</p>
+</div>
 <h2 id="miscellaneous-commands">Miscellaneous commands</h2>
 <table>
 <thead>
@@ -2238,12 +2244,6 @@ For further version management commands, see the <a href="https://github.com/jim
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Deleting the <code>default</code> version can break existing links to your website!</p>
-<p>To avoid that, first use <code>make default VERSION=v'</code> to change the default to
-a different version.</p>
-</div>
 <div class="footnote">
 <hr />
 <ol>
