@@ -62,8 +62,8 @@ It should produce similar results with other recent versions
 
 ## Platform dependencies
 
-Agda-Material has been developed and tested on MacBook laptops
-with Apple M1 and M3 chips running macOS Sequoia (15.6) with CLI Tools.
+Agda-Material has been developed and tested on MacBook laptops with Apple M1
+and M3 chips running macOS Sequoia (15.6) and Tahoe (26.2) with CLI Tools.
 
 Please report any [issues] with using Agda-Material on other platforms,
 including all relevant details. Pull requests for addressing such issues
