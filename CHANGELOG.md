@@ -1,6 +1,22 @@
 # CHANGELOG
 
-## [Unreleased] – 2026-01-27
+## [Unreleased] – 2026-02-01
+
+No code changes.
+
+## [0.1.1] – 2026-02-01
+
+This release includes all additions, changes, and fixes that have been made
+in the `main` branch since the previous release.
+
+**To upgrade** from a previous version, compare the following files with your
+fork or clone of this repository, and copy *all* changes that do not conflict
+with any further changes that you have made:
+
+- `docs/javascripts/*.js`
+- `docs/stylesheets/*.css`
+- `Makefile`
+- `mkdocs.yml`
 
 ### Added
 
@@ -12,7 +28,8 @@
   *vice versa*, provided that the website includes the HTML pages.
 - Support use of `docs` value for `HTML` and `MD`, to avoid prefixes in URLs.
 - Add Makefile targets `clean-html` and `clean-md`.
-- Add `skip.txt` to avoid false positives when using [linkcheck].
+- Add `skip.txt` for use with [linkcheck], to avoid false positives from (S)CCS
+  and `fonts.gstatic.com` URLs.
 - Add a link to the CHANGELOG on GitHub in the navigation panel.
 
 ### Changed
@@ -23,8 +40,8 @@
 
 - Ensure pages have been fully loaded before running
   `docs/javascripts/highlight-hover.js`.
-- Remove test for unsupported `default` alias. 
 - Update the outdated tip re versioning in the User Guide.
+- Ensure that `mkdocs.yml` does not activate versioning by default.
 
 ----
 
@@ -102,5 +119,6 @@ in v0.1.0 regarding use of the `Makefile`:
 [semantic versioning]: https://semver.org
 [version 0.0]: https://pdmosses.github.io/agda-material/0.0/
 
-[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/pdmosses/agda-material/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pdmosses/agda-material/releases/tag/v0.1.0
