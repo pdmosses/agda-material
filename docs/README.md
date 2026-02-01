@@ -166,6 +166,18 @@ In the `docs` directory:
 See the [User Guide] for a summary of how to generate websites with
 Agda-Material.
 
+## Upgrading to the latest version
+
+Compare the current contents of the following files in the `main` branch with
+the copies in your fork or clone of this repository:
+
+- `docs/javascripts/*.js`
+- `docs/stylesheets/*.css`
+- `Makefile`
+- `mkdocs.yml`
+
+Copy *all* changes that do not conflict with your own changes.
+
 ## Contributing
 
 Please report any [issues] with using Agda-Material, including all relevant

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## Upgrading to the latest version
+
+Compare the current contents of the following files in the `main` branch with
+the copies in your fork or clone of this repository:
+
+- `docs/javascripts/*.js`
+- `docs/stylesheets/*.css`
+- `Makefile`
+- `mkdocs.yml`
+
+Copy *all* changes that do not conflict with your own changes.
+
 ## [Unreleased] – 2026-02-01
 
 No code changes.
@@ -8,15 +20,6 @@ No code changes.
 
 This release includes all additions, changes, and fixes that have been made
 in the `main` branch since the previous release.
-
-**To upgrade** from a previous version, compare the following files with your
-fork or clone of this repository, and copy *all* changes that do not conflict
-with any further changes that you have made:
-
-- `docs/javascripts/*.js`
-- `docs/stylesheets/*.css`
-- `Makefile`
-- `mkdocs.yml`
 
 ### Added
 
