@@ -12,9 +12,13 @@ the copies in your fork or clone of this repository:
 
 Copy *all* changes that do not conflict with your own changes.
 
+----
+
 ## [Unreleased] – 2026-02-01
 
 No code changes.
+
+----
 
 ## [0.1.1] – 2026-02-01
 
