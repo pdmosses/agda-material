@@ -27,6 +27,12 @@ code.Agda {
   font-weight: bold;
 }
 
+/* KaTeX https://katex.org/docs/font */
+
+.katex {
+  font-size: 1em; /* default is 1.21em */
+}
+
 /* Search */
 
 /* Hide the previews, as recommended in a discussion answer

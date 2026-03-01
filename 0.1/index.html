@@ -41,21 +41,15 @@
     
     
       
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
     
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
       <link rel="stylesheet" href="stylesheets/Agda-material.css">
     
       <link rel="stylesheet" href="stylesheets/Agda-md.css">
     
       <link rel="stylesheet" href="stylesheets/Agda-md-dark.css">
-    
-      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -2064,6 +2058,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#upgrading-to-the-latest-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading to the latest version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2265,6 +2270,16 @@ make<span class="w"> </span>serve
 </ul>
 <p>See the <a href="user-guide/">User Guide</a> for a summary of how to generate websites with
 Agda-Material.</p>
+<h2 id="upgrading-to-the-latest-version">Upgrading to the latest version</h2>
+<p>Compare the current contents of the following files in the <code>main</code> branch with
+the copies in your fork or clone of this repository:</p>
+<ul>
+<li><code>docs/javascripts/*.js</code></li>
+<li><code>docs/stylesheets/*.css</code></li>
+<li><code>Makefile</code></li>
+<li><code>mkdocs.yml</code></li>
+</ul>
+<p>Copy <em>all</em> changes that do not conflict with your own changes.</p>
 <h2 id="contributing">Contributing</h2>
 <p>Please report any <a href="https://github.com/pdmosses/agda-material/issues/">issues</a> with using Agda-Material, including all relevant
 details. <a href="https://github.com/pdmosses/agda-material/pulls/">Pull requests</a> for addressing reported issues are welcome.
