@@ -14,6 +14,7 @@ use_directory_urls: true
 
 theme:
   name: material
+  font: false # use system fonts instead of Roboto
   palette: 
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -45,11 +46,12 @@ theme:
     - search.suggest
 
 extra_css:
+# KaTeX:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+# Agda:
   - stylesheets/Agda-material.css
   - stylesheets/Agda-md.css
   - stylesheets/Agda-md-dark.css
-# KaTeX:
-  - https://unpkg.com/katex@0/dist/katex.min.css
 
 extra_javascript:
   - javascripts/highlight-hover.js

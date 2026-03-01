@@ -14,9 +14,17 @@ Copy *all* changes that do not conflict with your own changes.
 
 ----
 
-## [Unreleased] – 2026-02-01
+## [Unreleased] – 2026-03-01
 
-No code changes.
+No unreleased code updates.
+
+## [0.1.2] – 2026-03-01
+
+### Changed
+
+- Use system fonts instead of Roboto, partly to improve the rendering of `\'`.
+- Use `font-size: 1em` for KaTeX math, overriding default `font-size: 1.21em`.
+- Load `Agda-material.css`after KaTeX CSS, to allow overriding.
 
 ----
 
@@ -126,6 +134,7 @@ in v0.1.0 regarding use of the `Makefile`:
 [semantic versioning]: https://semver.org
 [version 0.0]: https://pdmosses.github.io/agda-material/0.0/
 
-[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/pdmosses/agda-material/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/pdmosses/agda-material/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pdmosses/agda-material/releases/tag/v0.1.0
