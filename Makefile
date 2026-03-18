@@ -388,12 +388,14 @@ endif
 # are treated as ordinary versions, whereas other identifiers, like devel,
 # are treated as development versions, and placed above ordinary versions.
 
-# `make default VERSION=...` simply sets a deployed VERSION as the default,
-# without deploying the generated website.
+# `make default VERSION=...` sets a previously deployed version as the default,
+# *without* deploying the generated website. It also creates or updates the
+# alias `default` to point to the default version.
 
 .PHONY: default
 default:
 ifdef VERSION
+	@mike alias $(VERSION) default --update-aliases
 	@mike set-default $(VERSION) --allow-empty --push
 	@echo "The default version is now $(VERSION)"
 else
@@ -495,19 +497,17 @@ make deploy
 make deploy VERSION=v
   Deploy version v of the generated website on GitHub Pages
 make default VERSION=v
-  Set version v as the default version
+  Set version v as the default version, set the alias `default` to it.
 make delete VERSION=v
   Remove deployed version v from GitHub Pages
 make delete-all-deployed
-  Remove the deployed website from GitHub Pages
+  Remove all deployed versions from GitHub Pages
 make list-all-deployed
   Display a list of all deployed versions
 make clean-all
   Remove all generated files
 
 endef
-
-# Note: all make commands load $(ROOT) to initialize HTML-FILES
 
 # `make debug` shows the values of most of the variables assigned in this file:
 

@@ -62,8 +62,8 @@ It should produce similar results with other recent versions
 
 ## Platform dependencies
 
-Agda-Material has been developed and tested on MacBook laptops
-with Apple M1 and M3 chips running macOS Sequoia (15.6) with CLI Tools.
+Agda-Material has been developed and tested on MacBook laptops with Apple M1
+and M3 chips running macOS Sequoia (15.6) and Tahoe (26.2) with CLI Tools.
 
 Please report any [issues] with using Agda-Material on other platforms,
 including all relevant details. Pull requests for addressing such issues
@@ -165,6 +165,18 @@ In the `docs` directory:
 
 See the [User Guide] for a summary of how to generate websites with
 Agda-Material.
+
+## Upgrading to the latest version
+
+Compare the current contents of the following files in the `main` branch with
+the copies in your fork or clone of this repository:
+
+- `docs/javascripts/*.js`
+- `docs/stylesheets/*.css`
+- `Makefile`
+- `mkdocs.yml`
+
+Copy *all* changes that do not conflict with your own changes.
 
 ## Contributing
 
