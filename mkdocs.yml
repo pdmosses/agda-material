@@ -54,11 +54,12 @@ extra_css:
   - stylesheets/Agda-md-dark.css
 
 extra_javascript:
-  - javascripts/highlight-hover.js
 # KaTeX:
   - javascripts/katex.js
   - https://unpkg.com/katex@0/dist/katex.min.js
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+# Agda:
+  - javascripts/highlight-hover.js
 
 markdown_extensions:
   - admonition
