@@ -1,5 +1,15 @@
 # CHANGELOG
 
+The `main` branch of the Agda-Material repository may have been updated since
+the latest release; significant unreleased updates are listed below.
+
+The latest *numbered* version of the generated website is built and deployed
+from the latest commit of the `main` branch.
+
+Major updates are generally tested in the `dev` branch of the repository before
+they are merged into the `main` branch. The `dev` version of the generated
+website is built and deployed from the latest commit of the `dev` branch.
+
 ## Upgrading to the latest version
 
 Compare the current contents of the following files in the `main` branch with
@@ -14,9 +24,31 @@ Copy *all* changes that do not conflict with your own changes.
 
 ----
 
-## [Unreleased] – 2026-03-01
+## [Unreleased] – 2026-03-19
 
-No unreleased code updates.
+### Added
+
+- In the `Makefile`, the variable `INDEX` has been added (default `index`).
+  When HTML pages are generated at the top level of the `docs` directory,
+  the page generated from an `index` module is located at `docs/$(INDEX).html`.
+  Change the value of `INDEX` to avoid generating a page at `docs/index.html`,
+  which would override the website home page (and could also interfere with
+  version selection on generated websites).
+
+### Changed
+
+!!! warning
+    **Some of the `make` commands for version management have been changed!**
+
+- Use `make start-versioning` (instead of `make delete-all-deployed`)
+  to clear a previously-deployed *unversioned* website before deploying
+  an initial version. To clear a *versioned* website now requires direct use
+  of the `mike` application.
+- Use `make list-versions` instead of `make list-all-deployed`.
+
+### Fixed
+
+- Refactor the `Makefile`.
 
 ## [0.1.2] – 2026-03-01
 
@@ -30,7 +62,7 @@ No unreleased code updates.
 
 ## [0.1.1] – 2026-02-01
 
-This release includes all additions, changes, and fixes that have been made
+Each release includes all additions, changes, and fixes that have been made
 in the `main` branch since the previous release.
 
 ### Added

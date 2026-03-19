@@ -5,56 +5,48 @@ with highlighted listings of your (plain and/or literate) Agda source files.
 
 !!! note
 
-    This version generates *web pages* from:
-    
-    - plain Agda files (`*.agda`), and
-    - literate Agda files with LaTeX (`*.lagda`) or Markdown (`*.lagda.md`)
-      markup.
-
-    Imports of other kinds of literate Agda files result in missing pages,
-    and broken links in generated pages!
+    Agda-Material generates web pages from plain Agda and/or literate
+    **LaTeX** (`*.lagda`, `*.lagda.tex`) or **Markdown** (`*.lagda.md`) Agda.
+    Imports of other kinds of literate Agda will result in missing pages
+    and broken links!
 
 It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material [README] page)
 together with your Agda source files.
 
 All the `make` commands shown below are to be run from the base directory
-of your local clone.
+of your project.
 
 !!! tip
 
-    If you have not already checked your Agda code, run `make check`.
+    If you have not already checked your Agda code, first run 
+    **`make check`**.
 
-    Then run `make web` to generate web pages, and `make serve` to browse them.
+    Then run **`make web`** to generate web pages, and **`make serve`**
+    to browse them.
 
     When you are satisfied with the navigation and content of the website,
-    run `make deploy` to publish it on GitHub Pages.
+    run **`make deploy`** to publish it on GitHub Pages.
 
-    If you want to publish multiple versions of your website,
-    choose a version numbering scheme and the number for the first version,
-    then run `make delete-all-deployed` to replace the previously deployed
-    website on GitHub Pages by a clean site *before* deploying your first
-    version with `make deploy VERSION=...`.
+    If you want to publish multiple **versions** of your website,
+    run **`make start-versioning`** to clear the previously deployed
+    unversioned website on GitHub Pages *before* deploying the initial version
+    with **`make deploy VERSION=...`**.
 
-## Generate and browse a website
+## Check, generate, browse, and deploy
 
-| `make`       | Effect                                                 |
-| ------------ | ------------------------------------------------------ |
-| `check`      | load the ROOT source file(s) and all imported files    |
-| `web`        | generate web pages listing ROOT and all imported files |
-| `serve`      | browse the generated web pages using a local server    |
-
-## Deploy a generated website
-
-| `make`              | Effect                                              |
-| ------------------- | --------------------------------------------------- |
-| `deploy`            | deploy an *unversioned* website on GitHub Pages[^2] |
-| `deploy VERSION=v`  | deploy version `v` of the website on GitHub Pages   |
-| `default VERSION=v` | set alias `default` and redirect the root to `v`    |
+| Command       | Effect                                              |
+| ------------- | --------------------------------------------------- |
+| `make check`  | load the `ROOT` module(s) and all imported modules  |
+| `make web`    | generate hyperlinked highlighted web pages          |
+| `make serve`  | browse the generated web pages using a local server |
+| `make deploy` | deploy an *unversioned* website on GitHub Pages[^2] |
 
 [^2]:
     In case of an [`RPC failed`][RPC failed] error, try running
     `git config --global http.postBuffer 10g`.
+
+## Versioning
 
 The [mike] utility makes it easy to deploy multiple versions of your website.
 It is enabled by the following setting in `mkdocs.yml`:
@@ -78,36 +70,31 @@ updated or deleted.
 If the specified version has already been deployed, redeployment updates the
 contents to the current generated website.
 
-!!! warning
-
-    If you run `make clean-all` to delete all the generated files,
-    running `make deploy` replaces the generated website by an empty site!
-
-## Manage versions
-
-| `make`                | Effect                                         |
-| --------------------- | ---------------------------------------------- |
-| `delete VERSION=v`    | remove deployed version `v` from GitHub Pages  |
-| `delete-all-deployed` | remove all deployed versions from GitHub Pages |
-| `list-all-deployed`   | display a list of all deployed versions        |
-
 The Agda-Material `make` commands support a simple form of version management.
 For further version management commands, see the [mike] documentation.
 
+| Command                  | Effect                                           |
+| ------------------------ | ------------------------------------------------ |
+| `make start-versioning`  | clear any *unversioned* deployed website         |
+| `make deploy VERSION=v`  | deploy version `v` of the website                |
+| `make default VERSION=v` | set alias `default` and redirect the root to `v` |
+| `make delete VERSION=v`  | remove deployed version `v`                      |
+| `make list-versions`     | display a list of all deployed versions          |
+
 !!! warning
 
-    Deleting the `default` version can break existing links to your website!
+    ***Deleting the `default` version can break existing links to your website!***
 
     To avoid that, first use `make default VERSION=v'` to change the default to
     a different version.
 
 ## Miscellaneous commands
 
-| `make`       | Effect                                       |
-| ------------ | -------------------------------------------- |
-| `clean-all`  | remove all generated files                   |
-| `help`       | show explanations of the main targets        |
-| `debug`      | show values of variables (for developer use) |
+| Command           | Effect                                                 |
+| ----------------- | ------------------------------------------------------ |
+| `make clean-all`  | remove all generated files                   |
+| `make help`       | show explanations of the main targets        |
+| `make debug`      | show values of variables (for developer use) |
 
 [README]: README.md
 [mike]: https://github.com/jimporter/mike/

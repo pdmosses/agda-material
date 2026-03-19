@@ -6,9 +6,9 @@ when generating a website with highlighted, hyperlinked listings of Agda code.
 This is the README page for the repository [pdmosses/agda-material].
 It explains how to create a repository for using Agda-Material.
 
-See the [About] page for an overview of motivation and features.
+See the **[About]** page for an overview of motivation and features.
 
-See the [User Guide] for a summary of how to generate websites with
+See the **[User Guide]** for a summary of how to generate websites with
 Agda-Material.
 
 ## Repository contents
@@ -33,16 +33,20 @@ The repository does not contain any generated files.
 
 By default, Agda-Material creates generated files in the following directories:
 
-- `docs/html`: HTML files
-- `docs/md`: Markdown files
-- `site`: website
+- `docs/html`: HTML pages
+- `docs/md`: Markdown pages
+- `site`: built website
 - `temp`: temporary files
 
 The default directories for Agda source code and generated files can be changed
-by editing the `Makefile`.
+by editing the `Makefile`. This affects the URLs of the generated web pages:
+by default, the URL of the HTML page generated from a module named `A.B.C` is
+of the form `.../html/A.B.C.html`, and that of the corresponding MD page is
+of the form `.../md/A/B/C/`, where `...` is the website URL (including the
+version identifier, if any).
 
 The location of the directory `docs` can be configured by setting `docs_dir` in
-`mkdocs.yml`.
+`mkdocs.yml`; it does not affect the URLs.
 
 ## Software dependencies
 
@@ -63,7 +67,7 @@ It should produce similar results with other recent versions
 ## Platform dependencies
 
 Agda-Material has been developed and tested on MacBook laptops with Apple M1
-and M3 chips running macOS Sequoia (15.6) and Tahoe (26.3) with CLI Tools.
+and M3 chips running macOS Tahoe (26.3) with CLI Tools.
 
 Please report any [issues] with using Agda-Material on other platforms,
 including all relevant details. Pull requests for addressing such issues
@@ -153,15 +157,22 @@ In `mkdocs.yml`, update the repository settings:
     - set the value of `ROOT` to the *name* of a module that imports
       all the other modules to be included in your website.
     
-    Both `DIR` and `ROOT` can be comma-separated lists.
+    Both `DIR` and `ROOT` can be a comma-separated list: web pages are
+    generated for all modules in the `ROOT` list, and for all imported modules
+    found either in the directories in `DIR` list or in libraries.
 
 ### Update Markdown source files and navigation
 
-In the `docs` directory:
+Replace all `docs/*.md` files by your own Markdown file(s).
 
-- replace all `*.md` files by your own file(s);
-- your website home page should be named `index.md` or `README.md`;
-- update `.nav.yml` to create your desired navigation hierarchy.
+- Your website home page should be named `docs/index.md` or `docs/README.md`.
+- Update `docs/.nav.yml` to create your desired navigation hierarchy.[^awesome-nav]
+
+[^awesome-nav]:
+    You may prefer to specify only the upper levels in `docs/.nav.yml`,
+    leaving the lower levels to implicitly reflect your directory hierarchy
+    (with pages listed in alphabetical order). See the [Awesome-nav] plugin
+    documentation for details of the possibilities.
 
 See the [User Guide] for a summary of how to generate websites with
 Agda-Material.
