@@ -509,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="https://github.com/pdmosses/agda-material/blob/main/CHANGELOG.md" class="md-nav__link">
+      <a href="https://github.com/pdmosses/agda-material/blob/dev/CHANGELOG.md" class="md-nav__link">
         
   
   
@@ -2121,8 +2121,8 @@
 when generating a website with highlighted, hyperlinked listings of Agda code.</p>
 <p>This is the README page for the repository <a href="https://github.com/pdmosses/agda-material/">pdmosses/agda-material</a>.
 It explains how to create a repository for using Agda-Material.</p>
-<p>See the <a href="about/">About</a> page for an overview of motivation and features.</p>
-<p>See the <a href="user-guide/">User Guide</a> for a summary of how to generate websites with
+<p>See the <strong><a href="about/">About</a></strong> page for an overview of motivation and features.</p>
+<p>See the <strong><a href="user-guide/">User Guide</a></strong> for a summary of how to generate websites with
 Agda-Material.</p>
 <h2 id="repository-contents">Repository contents</h2>
 <p>The repository contains the following files:</p>
@@ -2146,15 +2146,19 @@ Agda-Material.</p>
 <p>The repository does not contain any generated files.</p>
 <p>By default, Agda-Material creates generated files in the following directories:</p>
 <ul>
-<li><code>docs/html</code>: HTML files</li>
-<li><code>docs/md</code>: Markdown files</li>
-<li><code>site</code>: website</li>
+<li><code>docs/html</code>: HTML pages</li>
+<li><code>docs/md</code>: Markdown pages</li>
+<li><code>site</code>: built website</li>
 <li><code>temp</code>: temporary files</li>
 </ul>
 <p>The default directories for Agda source code and generated files can be changed
-by editing the <code>Makefile</code>.</p>
+by editing the <code>Makefile</code>. This affects the URLs of the generated web pages:
+by default, the URL of the HTML page generated from a module named <code>A.B.C</code> is
+of the form <code>.../html/A.B.C.html</code>, and that of the corresponding MD page is
+of the form <code>.../md/A/B/C/</code>, where <code>...</code> is the website URL (including the
+version identifier, if any).</p>
 <p>The location of the directory <code>docs</code> can be configured by setting <code>docs_dir</code> in
-<code>mkdocs.yml</code>.</p>
+<code>mkdocs.yml</code>; it does not affect the URLs.</p>
 <h2 id="software-dependencies">Software dependencies</h2>
 <p>Agda-Material has been tested with the software versions listed below.
 It should produce similar results with other recent versions
@@ -2172,7 +2176,7 @@ It should produce similar results with other recent versions
 </ul>
 <h2 id="platform-dependencies">Platform dependencies</h2>
 <p>Agda-Material has been developed and tested on MacBook laptops with Apple M1
-and M3 chips running macOS Sequoia (15.6) and Tahoe (26.3) with CLI Tools.</p>
+and M3 chips running macOS Tahoe (26.3) with CLI Tools.</p>
 <p>Please report any <a href="https://github.com/pdmosses/agda-material/issues/">issues</a> with using Agda-Material on other platforms,
 including all relevant details. Pull requests for addressing such issues
 are welcome.</p>
@@ -2258,15 +2262,16 @@ make<span class="w"> </span>serve
 <li>set the value of <code>ROOT</code> to the <em>name</em> of a module that imports
   all the other modules to be included in your website.</li>
 </ul>
-<p>Both <code>DIR</code> and <code>ROOT</code> can be comma-separated lists.</p>
+<p>Both <code>DIR</code> and <code>ROOT</code> can be a comma-separated list: web pages are
+generated for all modules in the <code>ROOT</code> list, and for all imported modules
+found either in the directories in <code>DIR</code> list or in libraries.</p>
 </li>
 </ul>
 <h3 id="update-markdown-source-files-and-navigation">Update Markdown source files and navigation</h3>
-<p>In the <code>docs</code> directory:</p>
+<p>Replace all <code>docs/*.md</code> files by your own Markdown file(s).</p>
 <ul>
-<li>replace all <code>*.md</code> files by your own file(s);</li>
-<li>your website home page should be named <code>index.md</code> or <code>README.md</code>;</li>
-<li>update <code>.nav.yml</code> to create your desired navigation hierarchy.</li>
+<li>Your website home page should be named <code>docs/index.md</code> or <code>docs/README.md</code>.</li>
+<li>Update <code>docs/.nav.yml</code> to create your desired navigation hierarchy.<sup id="fnref:awesome-nav"><a class="footnote-ref" href="#fn:awesome-nav">1</a></sup></li>
 </ul>
 <p>See the <a href="user-guide/">User Guide</a> for a summary of how to generate websites with
 Agda-Material.</p>
@@ -2289,6 +2294,17 @@ announcements about Agda-Material, and links to websites generated using it.</p>
 <p>Peter Mosses</p>
 <p><a href="mailto:p.d.mosses@tudelft.nl">p.d.mosses@tudelft.nl</a></p>
 <p><a href="https://pdmosses.github.io">pdmosses.github.io</a></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:awesome-nav">
+<p>You may prefer to specify only the upper levels in <code>docs/.nav.yml</code>,
+leaving the lower levels to implicitly reflect your directory hierarchy
+(with pages listed in alphabetical order). See the <a href="https://lukasgeiter.github.io/mkdocs-awesome-nav/">Awesome-nav</a> plugin
+documentation for details of the possibilities.&#160;<a class="footnote-backref" href="#fnref:awesome-nav" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 

@@ -543,10 +543,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#generate-and-browse-a-website" class="md-nav__link">
+  <a href="#check-generate-browse-and-deploy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generate and browse a website
+        Check, generate, browse, and deploy
       
     </span>
   </a>
@@ -554,21 +554,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-a-generated-website" class="md-nav__link">
+  <a href="#versioning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deploy a generated website
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#manage-versions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Manage versions
+        Versioning
       
     </span>
   </a>
@@ -602,7 +591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="https://github.com/pdmosses/agda-material/blob/main/CHANGELOG.md" class="md-nav__link">
+      <a href="https://github.com/pdmosses/agda-material/blob/dev/CHANGELOG.md" class="md-nav__link">
         
   
   
@@ -2018,10 +2007,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#generate-and-browse-a-website" class="md-nav__link">
+  <a href="#check-generate-browse-and-deploy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generate and browse a website
+        Check, generate, browse, and deploy
       
     </span>
   </a>
@@ -2029,21 +2018,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-a-generated-website" class="md-nav__link">
+  <a href="#versioning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deploy a generated website
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#manage-versions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Manage versions
+        Versioning
       
     </span>
   </a>
@@ -2092,78 +2070,57 @@
 with highlighted listings of your (plain and/or literate) Agda source files.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This version generates <em>web pages</em> from:</p>
-<ul>
-<li>plain Agda files (<code>*.agda</code>), and</li>
-<li>literate Agda files with LaTeX (<code>*.lagda</code>) or Markdown (<code>*.lagda.md</code>)
-  markup.</li>
-</ul>
-<p>Imports of other kinds of literate Agda files result in missing pages,
-and broken links in generated pages!</p>
+<p>Agda-Material generates web pages from plain Agda and/or literate
+<strong>LaTeX</strong> (<code>*.lagda</code>, <code>*.lagda.tex</code>) or <strong>Markdown</strong> (<code>*.lagda.md</code>) Agda.
+Imports of other kinds of literate Agda will result in missing pages
+and broken links!</p>
 </div>
 <p>It is assumed that you have a local clone of a GitHub repository that includes
 the required directories and files (see the Agda-Material <a href="../">README</a> page)
 together with your Agda source files.</p>
 <p>All the <code>make</code> commands shown below are to be run from the base directory
-of your local clone.</p>
+of your project.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If you have not already checked your Agda code, run <code>make check</code>.</p>
-<p>Then run <code>make web</code> to generate web pages, and <code>make serve</code> to browse them.</p>
+<p>If you have not already checked your Agda code, first run 
+<strong><code>make check</code></strong>.</p>
+<p>Then run <strong><code>make web</code></strong> to generate web pages, and <strong><code>make serve</code></strong>
+to browse them.</p>
 <p>When you are satisfied with the navigation and content of the website,
-run <code>make deploy</code> to publish it on GitHub Pages.</p>
-<p>If you want to publish multiple versions of your website,
-choose a version numbering scheme and the number for the first version,
-then run <code>make delete-all-deployed</code> to replace the previously deployed
-website on GitHub Pages by a clean site <em>before</em> deploying your first
-version with <code>make deploy VERSION=...</code>.</p>
+run <strong><code>make deploy</code></strong> to publish it on GitHub Pages.</p>
+<p>If you want to publish multiple <strong>versions</strong> of your website,
+run <strong><code>make start-versioning</code></strong> to clear the previously deployed
+unversioned website on GitHub Pages <em>before</em> deploying the initial version
+with <strong><code>make deploy VERSION=...</code></strong>.</p>
 </div>
-<h2 id="generate-and-browse-a-website">Generate and browse a website</h2>
+<h2 id="check-generate-browse-and-deploy">Check, generate, browse, and deploy</h2>
 <table>
 <thead>
 <tr>
-<th><code>make</code></th>
+<th>Command</th>
 <th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>check</code></td>
-<td>load the ROOT source file(s) and all imported files</td>
+<td><code>make check</code></td>
+<td>load the <code>ROOT</code> module(s) and all imported modules</td>
 </tr>
 <tr>
-<td><code>web</code></td>
-<td>generate web pages listing ROOT and all imported files</td>
+<td><code>make web</code></td>
+<td>generate hyperlinked highlighted web pages</td>
 </tr>
 <tr>
-<td><code>serve</code></td>
+<td><code>make serve</code></td>
 <td>browse the generated web pages using a local server</td>
 </tr>
-</tbody>
-</table>
-<h2 id="deploy-a-generated-website">Deploy a generated website</h2>
-<table>
-<thead>
 <tr>
-<th><code>make</code></th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>deploy</code></td>
+<td><code>make deploy</code></td>
 <td>deploy an <em>unversioned</em> website on GitHub Pages<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">1</a></sup></td>
 </tr>
-<tr>
-<td><code>deploy VERSION=v</code></td>
-<td>deploy version <code>v</code> of the website on GitHub Pages</td>
-</tr>
-<tr>
-<td><code>default VERSION=v</code></td>
-<td>set alias <code>default</code> and redirect the root to <code>v</code></td>
-</tr>
 </tbody>
 </table>
+<h2 id="versioning">Versioning</h2>
 <p>The <a href="https://github.com/jimporter/mike/">mike</a> utility makes it easy to deploy multiple versions of your website.
 It is enabled by the following setting in <code>mkdocs.yml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">extra</span><span class="p">:</span>
@@ -2179,39 +2136,41 @@ website remain untouched. Deployed versions can however be subsequently
 updated or deleted.</p>
 <p>If the specified version has already been deployed, redeployment updates the
 contents to the current generated website.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If you run <code>make clean-all</code> to delete all the generated files,
-running <code>make deploy</code> replaces the generated website by an empty site!</p>
-</div>
-<h2 id="manage-versions">Manage versions</h2>
+<p>The Agda-Material <code>make</code> commands support a simple form of version management.
+For further version management commands, see the <a href="https://github.com/jimporter/mike/">mike</a> documentation.</p>
 <table>
 <thead>
 <tr>
-<th><code>make</code></th>
+<th>Command</th>
 <th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>delete VERSION=v</code></td>
-<td>remove deployed version <code>v</code> from GitHub Pages</td>
+<td><code>make start-versioning</code></td>
+<td>clear any <em>unversioned</em> deployed website</td>
 </tr>
 <tr>
-<td><code>delete-all-deployed</code></td>
-<td>remove all deployed versions from GitHub Pages</td>
+<td><code>make deploy VERSION=v</code></td>
+<td>deploy version <code>v</code> of the website</td>
 </tr>
 <tr>
-<td><code>list-all-deployed</code></td>
+<td><code>make default VERSION=v</code></td>
+<td>set alias <code>default</code> and redirect the root to <code>v</code></td>
+</tr>
+<tr>
+<td><code>make delete VERSION=v</code></td>
+<td>remove deployed version <code>v</code></td>
+</tr>
+<tr>
+<td><code>make list-versions</code></td>
 <td>display a list of all deployed versions</td>
 </tr>
 </tbody>
 </table>
-<p>The Agda-Material <code>make</code> commands support a simple form of version management.
-For further version management commands, see the <a href="https://github.com/jimporter/mike/">mike</a> documentation.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Deleting the <code>default</code> version can break existing links to your website!</p>
+<p><strong><em>Deleting the <code>default</code> version can break existing links to your website!</em></strong></p>
 <p>To avoid that, first use <code>make default VERSION=v'</code> to change the default to
 a different version.</p>
 </div>
@@ -2219,21 +2178,21 @@ a different version.</p>
 <table>
 <thead>
 <tr>
-<th><code>make</code></th>
+<th>Command</th>
 <th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>clean-all</code></td>
+<td><code>make clean-all</code></td>
 <td>remove all generated files</td>
 </tr>
 <tr>
-<td><code>help</code></td>
+<td><code>make help</code></td>
 <td>show explanations of the main targets</td>
 </tr>
 <tr>
-<td><code>debug</code></td>
+<td><code>make debug</code></td>
 <td>show values of variables (for developer use)</td>
 </tr>
 </tbody>
