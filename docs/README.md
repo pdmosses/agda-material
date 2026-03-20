@@ -55,14 +55,22 @@ It should produce similar results with other recent versions
 (although [Material for MkDocs] v9.7 has many more features than v9.6).
 
 - [Agda] (2.8.0)
-- [Awesome-nav] (3.2.0)
+- [Awesome-nav] (3.3.0)
 - [GNU Make] (3.81)
-- [Material for MkDocs] (9.7.1)
+- [Material for MkDocs] (9.7.6)
 - [mike] (2.0.0)
 - [MkDocs] (1.6.1)
-- [pip] (25.3)
+- [pip] (26.0.1)
 - [Python 3] (3.14.0)
 - [sd] (1.0.0)
+
+!!! tip
+    Starting in Material for Mkdocs 9.7.2, a warning is printed during a build
+    about the upcoming MkDocs 2.0 changes. To disable this warning:
+
+    ```sh
+    export NO_MKDOCS_2_WARNING=1
+    ```
 
 ## Platform dependencies
 
