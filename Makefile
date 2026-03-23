@@ -486,10 +486,9 @@ endif
 clean-md:
 ifeq ($(MD),docs)
 	@echo "Warning: manually remove any obsolete docs/**/index.md files"
-# 	@rm -rf $(shell \
-# 		    find docs/*/* -name index.md -and ! -path docs/Library/* -and \
-#				! -path docs/Library/* -and ! -path docs/Test/* | \
-# 		    sd '(docs/[^/]*)/.*index\.md' '$$1' | sort -u)
+# 	@find docs/*/* -name index.md \
+# 	    ! -path docs/Library/* ! -path docs/Test/* -delete
+# 	@find docs/* -empty -type d -delete
 else
 	@rm -rf $(MD)
 endif
