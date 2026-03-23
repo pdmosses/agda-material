@@ -44,7 +44,7 @@ can generate, browse, and deploy a website using simple `make` comamnds:
   - **Optional versioning**:
     `make deploy VERSION=...` publishes or updates the specified version.
 
-### Generated websites
+## Generated websites
 
 The websites have the following features.
 
