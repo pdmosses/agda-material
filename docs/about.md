@@ -81,7 +81,7 @@ The websites have the following features.
     Search works best for websites where each page is divided into small
     sections. It is currently of limited use for websites generated from
     large Agda modules. Moreover, it appears that some ASCII characters
-    do not produce the expected results (evn when escaped by `\`).
+    do not produce the expected results (even when escaped by `\`).
 
   [README]: README.md
   [User Guide]: user-guide.md
