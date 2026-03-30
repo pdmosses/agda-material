@@ -34,7 +34,7 @@ theme:
   features:
     - content.code.copy
     - navigation.expand
-    - navigation.indexes
+    # - navigation.indexes
     - navigation.instant
     - navigation.instant.progress
     - navigation.path

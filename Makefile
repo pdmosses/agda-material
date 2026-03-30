@@ -66,7 +66,7 @@ https://pdmosses.github.io/agda-material/
 # ARGUMENT DEFAULT VALUES
 
 DIR     := agda
-ROOT    := Test.index
+ROOT    := index
 
 # Both DIR and ROOT may be comma-separated lists.
 # The top level of the ROOT module(s) should be in DIR.
@@ -264,11 +264,14 @@ ifneq ($(filter docs docs/%,$(HTML)),)
 	for f in $(HTML)/*.html; do \
 	    p=$${f#$(HTML)/}; \
 	    m=$${p%.*}; \
-	    if [[ "$$m" == *\.index ]]; \
-	        then m=$${m%.index}; i="\.index"; \
-	        else i=""; \
+	    if [[ "$$m" == index ]]; then \
+		m=""; i="index"; \
+	    elif [[ "$$m" == *\.index ]]; then \
+		m=$${m%.index}; i=".index"; \
+	    else \
+		i=""; \
 	    fi; \
-	    u=$(patsubst docs/%,%,$(MD)/)$${m//\./\/}/; \
+	    u=$(patsubst docs/%,%,$(MD)/)$${m//\./\/}/; u=$${u//\/\///}; \
 	    sd "<a id=\"([^\"]+)\" href=\"$$m$$i.html\" class=\"Module\">" \
 	       "<a id=\"$$1\" href=\"$$d$$u\" class=\"Module Definition\">" \
 	       $$f; \
@@ -345,17 +348,27 @@ gen-md: clean-md
 #	When HTML is a sub-directory of docs, link the module name definition
 #	in MD to the HTML page.
 #
-	@r=$$(echo $(patsubst docs/%,%,$(MD)/) | sd '[^/]*/' '../'); \
+	@h=$(patsubst docs/%,%,$(HTML)/); \
+	r=$$(echo $(patsubst docs/%,%,$(MD)/) | sd '[^/]*/' '../'); \
+	echo "h=$$h"; echo "r=$$r"; \
+	\
 	for f in $(TEMP)/*; do \
 	  p=$${f#$(TEMP)/}; \
 	  m=$${p%.*}; \
-	  if [[ "$$m" == *\.index ]]; \
-	    then m=$${m%.index}; i=".index"; \
-	    else i=""; \
-	  fi; \
-	  t=$(MD)/$${m//\./\/}/index.md; \
-	  d=$$(echo $$m | sd '[^.]*.' '../'); \
+	  q=$${m##*.}; \
+	  t=$(MD)/$${m//\./\/}.md; \
 	  mkdir -p $$(dirname $$t) && mv -f $$f $$t;  \
+	  \
+	  if [[ "$$m" == index ]]; then \
+	    m=""; i="index"; \
+	  elif [[ "$$m" == *\.index ]]; then \
+	    m=$${m%.index}; i=".index"; \
+	  else \
+	    i=""; \
+	  fi; \
+	  u=$${m//\./\/}/; \
+	  d=$$(echo $$m | sd '[^.]*.' '../'); \
+	  \
 	  case $$f in \
 	    *.html) \
 		sd '\A' '<pre class="Agda"><code class="Agda">' $$t; \
@@ -381,9 +394,9 @@ gen-md: clean-md
 	  esac; \
 	  \
 	  if grep -q '^# '  $$t; then \
-	    sd -- '\A' "---\ntitle: $$m\nhide: toc\n---\n\n" $$t; \
+	    sd -- '\A' "---\ntitle: $$q\nhide: toc\n---\n\n" $$t; \
 	  else \
-	    sd -- '\A' "---\ntitle: $$m\nhide: toc\n---\n\n# $$m\n\n" $$t; \
+	    sd -- '\A' "---\ntitle: $$q\nhide: toc\n---\n\n# $$m\n\n" $$t; \
 	  fi; \
 	  \
 	  sd '(href="[^:"]+)\.html' '$$1/' $$t; \
@@ -391,17 +404,17 @@ gen-md: clean-md
 	  while grep -q 'href="[^:".][^:".]*\.' $$t; do \
 	    sd '(href="[^:".][^:".]*)\.' '$$1/' $$t; \
 	  done; \
-	  sd '(href="[^:"][^:"]*/)index/' '$$1' $$t; \
+	  sd '(href="[^:"]*)index/' '$$1' $$t; \
 	  sd "href=\"([^:\"][^:\"]*)\"" "href=\"$$d\$$1\"" $$t; \
 	  \
-	  u=$${m//\./\/}/; \
-	  h=$(patsubst docs/%,%,$(HTML)/); \
 	  if [ -z "$$h" ] || [ "$$h" != $(HTML)/ ]; then \
-	    if [ "$$m$$i" == index ]; then m=$(INDEX); fi; \
+	    if [ "$$m$$i" == index ]; then i=$(INDEX); u=""; fi; \
 	    sd "<a id=\"([^\"]+)\" href=\"$$d$$u\" class=\"Module\">" \
 	       "<a id=\"$$1\" href=\"$$d$$r$$h$$m$$i.html\" class=\"Module Definition\">" \
 	       $$t; \
 	  fi; \
+	  echo "f=$$f"; echo "p=$$p"; echo "q=$$q"; echo "m=$$m i=$$i"; \
+	  echo "t=$$t"; echo "d=$$d"; echo "u=$$u"; echo ""; \
 	done
 	@echo "Generated MD pages in $(MD)"
 
@@ -419,7 +432,7 @@ gen-md: clean-md
 
 .PHONY: serve
 serve:
-	@mkdocs serve --livereload
+	@NO_MKDOCS_2_WARNING=1 mkdocs serve --livereload
 
 ##############################################################################
 # DEPLOY AN UNVERSIONED WEBSITE
