@@ -4,7 +4,7 @@ nav:
     - md/index.md
     - md/*
   - Library:
-    - md/Agda/Primitive.md
+    - md/Agda/
   - HTML: html/index.html
 
 preserve_directory_names: true
