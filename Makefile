@@ -58,7 +58,8 @@ https://pdmosses.github.io/agda-material/
 # ROOT    Agda root module(s)
 # HTML    generated directory for HTML files
 # MD      generated directory for Markdown files
-# INDEX   used for index.html page when HTML = docs 
+# INDEX   $(INDEX).html used for index.html page when HTML = docs
+# SUFFIX  set when mkdocs.yml includes navigation.indexes feature
 # SITE    generated website
 # TEMP    temporary directory
 # VERSION used for managing versioned websites
@@ -532,7 +533,7 @@ serve:
 ifndef VERSION
 deploy:
 	@if [[ -z "$$(mike list)" ]]; then \
-	    mkdocs gh-deploy --force --ignore-version; \
+	    NO_MKDOCS_2_WARNING=1 mkdocs gh-deploy --force --ignore-version; \
 	else \
 	    echo "Error: unversioned deployment blocked by deployed version(s)."; \
 	    echo "To deploy an update to version ..., use 'make deploy VERSION=...'."; \
