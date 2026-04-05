@@ -59,7 +59,6 @@ https://pdmosses.github.io/agda-material/
 # HTML    generated directory for HTML files
 # MD      generated directory for Markdown files
 # INDEX   $(INDEX).html used for index.html page when HTML = docs
-# SUFFIX  set when mkdocs.yml includes navigation.indexes feature
 # SITE    generated website
 # TEMP    temporary directory
 # VERSION used for managing versioned websites
