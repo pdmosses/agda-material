@@ -91,14 +91,6 @@ INDEX := index
 # Set INDEX to a name that is different from all imported module names  
 # to generate the page at docs/$(INDEX).html and avoid these issues.
 
-# SUFFIX := /index
-
-# If mkdocs.yml includes the feature `navigation.indexes` and SUFFIX = `/index`
-# the navigation link to a module `A.index` is simply `A`. To produce explicit
-# navigation links to `index` modules, omit `navigation.indexes` in mkdocs.yml
-# and leave SUFFIX unset. (Other settings may produce unsatisfactory navigation
-# links for a non-index module `B` when `B` is also a directory of sub-modules.)
-
 SITE := site
 TEMP := temp
 
