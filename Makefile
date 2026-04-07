@@ -58,7 +58,10 @@ https://pdmosses.github.io/agda-material/
 # ROOT    Agda root module(s)
 # HTML    generated directory for HTML files
 # MD      generated directory for Markdown files
-# INDEX   $(INDEX).html used for index.html page when HTML = docs
+
+# HTML-INDEX  $(HTML-INDEX).html used for index.html page when HTML = docs
+# MD-INDEX    $(MD-INDEX).md     used for index.md   page when MD = docs
+
 # SITE    generated website
 # TEMP    temporary directory
 # VERSION used for managing versioned websites
@@ -71,8 +74,8 @@ ROOT := index
 # Both DIR and ROOT may be comma-separated lists.
 # The top level of the ROOT module(s) should be located in DIR.
 
-HTML := docs/html
-MD   := docs/md
+HTML := docs
+MD   := docs
 
 # N.B. The variables HTML and MD affect the URLs of the generated pages.
 # With the above defaults, the URLs of pages in the HTML section of a
@@ -82,13 +85,15 @@ MD   := docs/md
 # pages directly in `docs` may then overwrite non-generated files (depending
 # on the names of the Agda modules loaded by ROOT).
 
-INDEX := index
+HTML-INDEX := index_
+MD-INDEX   := index_
 
 # If ROOT = index and HTML = docs, the generated page at docs/index.html
 # overrides the website home page (automatically rendered by MkDocs from
 # docs/index.md or docs/README.md), and interferes with versioning.
-# Set INDEX to a name that is different from all imported module names  
-# to generate the page at docs/$(INDEX).html and avoid these issues.
+# Set HTML-INDEX to a name that is different from all imported module names  
+# to generate the page at docs/$(HTML-INDEX).html and avoid these issues;
+# similarly for MD-INDEX when MD = docs.
 
 SITE := site
 TEMP := temp
@@ -107,7 +112,7 @@ TEMP := temp
 # Top-level navigation links should be specified in docs/.nav.yml. Levels
 # specified using `*` are automatically generated from the directory hierarchy
 # of the Agda modules. The format of docs/.nav.yml is explained in the
-# Awesome-Nav documentation(https://lukasgeiter.github.io/mkdocs-awesome-nav/).
+# Awesome-Nav documentation (https://lukasgeiter.github.io/mkdocs-awesome-nav/).
 
 # N.B. docs/.nav.yml is *not* automatically updated when the settings of
 # ROOT, HTML, and MD are changed. When serving or deploying the generated
@@ -150,6 +155,11 @@ PROJECT := $(shell pwd)
 # and `$${...}` refers to a shell variable definition. Make removes newlines
 # in shell scripts, so end-of-line shell comments `# ...` cannot be used;
 # comments are written instead as dummy assignments of the form `_='# ...';`.
+
+# Set HIDE-INDEXES to true when mkdocs.yml includes the navigation.indexes feature:
+
+HIDE-INDEXES := $(shell grep -q '^[ \t]*- navigation\.indexes' mkdocs.yml \
+			&& echo true || echo false )
 
 # Relative paths to docs:
 
@@ -287,33 +297,25 @@ ifneq ($(filter docs docs/%,$(HTML)),)
 #	of the HTML page itself) by the URL of the corresponding MD page, and
 #	add 'Definition` to the `class`.
 # 	
-#	When f = docs/index.html, move f to docs/$(INDEX).html.
+#	When f = docs/index.html, move f to docs/$(HTML-INDEX).html.
 #
 	@for file in $(HTML)/*.html; do \
 	    _='# Get the path of the file relative to HTML:'; \
 	    path=$${file#$(HTML)/}; \
 	    _='# Get the module name by dropping the path extension:'; \
 	    module=$${path%.*}; \
-	    _='# If the module is an index module, update module and index variables:'; \
-	    if [[ "$${module}" == "index" ]]; then \
-		module=""; index="index"; \
-	    elif [[ "$${module}" == *\.index ]]; then \
-		module=$${module%.index}; index=".index"; \
-	    else \
-		index=""; \
-	    fi; \
 	    _='# Form the hierarchical URL of the MD page for the module'; \
 	    _='# by replacing `.`s with `/`s in the module name and adding `/`:'; \
 	    mdurl=$(DOCS2MD)$${module//\./\/}/; \
 	    _='# Replace `//` by `/`:'; \
 	    mdurl=$${mdurl//\/\///}; \
 	    _='# Replace the href and class in the (unique) anchor for the module name:'; \
-	    sd "<a id=\"([^\"]+)\" href=\"$${module}$${index}.html\" class=\"Module\">" \
+	    sd "<a id=\"([^\"]+)\" href=\"$${module}.html\" class=\"Module\">" \
 	       "<a id=\"$$1\" href=\"$(HTML2DOCS)$${mdurl}\" class=\"Module Definition\">" \
 	       $${file}; \
-	    _='# When HTML is `docs`, avoid the index module clashing with the home page:'; \
-	    if [[ "$${file}" == "docs/index.html" ]]; then \
-	        mv $${file} docs/$(INDEX).html; \
+	    _='# When HTML is `docs`, avoid the index module page clashing with the home page:'; \
+	    if [ "$(HTML)/$${module}" == "docs/index" ]; then \
+	        mv $${file} docs/$(HTML-INDEX).html; \
 	    fi; \
 	done
 # 	Append CSS for emphasising module definitions to Agda.css:
@@ -382,17 +384,24 @@ gen-md: clean-md
 	@for file in $(TEMP)/*; do \
 	    \
 	    _='# Get the module name by dropping TEMP/ and the file extension:'; \
-	    module=$${file#$(TEMP)/}; \
-	    module=$${module%.*}; \
+	    module=$${file#$(TEMP)/}; module=$${module%.*}; \
 	    _='# Get the module title by dropping all prefixes:'; \
 	    title=$${module##*.}; \
 	    _='# Get the module path by replacing `.`s with `/`s:'; \
 	    path=$${module//./\/}; \
-	    _='# Ensure the page for a non-leaf module is an index page:'; \
-	    if [ "$${title}" != "index" ] \
-	    && ( [ -n "$$(find . -path $(TEMP)/$${module}.*.* -quit)" ] || \
-	         [ -d $(MD)/$${path} ] ); then \
+	    _='# When HIDE-INDEXES, the navigation.indexes feature should be active,'; \
+	    _='# and non-leaf modules are forced to be index pages:'; \
+	    if  $(HIDE-INDEXES) \
+		&&  [ "$${title}" != "index" ] \
+		&&  (  [ -d $(MD)/$${path} ] \
+		    || [ -n "$$(find $(TEMP) -path '$(TEMP)/$${module}.*.*' -quit)" ] \
+		    ); \
+	    then \
+		_='# Use a hidden index page for the module:'; \
 		page=$(MD)/$${path}/index.md; \
+	    elif [ "$(MD)/$${module}" == "docs/index" ]; then \
+		_='# When MD is `docs`, avoid the index module page clashing with the home page:'; \
+	        page=docs/$(MD-INDEX).md; \
 	    else \
 		page=$(MD)/$${path}.md; \
 	    fi; \
@@ -433,7 +442,7 @@ gen-md: clean-md
 		;; \
 	    esac; \
 	    \
-	    _='# Set the page title, hiding the toc for non-Markdown files:'; \
+	    _='# Set the page title; for non-Markdown files, also hide the toc:'; \
 	    if [ "$${file##*.}" == "md" ]; then \
 		sd -- '\A' "---\ntitle: $${title}\n---\n\n" $${page}; \
 	    else \
@@ -450,9 +459,9 @@ gen-md: clean-md
 	    sd '(href="[^:"]*)index/' '$$1' $${page}; \
 	    \
 	    _='# Set the url of the page, relative to MD, and the htmlpagename:'; \
-	    if [ "$${module}" == "index" ]; then \
+	    if [ "$(HTML)/$${module}" == "docs/index" ]; then \
 		relurl=""; \
-		htmlpagename=$(INDEX); \
+		htmlpagename=$(HTML-INDEX); \
 	    else \
 		relurl=$${path%\/index}/; \
 		htmlpagename=$${module}; \
@@ -565,10 +574,12 @@ endif
 .PHONY: clean-md
 clean-md:
 ifeq ($(MD),docs)
-	@echo "Warning: manually remove any obsolete docs/**/index.md files"
-# 	@find docs/*/* -name index.md \
-# 	    ! -path docs/Library/* ! -path docs/Test/* -delete
-# 	@find docs/* -empty -type d -delete
+	@echo "Warning: manually remove any obsolete docs/**/*.md files"
+# 	@find docs/* -name *.md \
+# 	    ! -path docs/javascripts/* ! -path docs/stylesheets/* \
+# 	    ! -path docs/Library/* ! -path docs/Test/* \
+#	    -delete
+# 	@find docs/* -type d -empty -delete
 else
 	@rm -rf $(MD)
 endif
@@ -684,7 +695,7 @@ DIR:     $(DIR)
 ROOT:    $(ROOT)
 HTML:    $(HTML)
 MD:      $(MD)
-INDEX:   $(INDEX)
+INDEX:   $(HTML-INDEX)
 SITE:    $(SITE)
 TEMP:    $(TEMP)
 VERSION: $(VERSION)
@@ -693,6 +704,8 @@ DOCS2HTML: $(DOCS2HTML)
 DOCS2MD:   $(DOCS2MD)
 HTML2DOCS: $(HTML2DOCS)
 MD2DOCS:   $(MD2DOCS)
+
+HIDE-INDEXES: $(HIDE-INDEXES)
 
 INCLUDE-PATHS: $(strip $(INCLUDE-PATHS))
 ROOT-PATHS:    $(strip $(ROOT-PATHS))

@@ -1,6 +1,8 @@
 *.agdai
-/docs/html/
-/docs/md/
+/docs/*.css
+/docs/*.html
+/docs/*.js
+/docs/*/**/*.md
 /site
 /temp
 .DS_Store
