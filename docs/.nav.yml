@@ -1,11 +1,10 @@
 nav:
   - index.md
   - Modules:
-    - index_.md
-    - '*'
+    - md/
   - Library:
-    - Agda/
-  - HTML: index_.html
+    - md/Agda/
+  - HTML: html/index.html
 
 preserve_directory_names: true
 
