@@ -1,7 +1,6 @@
 nav:
   - index.md
-  - Modules:
-    - md/
+  - Modules: md/
   - Library:
     - md/Agda/
   - HTML: html/index.html
