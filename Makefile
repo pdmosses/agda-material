@@ -472,19 +472,24 @@ gen-md: clean-md
 	    modulepath=$${module//\./\/}; \
 	    \
 	    _='# When HIDE-INDEXES, non-leaf modules are always index pages:'; \
-	    if  $(HIDE-INDEXES) \
-		&&  [ "$${title}" != "index" ] \
-		&&  (echo "$${filelist}" | grep -q "$(TEMP)/$${module}\.[^.]*\.[^.]*"); \
+	    if  $(HIDE-INDEXES) && \
+		[ "$${title}" != "index" ] && \
+		(echo "$${filelist}" | grep -q "$(TEMP)/$${module}\.[^.]*\.[^.]*"); \
 	    then \
 		_='# Use a hidden index page for the module:'; \
 		mdpagepath=$${modulepath}/index; \
 		relurl=$${modulepath}/; \
 		page2md=$$(echo $${mdpagepath%\/*}/ | sd '[^/]*/' '../'); \
-	    elif [ "$${module}" == "index" ]; then \
-		_='# Avoid clash with an existing index.md file:'; \
+	    elif [ "$${module}" == "index" ] && \
+	         [ "$(MD-INDEX)" == "index" ]; then \
 	        mdpagepath=""; \
 		relurl=""; \
 		page2md=""; \
+	    elif [ "$${module}" == "index" ] && \
+	         [ "$(MD-INDEX)" != "index" ]; then \
+	        mdpagepath=""; \
+		relurl=""; \
+		page2md="../"; \
 	    elif [ "$${title}" == "index" ]; then \
 		mdpagepath=$${modulepath}; \
 		relurl=$${modulepath%\/index}/; \
@@ -495,7 +500,7 @@ gen-md: clean-md
 		page2md=$$(echo $${mdpagepath%\/*}/ | sd '[^/]*/' '../')../; \
 	    fi; \
 	    _='# Prefix local urls by the relative path to MD:'; \
-	    sd "href=\"([^:\"][^:\"]*)\"" "href=\"$${page2md}\$$1\"" $${file}; \
+	    sd "href=\"([^:\"]*)\"" "href=\"$${page2md}\$$1\"" $${file}; \
 	    \
 	    _='# If the HTML pages are included in the generated website:'; \
 	    if [ -z "$(DOCS2HTML)" ] || [ "$(DOCS2HTML)" != $(HTML)/ ]; then \
