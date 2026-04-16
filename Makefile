@@ -69,13 +69,13 @@ https://pdmosses.github.io/agda-material/
 # ARGUMENT DEFAULT VALUES
 
 DIR  := agda
-ROOT := index
+ROOT := index,Everything
 
 # Both DIR and ROOT may be comma-separated lists.
 # The top level of the ROOT module(s) should be located in DIR.
 
-HTML := docs/html
-MD   := docs/md
+HTML := docs
+MD   := docs
 
 # N.B. The variables HTML and MD affect the URLs of the generated pages.
 # With the above defaults, the URLs of pages in the HTML section of a
@@ -85,7 +85,7 @@ MD   := docs/md
 # pages directly in `docs` may then overwrite non-generated files (depending
 # on the names of the Agda modules loaded by ROOT).
 
-HTML-INDEX := index
+HTML-INDEX := index_
 MD-INDEX   := index
 
 # If ROOT = index and HTML = docs, the generated page at docs/index.html
@@ -308,32 +308,41 @@ ifneq ($(filter docs docs/%,$(HTML)),)
 	    path=$${file#$(TEMP)/}; \
 	    _='# Get the module name by dropping the path extension:'; \
 	    module=$${path%.*}; \
-	    _='# Get the url of the MD page for the module:'; \
-	    if [ "$${module}" == "index" ] && [ "$(MD-INDEX)" != "index" ]; then \
-		mdurl=$(DOCS2MD)$(MD-INDEX)/; \
+	    _='# Get modulepath by replacing `.`s with `/`s:'; \
+	    modulepath=$${module//\./\/}; \
+	    \
+	    if   [ "$${module}" == "index" ] && [ "$(MD-INDEX)" == "index" ] && \
+		 [ "$(HTML)" == "$(MD)" ]; then \
+		page2html="/../"; \
 	    else \
-		_='# Replace `.`s with `/`s and append `/`:'; \
-		modulepath=$(DOCS2MD)$${module//\./\/}; \
-		_='# Replace `.../index/` by `.../`:'; \
-		mdurl=$${modulepath%\/index}/; \
+		page2html=""; \
+	    fi; \
+	    \
+	    if   [ "$${module}" == "index" ] && [ "$(MD-INDEX)" == "index" ]; then \
+		relurl=""; \
+	    elif [ "$${module}" == "index" ] && [ "$(MD-INDEX)" != "index" ]; then \
+		relurl=$(MD-INDEX)/; \
+	    else \
+		relurl=$${modulepath%\/index}/; \
 	    fi; \
 	    _='# Replace the href and class in the (unique) anchor for the module name:'; \
 	    sd "<a id=\"([^\"]+)\" href=\"$${module}.html\" class=\"Module\">" \
-	       "<a id=\"$$1\" href=\"$(HTML2DOCS)$${mdurl}\" class=\"Module Definition\">" \
+	       "<a id=\"$$1\" href=\"$${page2html}$(HTML2DOCS)$(DOCS2MD)$${relurl}\" class=\"Module Definition\">" \
 	       $${file}; \
 	    _='# Move the file from TEMP to HTML:'; \
 	    if [ "$${module}" == "index" ]; then \
 		_='# Avoid clash with existing index.html file:'; \
-	        mv $${file} $(HTML)/$(HTML-INDEX).html; \
+	        mv -f $${file} $(HTML)/$(HTML-INDEX).html; \
 	    else \
-	        mv $${file} $(HTML)/$${module}.html; \
+	        mv -f $${file} $(HTML)/$${module}.html; \
 	    fi; \
 	    \
 	    if [ "$(ECHO)" == "html" ]; then \
 		echo "file=$${file}"; \
 		echo "path=$${path}"; \
 		echo "module=$${module}"; \
-		echo "mdurl=$${mdurl}"; \
+		echo "modulepath=$${modulepath}"; \
+		echo "relurl=$${relurl}"; \
 		echo ""; \
 	    fi; \
 	    \
@@ -468,63 +477,53 @@ gen-md: clean-md
 	    _='# Replace `...index/` by `...` in local urls:'; \
 	    sd '(href="[^:"]*)index/' '$$1' $${file}; \
 	    \
-	    _='# Get a modulepath by replacing `.`s with `/`s:'; \
+	    _='# Get modulepath by replacing `.`s with `/`s:'; \
 	    modulepath=$${module//\./\/}; \
 	    \
-	    _='# When HIDE-INDEXES, non-leaf modules are always index pages:'; \
-	    if  $(HIDE-INDEXES) && \
-		[ "$${title}" != "index" ] && \
-		(echo "$${filelist}" | grep -q "$(TEMP)/$${module}\.[^.]*\.[^.]*"); \
+	    if   [ "$${module}" == "index" ] && [ "$(MD-INDEX)" == "index" ]; then \
+		mdpage=index.md; \
+		relurl=""; \
+	    elif [ "$${module}" == "index" ] && [ "$(MD-INDEX)" != "index" ]; then \
+		mdpage=$(MD-INDEX).md; \
+		relurl=$(MD-INDEX)/; \
+	    elif $(HIDE-INDEXES) && \
+		 [ "$${title}" != "index" ] && \
+		 (echo "$${filelist}" | grep -q "$(TEMP)/$${module}\.[^.]*\.[^.]*"); \
 	    then \
-		_='# Use a hidden index page for the module:'; \
-		mdpagepath=$${modulepath}/index; \
+		_='# Non-leaf modules become index pages:'; \
+		mdpage=$${modulepath}/index.md; \
 		relurl=$${modulepath}/; \
-		page2md=$$(echo $${mdpagepath%\/*}/ | sd '[^/]*/' '../'); \
-	    elif [ "$${module}" == "index" ] && \
-	         [ "$(MD-INDEX)" == "index" ]; then \
-	        mdpagepath=""; \
-		relurl=""; \
-		page2md=""; \
-	    elif [ "$${module}" == "index" ] && \
-	         [ "$(MD-INDEX)" != "index" ]; then \
-	        mdpagepath=""; \
-		relurl=""; \
-		page2md="../"; \
-	    elif [ "$${title}" == "index" ]; then \
-		mdpagepath=$${modulepath}; \
-		relurl=$${modulepath%\/index}/; \
-		page2md=$$(echo $${mdpagepath%\/*}/ | sd '[^/]*/' '../'); \
 	    else \
-		mdpagepath=$${modulepath}; \
+		mdpage=$${modulepath}.md; \
+		_='# Index pages:'; \
 		relurl=$${modulepath%\/index}/; \
-		page2md=$$(echo $${mdpagepath%\/*}/ | sd '[^/]*/' '../')../; \
 	    fi; \
+	    \
+	    _='# Get the relative path to MD:'; \
+	    path2md=$$(echo $${relurl} | sd '[^/]*/' '../'); \
 	    _='# Prefix local urls by the relative path to MD:'; \
-	    sd "href=\"([^:\"]*)\"" "href=\"$${page2md}\$$1\"" $${file}; \
+	    sd "href=\"([^:\"]*)\"" "href=\"$${path2md}\$$1\"" $${file}; \
 	    \
 	    _='# If the HTML pages are included in the generated website:'; \
 	    if [ -z "$(DOCS2HTML)" ] || [ "$(DOCS2HTML)" != $(HTML)/ ]; then \
 		_='# Get the name of the HTML page for the module:'; \
-		if [ "$${module}" == "index" ] && [ "$(HTML-INDEX)" != "index" ]; then \
+		if [ "$${module}" == "index" ]; then \
 		    htmlmodule=$(HTML-INDEX); \
+		    mdurl=""; \
 		else \
 		    htmlmodule=$${module}; \
+		    mdurl=$${relurl}; \
 		fi; \
 		_='# Replace the href and class in the (unique) anchor for the module name:'; \
-		sd "<a id=\"([^\"]+)\" href=\"$${page2md}$${relurl}\" class=\"Module\">" \
-		   "<a id=\"$$1\" href=\"$${page2md}$(MD2DOCS)$(DOCS2HTML)$${htmlmodule}.html\" class=\"Module Definition\">" \
+		sd "<a id=\"([^\"]+)\" href=\"$${path2md}$${mdurl}\" class=\"Module\">" \
+		   "<a id=\"$$1\" href=\"$${path2md}$(MD2DOCS)$(DOCS2HTML)$${htmlmodule}.html\" class=\"Module Definition\">" \
 		   $${file}; \
 	    fi; \
 	    \
-	    if [ "$${module}" == "index" ]; then \
-		mdpage=$(MD)/$(MD-INDEX).md; \
-	    else \
-		mdpage=$(MD)/$${mdpagepath}.md; \
-	    fi; \
 	    _='# Ensure the directory for the page exists:'; \
-	    mkdir -p $$(dirname $${mdpage});  \
+	    mkdir -p $$(dirname $(MD)/$${mdpage});  \
 	    _='# Move the file from TEMP to MD:'; \
-	    mv $${file} $${mdpage}; \
+	    mv -f $${file} $(MD)/$${mdpage}; \
 	    \
 	    if [ "$(ECHO)" == "md" ]; then \
 		echo "file=$${file}"; \
@@ -532,11 +531,11 @@ gen-md: clean-md
 		echo "module=$${module}"; \
 		echo "title=$${title}"; \
 		echo "modulepath=$${modulepath}"; \
-		echo "mdpagepath=$${mdpagepath}"; \
-		echo "relurl=$${relurl}"; \
-		echo "page2md=$${page2md}"; \
-		echo "htmlmodule=$${htmlmodule}"; \
 		echo "mdpage=$${mdpage}"; \
+		echo "relurl=$${relurl}"; \
+		echo "path2md=$${path2md}"; \
+		echo "htmlmodule=$${htmlmodule}"; \
+		echo "mdurl=$${mdurl}"; \
 		echo ""; \
 	    fi; \
 	    \
@@ -745,7 +744,10 @@ DIR:     $(DIR)
 ROOT:    $(ROOT)
 HTML:    $(HTML)
 MD:      $(MD)
-INDEX:   $(HTML-INDEX)
+
+HTML-INDEX: $(HTML-INDEX)
+MD-INDEX:   $(HTML-INDEX)
+
 SITE:    $(SITE)
 TEMP:    $(TEMP)
 VERSION: $(VERSION)
