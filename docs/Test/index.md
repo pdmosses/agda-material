@@ -9,6 +9,6 @@
     have been commented-out, to avoid warnings when loading them.
 
 
-[Test]: ../md/Test/Plain/Test/index.md
-[Test2]: ../md/Test/Plain/Test2/index.md
+[Test]:  ../md/Test/Plain/Test.md
+[Test2]: ../md/Test/Plain/Test2.md
 [examples/syntax/highlighting]: https://github.com/agda/agda/tree/master/examples/syntax/highlighting/
