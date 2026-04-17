@@ -1,3 +1,5 @@
+# A Literate Markdown Agda Module
+
 This literate Agda file has extension `lagda.md`.
 
 ```agda
@@ -5,6 +7,8 @@ module Test.Literate.Markdown where
 
 -- Just testing...
 ```
+
+## Rendering
 
 In generated web pages, prose in files with extension `lagda.md`
 is rendered in a variable-width font:
@@ -15,6 +19,8 @@ is rendered in a variable-width font:
 
 See [Test.Literate.LaTeX] for an example of a literate Agda file
 where the prose is rendered verbatim in generated web pages.
+
+## Math
 
 The subset of $\LaTeX$ math markup supported by $\KaTeX$ (<https://katex.org>) is
 rendered correctly in generated webpages. The following examples are from
@@ -28,7 +34,9 @@ the [Material for MkDocs] website:
 > singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$
 > such that $f(a)=f(b)$.
 
-LaTeX files with highlighted Agda code cannot be generated directly from files
+## LaTeX
+
+$\LaTeX$ files with highlighted Agda code cannot be generated directly from files
 with extension `lagda.md`. However, it should be possible to use [Pandoc] to
 convert such files to `lagda.tex` files.
 
@@ -36,4 +44,4 @@ convert such files to `lagda.tex` files.
 [Material for MkDocs]: https://squidfunk.github.io/mkdocs-material/
 [Pandoc]: https://pandoc.org
 [Python extensions]: https://python-markdown.github.io/extensions/
-[Test.Literate.LaTeX]: ../LaTeX/index.md
+[Test.Literate.LaTeX]: LaTeX.md
