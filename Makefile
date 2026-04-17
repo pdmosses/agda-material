@@ -7,7 +7,10 @@ https://pdmosses.github.io/agda-material/
 # Peter Mosses (@pdmosses)
 
 ##############################################################################
-# MAIN TARGETS 
+# MAIN TARGETS
+
+# N.B. With GNU Make, `make ...` uses `GNUMakefile` as the default.
+# Run `make -f Makefile ...` instead of `make ...` to use this `Makefile`.
 
 # HELP
 #
@@ -74,8 +77,8 @@ ROOT := index,Everything
 # Both DIR and ROOT may be comma-separated lists.
 # The top level of the ROOT module(s) should be located in DIR.
 
-HTML := docs
-MD   := docs
+HTML := docs/html
+MD   := docs/md
 
 # N.B. The variables HTML and MD affect the URLs of the generated pages.
 # With the above defaults, the URLs of pages in the HTML section of a
@@ -85,7 +88,7 @@ MD   := docs
 # pages directly in `docs` may then overwrite non-generated files (depending
 # on the names of the Agda modules loaded by ROOT).
 
-HTML-INDEX := index_
+HTML-INDEX := index
 MD-INDEX   := index
 
 # If ROOT = index and HTML = docs, the generated page at docs/index.html
@@ -337,15 +340,6 @@ ifneq ($(filter docs docs/%,$(HTML)),)
 	        mv -f $${file} $(HTML)/$${module}.html; \
 	    fi; \
 	    \
-	    if [ "$(ECHO)" == "html" ]; then \
-		echo "file=$${file}"; \
-		echo "path=$${path}"; \
-		echo "module=$${module}"; \
-		echo "modulepath=$${modulepath}"; \
-		echo "relurl=$${relurl}"; \
-		echo ""; \
-	    fi; \
-	    \
 	done
 # 	Append CSS for emphasising module definitions to Agda.css:
 	@printf "\n%s {\n  %s\n  %s\n}" ".Agda a.Module.Definition" \
@@ -414,10 +408,6 @@ gen-md: clean-md
 	@mkdir -p $(MD)
 #
 	@filelist=$$(ls -1 $(TEMP)/*); \
-	if [ "$(ECHO)" == "md" ]; then \
-	    echo "filelist="; echo "$${filelist}"; \
-	    echo ""; \
-	fi; \
 	for file in $${filelist}; do \
 	    \
 	    _='# Get the path of the file relative to TEMP:'; \
@@ -525,20 +515,6 @@ gen-md: clean-md
 	    _='# Move the file from TEMP to MD:'; \
 	    mv -f $${file} $(MD)/$${mdpage}; \
 	    \
-	    if [ "$(ECHO)" == "md" ]; then \
-		echo "file=$${file}"; \
-		echo "path=$${path}"; \
-		echo "module=$${module}"; \
-		echo "title=$${title}"; \
-		echo "modulepath=$${modulepath}"; \
-		echo "mdpage=$${mdpage}"; \
-		echo "relurl=$${relurl}"; \
-		echo "path2md=$${path2md}"; \
-		echo "htmlmodule=$${htmlmodule}"; \
-		echo "mdurl=$${mdurl}"; \
-		echo ""; \
-	    fi; \
-	    \
 	done
 # 	Report the location of the generated MD pages:
 	@echo "Generated MD pages in $(MD)"
@@ -557,7 +533,7 @@ gen-md: clean-md
 
 .PHONY: serve
 serve:
-	@NO_MKDOCS_2_WARNING=1 mkdocs serve --livereload
+	@NO_MKDOCS_2_WARNING=1 mkdocs serve --livereload --dev-addr localhost:8000
 
 ##############################################################################
 # DEPLOY AN UNVERSIONED WEBSITE
@@ -764,19 +740,3 @@ ROOT-PATHS:    $(strip $(ROOT-PATHS))
 ROOT-FILES:    $(strip $(ROOT-FILES))
 
 endef
-
-# agda-material: make debug
-
-# PROJECT: /Users/pdm/Projects/Agda/agda-material
-# DIR:     agda
-# ROOT:    Test.index
-# HTML:    docs/html
-# MD:      docs/md
-# INDEX:   index
-# SITE:    site
-# TEMP:    temp
-# VERSION: 
-# 
-# INCLUDE-PATHS: agda
-# ROOT-PATHS:    Test/index
-# ROOT-FILES:    agda/Test/index.agda
