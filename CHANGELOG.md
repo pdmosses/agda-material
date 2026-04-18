@@ -26,6 +26,10 @@ Copy *all* changes that do not conflict with your own changes.
 
 ## [Unreleased] – 2026-04-18
 
+No code updates.
+
+## [0.2.0] – 2026-04-18
+
 ### Added
 
 - The `Makefile` variables `HTML-INDEX` and `MD-INDEX` have been added
@@ -169,7 +173,8 @@ in v0.1.0 regarding use of the `Makefile`:
 [semantic versioning]: https://semver.org
 [version 0.0]: https://pdmosses.github.io/agda-material/0.0/
 
-[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.2...HEAD
+[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/pdmosses/agda-material/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/pdmosses/agda-material/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/pdmosses/agda-material/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pdmosses/agda-material/releases/tag/v0.1.0
