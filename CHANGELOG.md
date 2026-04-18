@@ -24,18 +24,19 @@ Copy *all* changes that do not conflict with your own changes.
 
 ----
 
-## [Unreleased] – 2026-03-19
+## [Unreleased] – 2026-04-18
 
 ### Added
 
-- In the `Makefile`, the variable `INDEX` has been added (default `index`).
-  When HTML pages are generated at the top level of the `docs` directory,
-  the page generated from an `index` module is located at `docs/$(INDEX).html`.
-  Change the value of `INDEX` to avoid generating a page at `docs/index.html`,
-  which would override the website home page (and could also interfere with
-  version selection on generated websites).
+- The `Makefile` variables `HTML-INDEX` and `MD-INDEX` have been added
+  (default: `index`). Use to avoid issues when pages are generated at the top
+  level of the `docs` directory.
+- The `Makefile` variable `HIDE-INDEXES` determines whether `index` modules are
+  hidden in the navigation panel by using them as links to directories.
 
 ### Changed
+
+- The generated Markdown pages are no longer all named `index.md`.
 
 !!! warning
     **Some of the `make` commands for version management have been changed!**
@@ -45,6 +46,8 @@ Copy *all* changes that do not conflict with your own changes.
   an initial version. To clear a *versioned* website now requires direct use
   of the `mike` application.
 - Use `make list-versions` instead of `make list-all-deployed`.
+- Upgrade dependency: Awesome-nav v3.3.0.
+- Upgrade dependency: Material for MkDocs v9.7.6.
 
 ### Fixed
 
