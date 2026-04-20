@@ -26,6 +26,12 @@ Copy *all* changes that do not conflict with your own changes.
 
 ## [Unreleased] – 2026-04-18
 
+No code updates.
+
+----
+
+## [0.2.0] – 2026-04-18
+
 ### Added
 
 - The `Makefile` variables `HTML-INDEX` and `MD-INDEX` have been added
@@ -38,8 +44,8 @@ Copy *all* changes that do not conflict with your own changes.
 
 - The generated Markdown pages are no longer all named `index.md`.
 
-!!! warning
-    **Some of the `make` commands for version management have been changed!**
+> [!CAUTION]
+> **Some of the `make` commands for version management have been changed!**
 
 - Use `make start-versioning` (instead of `make delete-all-deployed`)
   to clear a previously-deployed *unversioned* website before deploying
@@ -52,6 +58,8 @@ Copy *all* changes that do not conflict with your own changes.
 ### Fixed
 
 - Refactor the `Makefile`.
+
+----
 
 ## [0.1.2] – 2026-03-01
 
@@ -112,12 +120,11 @@ fixes and backwards compatible changes; those that introduce new features,
 affect the UI, or could break generated websites are indicated by incrementing
 the minor version *Y*.
 
-!!! note
-
-    The version numbers of the deployed website omit the patch number *Z*.
-
-    Minor updates to the Agda-Material documentation are deployed silently,
-    independently of code releases.
+> [!NOTE]
+> The version numbers of the deployed website omit the patch number *Z*.
+>
+> Minor updates to the Agda-Material documentation are deployed silently,
+> independently of code releases.
 
 The `main` branch of the repo may include unreleased changes. The `dev` branch
 is used for development, and inherently unstable – possibly with significant
@@ -169,7 +176,8 @@ in v0.1.0 regarding use of the `Makefile`:
 [semantic versioning]: https://semver.org
 [version 0.0]: https://pdmosses.github.io/agda-material/0.0/
 
-[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.1.2...HEAD
+[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/pdmosses/agda-material/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/pdmosses/agda-material/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/pdmosses/agda-material/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pdmosses/agda-material/releases/tag/v0.1.0
