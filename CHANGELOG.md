@@ -42,8 +42,8 @@ No code updates.
 
 - The generated Markdown pages are no longer all named `index.md`.
 
-!!! warning
-    **Some of the `make` commands for version management have been changed!**
+> [!CAUTION]
+> **Some of the `make` commands for version management have been changed!**
 
 - Use `make start-versioning` (instead of `make delete-all-deployed`)
   to clear a previously-deployed *unversioned* website before deploying
@@ -116,12 +116,11 @@ fixes and backwards compatible changes; those that introduce new features,
 affect the UI, or could break generated websites are indicated by incrementing
 the minor version *Y*.
 
-!!! note
-
-    The version numbers of the deployed website omit the patch number *Z*.
-
-    Minor updates to the Agda-Material documentation are deployed silently,
-    independently of code releases.
+> [!NOTE]
+> The version numbers of the deployed website omit the patch number *Z*.
+>
+> Minor updates to the Agda-Material documentation are deployed silently,
+> independently of code releases.
 
 The `main` branch of the repo may include unreleased changes. The `dev` branch
 is used for development, and inherently unstable – possibly with significant
