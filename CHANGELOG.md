@@ -28,6 +28,8 @@ Copy *all* changes that do not conflict with your own changes.
 
 No code updates.
 
+----
+
 ## [0.2.0] – 2026-04-18
 
 ### Added
@@ -56,6 +58,8 @@ No code updates.
 ### Fixed
 
 - Refactor the `Makefile`.
+
+----
 
 ## [0.1.2] – 2026-03-01
 
