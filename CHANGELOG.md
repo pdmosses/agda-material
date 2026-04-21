@@ -24,9 +24,13 @@ Copy *all* changes that do not conflict with your own changes.
 
 ----
 
-## [Unreleased] – 2026-04-18
+## [Unreleased] – 2026-04-21
 
-No code updates.
+## Changed
+
+- The fontsizes have been adjusted to make the rendering of the preformatted
+  prose and code in literate LaTeX modules consistent with the rendering of
+  the plain HTML pages.
 
 ----
 
