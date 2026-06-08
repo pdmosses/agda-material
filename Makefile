@@ -434,7 +434,7 @@ gen-md: clean-md
 	    *.md) \
 		_='# Replace pre tags by code tags:'; \
 		sd '(<pre class="Agda">)' '$$1<code class="Agda">' $${file}; \
-		sd '(</pre>)' '</code>$$1' $${file}; \
+		sd '(</pre>)' '</code>$$1\n' $${file}; \
 		_='# Ensure the page has a top-level heading:'; \
 		if ! grep -q '^# ' $${file}; then \
 		    sd '\A' "# $${title}\n\n" $${file}; \
