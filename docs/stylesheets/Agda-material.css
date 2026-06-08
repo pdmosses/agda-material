@@ -10,13 +10,14 @@
 pre.Agda {
   color: var(--md-text-fg-color);
   background-color: var(--md-text-bg-color);
-  /* font-size: 1em; */
+  font-size: .65rem;
   /* font-family: var(--md-text-font-family); */
 }
 
 code.Agda {
   color: var(--md-code-fg-color);
   background-color: var(--md-code-bg-color);
+  font-size: 1em;
   /* font-family: var(--md-code-font-family); */
 }
 
@@ -29,9 +30,10 @@ code.Agda {
 
 /* KaTeX https://katex.org/docs/font */
 
-.katex {
-  font-size: 1em; /* default is 1.21em */
+/* .katex {
+  font-size: 1.21em;
 }
+*/
 
 /* Search */
 

@@ -24,7 +24,29 @@ Copy *all* changes that do not conflict with your own changes.
 
 ----
 
-## [Unreleased] – 2026-04-18
+## [Unreleased] – 2026-06-08
+
+### Added
+
+- The theme feature `navigation.footer` includes links to the next and previous
+  pages in the footer of each page.
+
+### Changed
+
+- The fontsizes have been adjusted to make the rendering of the preformatted
+  prose and code in literate LaTeX modules consistent with the rendering of
+  the plain HTML pages.
+- Reverted to default `font-size: 1.21em` for KaTeX math, to match the text
+  x-height.
+
+### Fixed
+
+- Generate newline after `/pre`.
+- Add missing link references in `README`, `about`.
+
+----
+
+## [0.2.0] – 2026-04-18
 
 No code updates.
 

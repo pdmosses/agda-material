@@ -26,13 +26,13 @@ The subset of $\LaTeX$ math markup supported by $\KaTeX$ (<https://katex.org>) i
 rendered correctly in generated webpages. The following examples are from
 the [Material for MkDocs] website:
 
-> $$
-> \cos x=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
-> $$
-> 
-> The homomorphism $f$ is injective if and only if its kernel is only the
-> singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$
-> such that $f(a)=f(b)$.
+$$
+\cos x=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
+$$
+
+The homomorphism $f$ is injective if and only if its kernel is only the
+singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$
+such that $f(a)=f(b)$.
 
 ## LaTeX
 

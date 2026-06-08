@@ -1,2 +1,2 @@
 \.s?css$
-fonts\.gstatic\.com
+www.gnu.org/software

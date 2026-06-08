@@ -83,5 +83,40 @@ The websites have the following features.
     large Agda modules. Moreover, it appears that some ASCII characters
     do not produce the expected results (even when escaped by `\`).
 
-  [README]: README.md
-  [User Guide]: user-guide.md
+## Examples of use
+
+The [Agda-Material] website is generated using different releases of the
+[agda-material repository]. Each version of the website correponds to a
+minor release of the repository, updated to reflect the latest patches.
+
+### Denotational semantics in Agda
+
+The [XDS-Agda] website includes experimental Agda embeddings of three separate
+denotational definitions. The different versions of the website show how the
+embeddings have evolved.
+
+### Agda standard library
+
+The [Agda-StdLib] website is a prototype generated using the same Makefile
+as the [Agda-Material] website. The different versions of the website
+correspond to released versions of the library, and show how the library has
+evolved.
+
+### TypeTopologyDocs
+
+The [TypeTopologyDocs] website is a prototype of an alternative rendering of
+the official [TypeTopology] website, and is unversioned. The Makefile used to
+generate it currently differs slightly from the Makefile used for the
+[Agda-Material] website.
+
+[README]: README.md
+[User Guide]: user-guide.md
+
+[agda-material repository]: https://github.com/pdmosses/agda-material/
+[Agda-Material]: https://pdmosses.github.io/agda-material/default/about/
+[README]: README.md
+[User Guide]: user-guide.md
+[XDS-Agda]: https://pdmosses.github.io/xds-agda/
+[Agda-StdLib]: https://pdmosses.github.io/agda-stdlib/nav/default/
+[TypeTopology]: https://martinescardo.github.io/TypeTopology/
+[TypeTopologyDocs]: https://pdmosses.github.io/TypeTopology/
