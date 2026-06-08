@@ -30,9 +30,10 @@ code.Agda {
 
 /* KaTeX https://katex.org/docs/font */
 
-.katex {
-  font-size: 1em; /* default is 1.21em */
+/* .katex {
+  font-size: 1.21em;
 }
+*/
 
 /* Search */
 
