@@ -24,7 +24,7 @@ Copy *all* changes that do not conflict with your own changes.
 
 ----
 
-## [Unreleased] – 2026-06-08
+## [Unreleased]
 
 No code updates.
 
