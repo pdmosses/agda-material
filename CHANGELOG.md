@@ -26,29 +26,28 @@ Copy *all* changes that do not conflict with your own changes.
 
 ## [Unreleased] – 2026-06-08
 
+No code updates.
+
+----
+
+## [0.2.1] – 2026-06-08
+
 ### Added
 
-- The theme feature `navigation.footer` includes links to the next and previous
-  pages in the footer of each page.
+- Add theme feature `navigation.footer`, which includes links to the next and
+  previous pages in the footer of each page.
 
 ### Changed
 
-- The fontsizes have been adjusted to make the rendering of the preformatted
-  prose and code in literate LaTeX modules consistent with the rendering of
-  the plain HTML pages.
-- Reverted to default `font-size: 1.21em` for KaTeX math, to match the text
+- Adjut the fontsizes to make the rendering of the preformatted prose and code
+  in literate LaTeX modules consistent with the rendering of plain HTML pages.
+- Revert to default `font-size: 1.21em` for KaTeX math, to match the text
   x-height.
 
 ### Fixed
 
 - Generate newline after `/pre`.
 - Add missing link references in `README`, `about`.
-
-----
-
-## [0.2.0] – 2026-04-18
-
-No code updates.
 
 ----
 
@@ -198,7 +197,8 @@ in v0.1.0 regarding use of the `Makefile`:
 [semantic versioning]: https://semver.org
 [version 0.0]: https://pdmosses.github.io/agda-material/0.0/
 
-[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/pdmosses/agda-material/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/pdmosses/agda-material/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/pdmosses/agda-material/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/pdmosses/agda-material/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/pdmosses/agda-material/compare/v0.1.0...v0.1.1
