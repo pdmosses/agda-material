@@ -112,9 +112,11 @@ generate it currently differs slightly from the Makefile used for the
 [README]: README.md
 [User Guide]: user-guide.md
 
+[agda-material repository]: https://github.com/pdmosses/agda-material/
 [Agda-Material]: https://pdmosses.github.io/agda-material/default/about/
 [README]: README.md
-[User Guide]: user-guide.md[XDS-Agda]: https://pdmosses.github.io/xds-agda/sub/
+[User Guide]: user-guide.md
+[XDS-Agda]: https://pdmosses.github.io/xds-agda/
 [Agda-StdLib]: https://pdmosses.github.io/agda-stdlib/nav/default/
 [TypeTopology]: https://martinescardo.github.io/TypeTopology/
 [TypeTopologyDocs]: https://pdmosses.github.io/TypeTopology/
